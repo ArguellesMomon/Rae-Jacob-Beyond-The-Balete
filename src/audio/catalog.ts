@@ -1,0 +1,17 @@
+export const AUDIO_SOURCES = {
+  afternoon: require('../../assets/audio/afternoon.wav'),
+  silong: require('../../assets/audio/silong.wav'),
+  garden: require('../../assets/audio/garden.wav'),
+  forest: require('../../assets/audio/forest.wav'),
+  water: require('../../assets/audio/water.wav'),
+  tap: require('../../assets/audio/tap.wav'),
+  step: require('../../assets/audio/step.wav'),
+  push: require('../../assets/audio/push.wav'),
+  lever: require('../../assets/audio/lever.wav'),
+  bell: require('../../assets/audio/bell.wav'),
+  clang: require('../../assets/audio/clang.wav'),
+  found: require('../../assets/audio/found.wav'),
+  crossing: require('../../assets/audio/crossing.wav'),
+  hooves: require('../../assets/audio/hooves.wav'),
+  complete: require('../../assets/audio/complete.wav'),
+} as const;

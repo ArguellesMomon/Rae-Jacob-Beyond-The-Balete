@@ -1,0 +1,58 @@
+export type Direction = 'up' | 'down' | 'left' | 'right';
+export type Point = { x: number; y: number };
+export type Rect = Point & { width: number; height: number };
+export type Player = Point & { facing: Direction; moving: boolean; stride: number };
+export type MapId = 'yard' | 'clearing' | 'grove' | 'waterworks' | 'bamboo' | 'turning';
+export type StoryChoiceId = 'firstTrust' | 'mapMistake' | 'bagtasIntent';
+export type ReplyTone = 'playful' | 'cautious' | 'thoughtful';
+export type DiscoveryId = 'bambooCord' | 'bambooCup' | 'hoofMarks' | 'rainLeaves' | 'trailVerse' | 'pathStone' | 'pathWind' | 'pathWater' | SceneryId | 'merienda' | 'clothesline' | 'basin' | 'yardCat' | 'calamansi' | 'herbBed' | 'sungka' | 'rainJar' | 'sealedRoots' | 'rootHomes' | 'bellArch' | 'waterPath' | 'speakingTube' | 'oldMarker' | 'rootFootprints' | 'splitter' | 'branch' | 'lever' | 'wheelBell' | 'worksTube' | 'rootSeal';
+export type TalaTopic = 'where' | 'home' | 'ringing' | 'maps' | 'courtesy' | 'journey';
+export type MangTopic = 'home' | 'ringing' | 'forest' | 'kapre' | 'memory' | 'bagtas';
+export type LolaTopic = 'stories' | 'string' | 'waiting';
+export type MindaTopic = 'water' | 'neighbors' | 'waybell';
+export type BagtasTopic = 'paths' | 'stories' | 'seals';
+export type ChapterTwoProgress = { visited: boolean; arrivalSeen: boolean; metBagtas: boolean; turningVisited: boolean; turningSeen: boolean; trailStep: number; routeVerified: boolean; debriefSeen: boolean; loops: number; topics: BagtasTopic[] };
+export const freshChapterTwo = (): ChapterTwoProgress => ({ visited: false, arrivalSeen: false, metBagtas: false, turningVisited: false, turningSeen: false, trailStep: 0, routeVerified: false, debriefSeen: false, loops: 0, topics: [] });
+export type CharacterId = 'bagtas' | 'rae' | 'lola' | 'tala' | 'minda' | 'uban';
+export type ResidentId = 'nilo' | 'sela' | 'doro' | 'pilo';
+export type SceneryId = 'lampShelf' | 'messageBoard' | 'dryingRack' | 'seedTray' | 'rainCup' | 'listeningStone' | 'toolRoll' | 'floatGauge' | 'reedChimes';
+export type Emotion = 'neutral' | 'warm' | 'delighted' | 'curious' | 'worried' | 'determined' | 'wistful' | 'surprised' | 'wry';
+export type Gesture = 'idle' | 'talk' | 'wave' | 'map' | 'think' | 'work' | 'reach' | 'pull' | 'bow' | 'brush' | 'guardMap' | 'listen' | 'celebrate';
+export type BambooForkId = 'forkWest' | 'forkNorth' | 'forkEast';
+export type InteractionId = BambooForkId | 'bambooDeparture' | 'bambooArrival' | 'bagtas' | 'bagtasPaths' | 'bagtasStories' | 'bagtasSeals' | 'bagtasDebrief' | 'turningEntry' | 'turningArrival' | 'bambooReturn' | 'turningReturn' | 'afterBell' | ResidentId | 'mangGift' | 'listeningSeed' | DiscoveryId | 'lola' | 'balete' | 'arrival' | 'tala' | 'minda' | 'grovePath' | 'talaWhere' | 'talaHome' | 'talaRinging' | 'mang' | 'mangHome' | 'mangRinging' | 'mangForest' | 'clearingPath' | 'waterworksPath' | 'waterworksArrival' | 'splitter' | 'branch' | 'lever' | 'wheelBell' | 'stringBell' | 'worksTube' | 'groveReturn' | 'lowTrail' | 'footbridge' | 'rootSeal' | 'talaMaps' | 'talaCourtesy' | 'talaJourney' | 'mangKapre' | 'mangMemory' | 'mangBagtas' | 'lolaStories' | 'lolaString' | 'lolaWaiting' | 'mindaWater' | 'mindaNeighbors' | 'mindaWaybell';
+export type Progress = {
+  chapterTwo: ChapterTwoProgress;
+  talkedToLola: boolean; discoveries: DiscoveryId[]; foundTree: boolean;
+  crossed: boolean; arrivalSeen: boolean; metTala: boolean;
+  talaTopics: TalaTopic[]; heardMinda: boolean; groveLead: boolean;
+  visitedGrove: boolean; groveRevealed: boolean; metMang: boolean;
+  mangTopics: MangTopic[]; waterworksLead: boolean;
+  visitedWaterworks: boolean; waterworksSeen: boolean; branchMoved: boolean; flowDiverted: boolean;
+  bellRecovered: boolean; waterRestored: boolean; bellReturned: boolean; bellHung: boolean; bellRung: boolean;
+  rootRevealed: boolean; chapterComplete: boolean;
+  lolaTopics: LolaTopic[]; mindaTopics: MindaTopic[];
+  ubanGiftReceived: boolean; residentChats: Partial<Record<ResidentId, number>>;
+  storyChoices: Partial<Record<StoryChoiceId, ReplyTone>>; talaMapHelped: boolean; afterBellSeen: boolean;
+};
+export type Interaction = {
+  id: InteractionId;
+  name: string;
+  action: 'Talk' | 'Inspect' | 'Push' | 'Use' | 'Take' | 'Ring' | 'Travel';
+  point: Point;
+  note?: string;
+};
+export type DialogueLine = { speaker: 'Bagtas' | 'Nilo' | 'Sela' | 'Doro' | 'Pilo' | 'Rae Jacob' | 'Lola Selya' | 'Someone?' | 'Tala' | 'Minda' | 'Mang Uban'; text: string; emotion?: Emotion; gesture?: Gesture; beat?: string; prop?: 'seed'; cue?: 'hooves'; choice?: StoryChoiceId };
+export type Dialogue = { id: InteractionId; lines: DialogueLine[]; index: number; effectApplied?: boolean };
+export type HistoryEntry = { seq: number; mapId: MapId; scene: string; speaker: DialogueLine['speaker']; text: string; beat?: string };
+export type SaveData = { version: 2; mapId: MapId; player: Player; progress: Progress; history?: HistoryEntry[] };
+
+export const EMPTY_PROGRESS: Progress = { chapterTwo: freshChapterTwo(), talkedToLola: false, discoveries: [], foundTree: false, crossed: false, arrivalSeen: false, metTala: false, talaTopics: [], heardMinda: false, groveLead: false, visitedGrove: false, groveRevealed: false, metMang: false, mangTopics: [], waterworksLead: false, visitedWaterworks: false, waterworksSeen: false, branchMoved: false, flowDiverted: false, bellRecovered: false, waterRestored: false, bellReturned: false, bellHung: false, bellRung: false, rootRevealed: false, chapterComplete: false, lolaTopics: [], mindaTopics: [], ubanGiftReceived: false, residentChats: {}, storyChoices: {}, talaMapHelped: false, afterBellSeen: false };
+export const START: Player = { x: 270, y: 252, facing: 'down', moving: false, stride: 0 };
+export const CLEARING_START: Player = { x: 86, y: 358, facing: 'right', moving: false, stride: 0 };
+export const TALA_START: Player = { x: 188, y: 286, facing: 'down', moving: false, stride: 0 };
+export const GROVE_START: Player = { x: 224, y: 448, facing: 'up', moving: false, stride: 0 };
+export const CLEARING_GROVE_RETURN: Player = { x: 292, y: 137, facing: 'down', moving: false, stride: 0 };
+export const WATERWORKS_START: Player = { x: 84, y: 344, facing: 'right', moving: false, stride: 0 };
+
+export const BAMBOO_START: Player = { x: 84, y: 391, facing: 'right', moving: false, stride: 0 };
+export const TURNING_START: Player = { x: 320, y: 390, facing: 'up', moving: false, stride: 0 };

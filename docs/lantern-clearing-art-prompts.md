@@ -1,0 +1,52 @@
+# Lantern Clearing — generation prompts
+
+Generated using the built-in imagegen tool on 2026-10-17. The layout reference was rendered from the original game artwork without actors. Lola's Yard was supplied as a material/pixel-style reference only.
+
+The first draft is retained as `assets/maps/clearing-painted-draft.png`. A top-anchored 576 × 484 sampling, cropped to the 576 × 448 world, aligned its landmarks before the local correction pass; that guide is `artifacts/clearing-composition-draft.png`. The correction removes a false creek and supplies an open work bank. Its saved output, `assets/maps/clearing-restored-source.png`, is sampled directly to `clearing-restored-native.png` at 576 × 448, then enlarged with nearest-neighbor sampling to the production [lantern-clearing-v2.png](../assets/maps/lantern-clearing-v2.png).
+
+The base shows the cleared bank and warm open window. Runtime overlays supply the initial barrier/closed shutters and earned bell/name states. No full-background swap occurs after repairs. The correction draft's extra stream is not used in the production map.
+
+The separate root backdrop is saved as `assets/maps/root-descent-source.png`, sampled to `root-descent-native.png` at 320 × 180, then enlarged with nearest-neighbor sampling to the production [root-descent-v2.png](../assets/maps/root-descent-v2.png) at 640 × 360.
+
+Only the two production PNGs are referenced by runtime code. All prompt text is preserved below.
+
+## Environment layout and style
+
+```text
+Use case: sketch-to-render.
+Asset type: exact-layout production environment background for a 2D pixel-art mobile RPG, not a poster.
+Input 1 is the exact gameplay map layout. Input 2 (Lola's yard) is a STYLE reference for material detail and pixel density only; do not copy its house, garden, sunshine or objects.
+Primary request: transform input 1 into a beautiful Philippine folklore forest hamlet at BLUE HOUR, Lantern Clearing in Silong: tiny duwende houses tucked into giant living balete buttress roots, gentle amber lanterns, cool jade and deep teal woodland, inviting violet-blue twilight glimpsed through layered treetops. Same handcrafted detailed 16-bit pixel environment finish as image 2, crisp visible clustered source pixels, nuanced wood, moss, wet earth, lichen, leaf litter, little stones, warm windows, cool reflected water. Readable paths and actors, restrained luminous fungi at the margins, not a carpet of giant fantasy mushrooms. Lush foreground and hazy distant roots create depth and scale. No modern buildings, no house from image 2.
+CRITICAL PRODUCTION LAYOUT: Entire map remains exactly 576x448 native game coordinates, output 1152x896, preserve framing and all object feet/footprints from input 1. Do not relocate or enlarge anything. Coordinate list below is NATIVE pixels, double for final image. View is top-down slightly front-facing RPG, no horizon, no isometric rotation or dramatic perspective.
+Root ridge blocks x30-255,y38-110, huge organic roots cradle existing three LITTLE houses without expanding across clear paths. House 1 x80-126,y129-161, roof about y126-137, window x86-95,y141-151 and door x109-120,y144-161. House 2 x153-199,y107-141. House 3 x224-267,y140-173. Keep them only about 46 pixels wide and 30 tall, tiny compared with forest roots. Detailed little woven shutters, wood grain, curved moss roofs, low thresholds and household warmth. Keep surrounding footpaths open.
+A plainly visible NORTH exit at x284-318,y73-173 leads toward Old Balete Grove; retain its small wooden UP arrow sign centered x292,y78 with post to y98. NO letters on the sign, just the arrow. Do not block this central north passage with roots.
+The CLOSED arrival hollow is at x33-68,y301-341 on left, layered intertwined roots visibly sealing its dark rear, threshold x31-75,y340-348. No open glowing portal. Rae arrives on leaves just to its right, around x86,y358; keep that space clear.
+Tiny plank walkway x164-216,y293-309 over a SHALLOW trickle x145-239,y295-310. This is Tala's mapping spot just above bridge (x188,y286), no person baked in. Preserve the tiny bridge, not a huge river across the map.
+Minda's work table x423-461,y208-224, bamboo speaking tube x451-471,y165-195. Right-side water CHANNEL strictly x484-523,y172-391, vertical, clearly water and impassable with stone/root-lined banks. No bridge across this channel. Flooded-state wood WORK BARRIER x461-486,y266-290 on LEFT bank, horizontal caution slat y275-281: keep closed and visibly raised. Wet marks and shallow overflow only on its approach, no pond across main central plaza. This will be opened by a later gameplay overlay.
+Empty BELL ARCH at x362-403,y290-331 with two posts x365-370 and395-400, beam y290-295, EMPTY central space (no bell), snapped hanging cord at x382,y295-310. A small DARK BLANK signboard x371-395,y313-325 is beneath it. No letters, no runes; the game supplies the name after repair. Preserve visible path scratches south-east of arch.
+Long low root BENCH x275-346,y357-378. Preserve tiny existing props: spare lamp SHELF x338-358,y178-189, NOTICE BOARD x267-290,y177-201 with blank scraps no letters, DRYING RACK x141-165,y164-183, low basket mat x299-326,y268-282, small plants near (73,183),(207,151),(352,340). Upgrade existing materials, NOT more gameplay objects.
+String lamps from (80,241) through (130,253),(181,246),(232,223),(282,215),(332,229) to(386,213). They are tiny lamps on a delicate overhead cord at those exact points, no giant lanterns or raised posts blocking the walking path. Lamps also at(92,325),(262,112),(447,262). Soft amber pools on ground, luminous cores, restrained glow. Do not obscure walkway or central open play area with light effects.
+Keep central navigable ground open as input: winding paths from arrival northeast to Tala, to Minda east, north to grove, south-east to bell. The boundary vegetation can be gorgeous and dense; paths are subtle soft-edged worn earth, not flat polygons or square tiles. Decorative canopy frames top, far left and bottom corners, with front leaves but NO plants on top of key props. Plants can be walked through unless existing large objects.
+NO people, faces, NPCs, player characters, creatures, UI, readable text, invented letters, logos, watermarks, labels, HUD, border. No bell hanging anywhere, no huge mushrooms, no extra gates. No viewpoint or crop changes. A mysterious but welcoming place for a lost child, not horror.
+```
+
+## Navigation correction and repaired bank
+
+```text
+Use case: precise-object-edit. Image 1 is the EXACT edit target, a production pixel RPG map 1152x896 representing native world576x448. Preserve its dimensions, crop, detailed pixel style, entire color palette, lighting, every cottage, moss, lantern, arch, footbridge, root bench, noticeboard, shelf, sealed hollow and all object positions. Make ONLY these localized navigation/state fixes. No global repaint, no camera movement, no new objects, no text or people.
+1. The winding blue creek on the lower left must be REMOVED and replaced with flat walkable damp earth, small embedded stones and low moss, except for a TINY shallow trickle immediately under the existing little footbridge. In FINAL1152x896 image coordinates: the ONLY left-side surface water allowed is the narrow horizontal area x290-478,y590-620, under the footbridge at x328-432,y586-618. ALL other blue water near the left-side lamp chain (x130-370,y465-587) and downstream south of the bridge (x330-550,y620-745) becomes continuous flat earth and moss. Preserve the tiny bridge itself at EXACT existing position; do not move, enlarge or remove it. Keep the main settlement walking space open and unobstructed, no taller plants or new rocks in place of the false creek.
+2. Produce the REPAIRED work-path version: remove ONLY the little yellow-striped wooden barrier on the left bank of the far-right channel at FINAL coordinates x922-972,y532-580. Fill its former footprint and damp approach x906-974,y518-626 with matching dry worn path earth and clear walking access along the bank. Do NOT add a bridge over the right channel. Keep channel water and its banks at x968-1046,y344-782 untouched. Keep the nearby small lamp, flowers and large blank bell arch in place.
+3. Open the tiny wooden shutters around the FIRST/leftmost cottage window at FINAL coordinates x166-200,y274-312. The warm light stays the same. Lay the shutters outward against the wall, use aged wood matching the house. Do not move the window or change the house outline.
+Everything else MUST be identical to image 1. Keep the bell arch empty with snapped cord and its dark BLANK signboard unchanged, no bell or writing. No text, labels, NPCs, faces, arrows except the already existing north arrow. Exact layout, exact lighting, same pixel scale.
+```
+
+## Root descent backdrop
+
+```text
+Use case: stylized-concept.
+Asset type: a production pixel-art BACKDROP for a short falling-between-roots animation in an Expo 2D RPG. Generate a NEW landscape image, 1280x720 (native game view320x180).
+Reference image is Lantern Clearing. Match ONLY its intricate visible pixel clusters, weathered organic bark, luminous moss and cool teal/blue twilight contrasted with a few warm gold motes. Do NOT reproduce the village layout or any houses or lantern strings.
+Composition: looking down through a dark vertical chasm inside intertwined ancient balete roots. Heavy tactile roots frame the leftmost quarter and rightmost quarter, strong foreground silhouettes, ridged bark with moss and small fungal shelves. Finer root threads and softly layered blue-green branches recede toward a distant little bed of leaves at the bottom edge. The CENTER HALF of the image (native x80-240, y0-153) must stay dark, open and uncluttered so a falling child sprite can be animated clearly over it. No branches crossing that central falling corridor. Slight warmer violet/amber light near the bottom leaf bed suggests a safe landing in a twilight forest. Depth through overlapping roots, restrained shafts of light and atmospheric color, not radial blur or fog that obscures pixels. Quiet wonder with a hint of worry, not horror.
+Native pixel grid320x180, crisp 16-bit pixel environmental illustration, textured but deliberate clusters consistent with reference. No people, character sprites, creatures, faces, symbols, letters, UI, borders, watermark, arrows, houses, doors or glowing portal. Entire scene full bleed.
+```
+

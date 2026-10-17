@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "Rae Jacob · Beyond the Balete",
+    "slug": "rae-jacob-beyond-the-balete",
+    "version": "0.1.0",
+    "orientation": "landscape",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#172f28",
+    "icon": "./assets/icon.png",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "predictiveBackGestureEnabled": true
+    },
+    "web": {
+      "name": "Rae Jacob — Beyond the Balete",
+      "themeColor": "#172f28",
+      "backgroundColor": "#172f28",
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      ["expo-audio", { "microphonePermission": false, "recordAudioAndroid": false, "enableBackgroundPlayback": false, "enableBackgroundRecording": false }],
+      "expo-asset"
+    ]
+  }
+}

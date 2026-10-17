@@ -1,0 +1,98 @@
+{
+  "sampleRate": 22050,
+  "channels": 1,
+  "encoding": "PCM16",
+  "originalSynthesis": true,
+  "assets": {
+    "afternoon": {
+      "seconds": 20,
+      "bytes": 882044,
+      "peak": 0.3346,
+      "rms": 0.0874
+    },
+    "silong": {
+      "seconds": 22.857,
+      "bytes": 1008044,
+      "peak": 0.2722,
+      "rms": 0.0731
+    },
+    "garden": {
+      "seconds": 8,
+      "bytes": 352844,
+      "peak": 0.161,
+      "rms": 0.0217
+    },
+    "forest": {
+      "seconds": 8,
+      "bytes": 352844,
+      "peak": 0.0723,
+      "rms": 0.0146
+    },
+    "water": {
+      "seconds": 8,
+      "bytes": 352844,
+      "peak": 0.2984,
+      "rms": 0.0638
+    },
+    "tap": {
+      "seconds": 0.16,
+      "bytes": 7100,
+      "peak": 0.161,
+      "rms": 0.0664
+    },
+    "step": {
+      "seconds": 0.13,
+      "bytes": 5778,
+      "peak": 0.2697,
+      "rms": 0.0406
+    },
+    "push": {
+      "seconds": 0.6,
+      "bytes": 26504,
+      "peak": 0.1699,
+      "rms": 0.0219
+    },
+    "lever": {
+      "seconds": 0.34,
+      "bytes": 15038,
+      "peak": 0.2551,
+      "rms": 0.0539
+    },
+    "bell": {
+      "seconds": 2.6,
+      "bytes": 114704,
+      "peak": 0.5529,
+      "rms": 0.0968
+    },
+    "clang": {
+      "seconds": 0.9,
+      "bytes": 39734,
+      "peak": 0.2807,
+      "rms": 0.0578
+    },
+    "found": {
+      "seconds": 1.1,
+      "bytes": 48554,
+      "peak": 0.3636,
+      "rms": 0.0886
+    },
+    "crossing": {
+      "seconds": 1.5,
+      "bytes": 66194,
+      "peak": 0.2188,
+      "rms": 0.0631
+    },
+    "hooves": {
+      "seconds": 0.8,
+      "bytes": 35324,
+      "peak": 0.3436,
+      "rms": 0.0368
+    },
+    "complete": {
+      "seconds": 3.2,
+      "bytes": 141164,
+      "peak": 0.585,
+      "rms": 0.1418
+    }
+  }
+}
