@@ -2,6 +2,8 @@
 
 First playable version: **Bamboo Verge → Turning Paths → a checked route back to Bagtas**. This implements the opening story arc. The rainlit road and the rest of Chapter 2 remain subsequent work.
 
+The agreed continuation is [The Rainlit Road](chapter-02-the-rainlit-road.md), introducing **Mayumi, The Diwata ng Bukal**. Her name and spring-centered identity were confirmed on 2026-10-18. This remains planned content beyond the playable opening.
+
 ## Story and continuity
 
 Rae and Tala follow the open bamboo road beside the sealed side passage from Chapter 1. The restored waybell remains restored. They can return to the clearing, Mang Uban and Minda throughout this arc.

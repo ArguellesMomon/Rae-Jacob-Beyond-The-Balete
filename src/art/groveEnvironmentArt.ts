@@ -1,3 +1,4 @@
+import { sceneViewport } from '../game/camera.ts';
 import type { Point, Progress } from '../game/model.ts';
 import { pixelPath as p, pixelRect as r, wrapSvg } from './pixelArt.ts';
 
@@ -28,8 +29,7 @@ export function grovePerchMarkup(prefix = 'grove-preview') {
   return `<use href="#${prefix}-map" clip-path="url(#${prefix}-perch)"/>`;
 }
 export function groveBaseMarkup(prefix = 'grove-preview') {
-  // Decorative forest beyond the map fills wide cinematic views; it has no collision or actors.
-  return `<rect x="-240" y="-256" width="960" height="1024" fill="#142d36"/><use href="#${prefix}-map" transform="translate(-240 -256) scale(2)" opacity=".45"/><use href="#${prefix}-map"/>`;
+  return `<use href="#${prefix}-map"/>`;
 }
 export function groveSeedPosition(player: Point, progress: number) {
   const t = Math.max(0, Math.min(1, progress)), ease = t * t * (3 - 2 * t);
@@ -43,7 +43,15 @@ export function groveShot(player: Point, width: number, height: number, { overvi
     x: overview ? 240 : giftScene ? (player.x + 238) / 2 : focusMang ? player.x + (238 - player.x) * ease : player.x,
     y: overview ? 190 : giftScene ? (player.y + 128) / 2 : focusMang ? player.y - 24 + (164 - (player.y - 24)) * ease : player.y - 24,
   };
-  // The gift needs vertical room for a seated giant and a child; the forest backdrop fills its sides.
+  // Frame the seated giant and Rae together when the player is near his perch.
+  // This is continuous at the clearing edges, rather than a camera jump.
+  if (!overview && !giftScene && !focusMang) {
+    const { vh } = sceneViewport(width, height, undefined, GROVE_ART);
+    const clamp = (n: number) => Math.max(0, Math.min(1, n));
+    const interest = clamp((player.x - 120) / 40) * clamp((400 - player.x) / 40) * clamp((440 - player.y) / 90);
+    const sharedY = Math.max((108 + player.y + 16) / 2, player.y + 16 - vh / 2);
+    center.y += (sharedY - center.y) * interest;
+  }
   const view = giftScene ? { width: 440, height: 240 } : overview ? { width: Math.min(480, 512 * width / height), height: Math.min(512, 480 * height / width) } : undefined;
   return { center, view, cinematic: focusMang };
 }
@@ -83,7 +91,6 @@ export function groveLightSvg(progress: Progress, clock: number, layer: 'ground'
     if (!quiet) {
       const shaking = time % 10 < .7, dx = shaking ? frame % 2 : 0;
       s += r(261 + dx, 280, 2, 1, '#e1c798', shaking ? .7 : .18) + r(278 - dx, 283, 2, 1, '#d8bd8a', shaking ? .65 : .15) + r(267 + dx, 288, 3, 1, '#e3cf9d', shaking ? .6 : .12);
-      s += p('M343 310v8h1v-8z M347 307v14h1v-14z', '#d6d8ae', .22 + Math.sin(time * Math.PI / 5) * .1);
     }
   }
   const result = wrapSvg(s, 480, 512);

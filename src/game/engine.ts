@@ -1,3 +1,6 @@
+import { isRainlitMap, parseRainlit, rainlitAction } from './rainlit.ts';
+import { RAINLIT_SPAWNS } from './rainlitWorld.ts';
+import { freshRainlit } from './model.ts';
 import { chapterTwoAction, chapterTwoHint, chapterTwoObjective, isChapterTwoMap, parseChapterTwo } from './chapterTwo.ts';
 import { BAMBOO_START, TURNING_START, freshChapterTwo } from './model.ts';
 import { CLEARING_GROVE_RETURN, CLEARING_START, EMPTY_PROGRESS, GROVE_START, START, WATERWORKS_START } from './model.ts';
@@ -44,7 +47,9 @@ export function stepPlayer(player: Player, input: Point, seconds: number, mapId:
     if (canStand({ x: x + dx / steps, y }, colliders, mapId)) x += dx / steps;
     if (canStand({ x, y: y + dy / steps }, colliders, mapId)) y += dy / steps;
   }
-  const stablePixel = (value: number) => Math.abs(value - Math.round(value)) < 1e-7 ? Math.round(value) : value;
+  // Converging steering can leave a few millionths of a pixel above an integer
+  // bank edge. Snap that invisible drift before it becomes a ceiling-row snag.
+  const stablePixel = (value: number) => Math.abs(value - Math.round(value)) < 1e-4 ? Math.round(value) : value;
   x = stablePixel(x); y = stablePixel(y);
   const moved = Math.hypot(x - player.x, y - player.y);
   const diagonal = Math.abs(Math.abs(input.x) - Math.abs(input.y)) < magnitude * .12;
@@ -53,14 +58,21 @@ export function stepPlayer(player: Player, input: Point, seconds: number, mapId:
   return { x, y, facing, moving: moved > 0.01, stride: player.stride + moved };
 }
 
-export function nearbyInteraction(player: Point & Partial<Pick<Player, 'facing'>>, previousId?: string, mapId: MapId = 'yard', companion?: Point, progress: Progress = EMPTY_PROGRESS): Interaction | null {
+export function nearbyInteraction(player: Point & Partial<Pick<Player, 'facing' | 'moving'>>, previousId?: string, mapId: MapId = 'yard', companion?: Point, progress: Progress = EMPTY_PROGRESS): Interaction | null {
   const map = getMap(mapId, progress);
   if (!canStand(player, map.colliders, mapId)) return null;
   const items = map.interactions.map(item => item.id === 'tala' && companion ? { ...item, point: companion } : item);
   const candidates = items.filter(item => {
     const dx = item.point.x - player.x;
     const dy = item.point.y - player.y;
-    if (Math.hypot(dx, dy) > 29) return false;
+    const distance = Math.hypot(dx, dy);
+    if (distance > 29) return false;
+    // A following companion is an intentional conversation, not a walking target.
+    if (item.id === 'tala' && companion) {
+      if (player.moving || distance > 22) return false;
+      const forward = player.facing === 'up' ? -dy : player.facing === 'down' ? dy : player.facing === 'left' ? -dx : player.facing === 'right' ? dx : distance;
+      if (distance > 2 && forward / distance < .45) return false;
+    }
     if (!clearApproach(player, item, map.colliders)) return false;
     // Do not select a porch object from behind the solid house wall.
     return item.id !== 'lola' && item.id !== 'merienda' || player.y >= 187;
@@ -105,6 +117,8 @@ export function objective(progress: Progress, mapId: MapId = 'yard'): string {
 }
 
 export function completeInteraction(progress: Progress, id: InteractionId): Progress {
+  const rainlit = rainlitAction(progress, id);
+  if (rainlit) return rainlit;
   const chapterTwo = chapterTwoAction(progress, id);
   if (chapterTwo) return progress.chapterComplete ? chapterTwo : progress;
   if (id === 'afterBell') return progress.bellRung ? { ...progress, afterBellSeen: true } : progress;
@@ -152,9 +166,17 @@ export function crossToClearing(progress: Progress): SaveData {
   return { version: 2, mapId: 'clearing', player: { ...CLEARING_START }, progress: { ...progress, foundTree: true, crossed: true, arrivalSeen: false } };
 }
 
-export type TravelRoute = 'toBamboo' | 'toTurning' | 'bambooLoop' | 'backToBamboo' | 'backToWorks' | 'toGrove' | 'toClearing' | 'toWaterworks' | 'toGroveFromWorks' | 'toClearingFromWorks' | 'toWorksFromClearing';
+export type TravelRoute = 'toRainroad' | 'toHamlet' | 'toSpring' | 'backToShelter' | 'backToRoad' | 'backToHamlet' | 'toBamboo' | 'toTurning' | 'bambooLoop' | 'backToBamboo' | 'backToWorks' | 'toGrove' | 'toClearing' | 'toWaterworks' | 'toGroveFromWorks' | 'toClearingFromWorks' | 'toWorksFromClearing';
 export function travelRoute(progress: Progress, route: TravelRoute): SaveData | null {
   const checkpoint = (mapId: MapId, x: number, y: number, facing: Player['facing'] = 'down'): SaveData => ({ version: 2, mapId, player: { x, y, facing, moving: false, stride: 0 }, progress });
+  if (['toRainroad', 'toHamlet', 'toSpring', 'backToShelter', 'backToRoad', 'backToHamlet'].includes(route)) {
+    if (!progress.chapterComplete || !progress.chapterTwo.debriefSeen) return null;
+    if (route === 'backToShelter') return checkpoint('bamboo', 384, 203);
+    if (route === 'toHamlet' && !progress.rainlit.roadSeen || route === 'toSpring' && (!progress.rainlit.hamletSeen || !progress.rainlit.metLuning)) return null;
+    const mapId = route === 'toRainroad' || route === 'backToRoad' ? 'rainroad' : route === 'toSpring' ? 'spring' : 'hamlet';
+    const player = route === 'backToRoad' || route === 'backToHamlet' ? { ...RAINLIT_SPAWNS[mapId], x: mapId === 'rainroad' ? 559 : 569, y: mapId === 'rainroad' ? 218 : 242, facing: 'left' as const } : { ...RAINLIT_SPAWNS[mapId] };
+    return { version: 2, mapId, player, progress: { ...progress, rainlit: { ...progress.rainlit, visited: true } } };
+  }
   if (route === 'toBamboo') return progress.chapterComplete ? { version: 2, mapId: 'bamboo', player: { ...BAMBOO_START }, progress: { ...progress, chapterTwo: { ...progress.chapterTwo, visited: true } } } : null;
   if (route === 'toTurning') return progress.chapterComplete && progress.chapterTwo.metBagtas ? { version: 2, mapId: 'turning', player: { ...TURNING_START }, progress: { ...progress, chapterTwo: { ...progress.chapterTwo, turningVisited: true } } } : null;
   if (route === 'bambooLoop') return progress.chapterTwo.turningSeen ? { version: 2, mapId: 'turning', player: { ...TURNING_START }, progress } : null;
@@ -178,12 +200,12 @@ export function parseSave(raw: string | null): SaveData | null {
   try {
     const value = JSON.parse(raw);
     if (![1, 2].includes(value.version) || !value.player || !value.progress) return null;
-    if (value.version === 2 && !['yard', 'clearing', 'grove', 'waterworks', 'bamboo', 'turning'].includes(value.mapId)) return null;
+    if (value.version === 2 && !['yard', 'clearing', 'grove', 'waterworks', 'bamboo', 'turning', 'rainroad', 'hamlet', 'spring'].includes(value.mapId)) return null;
     if (typeof value.player.x !== 'number' || typeof value.player.y !== 'number' || !Number.isFinite(value.player.x) || !Number.isFinite(value.player.y)) return null;
     const p = value.progress;
     if (typeof p.talkedToLola !== 'boolean' || typeof p.foundTree !== 'boolean' || !Array.isArray(p.discoveries)) return null;
     if (isChapterTwoMap(value.mapId) && p.chapterComplete !== true) return null;
-    const validIds = ['bambooCord', 'bambooCup', 'hoofMarks', 'rainLeaves', 'trailVerse', 'pathStone', 'pathWind', 'pathWater', 'merienda', 'clothesline', 'basin', 'yardCat', 'calamansi', 'herbBed', 'sungka', 'rainJar', 'sealedRoots', 'rootHomes', 'bellArch', 'waterPath', 'speakingTube', 'oldMarker', 'rootFootprints', 'splitter', 'branch', 'lever', 'wheelBell', 'worksTube', 'rootSeal', 'lampShelf', 'messageBoard', 'dryingRack', 'seedTray', 'rainCup', 'listeningStone', 'toolRoll', 'floatGauge', 'reedChimes'];
+    const validIds = ['rainGauge', 'bambooDrips', 'basketRack', 'springMoss', 'bambooCord', 'bambooCup', 'hoofMarks', 'rainLeaves', 'trailVerse', 'pathStone', 'pathWind', 'pathWater', 'merienda', 'clothesline', 'basin', 'yardCat', 'calamansi', 'herbBed', 'sungka', 'rainJar', 'sealedRoots', 'rootHomes', 'bellArch', 'waterPath', 'speakingTube', 'oldMarker', 'rootFootprints', 'splitter', 'branch', 'lever', 'wheelBell', 'worksTube', 'rootSeal', 'lampShelf', 'messageBoard', 'dryingRack', 'seedTray', 'rainCup', 'listeningStone', 'toolRoll', 'floatGauge', 'reedChimes'];
     const topics = Array.isArray(p.talaTopics) ? p.talaTopics.filter((topic: unknown) => ['where', 'home', 'ringing', 'maps', 'courtesy', 'journey'].includes(topic as string)) : [];
     const mapId: MapId = value.version === 1 ? 'yard' : value.mapId;
     const inSilong = mapId !== 'yard';
@@ -202,6 +224,9 @@ export function parseSave(raw: string | null): SaveData | null {
     progress.waterworksSeen = p.waterworksSeen === true;
     progress.chapterComplete = p.chapterComplete === true && inSilong;
     progress.chapterTwo = parseChapterTwo(p.chapterTwo, progress.chapterComplete, mapId);
+    progress.rainlit = parseRainlit(p.rainlit, progress.chapterTwo.debriefSeen);
+    if (!progress.ubanGiftReceived && p.ubanGiftReceived !== true) progress.rainlit.seedMemory = false;
+    if (isRainlitMap(mapId) && (!progress.rainlit.visited || mapId !== 'rainroad' && !progress.rainlit.roadSeen || mapId === 'spring' && (!progress.rainlit.hamletSeen || !progress.rainlit.metLuning))) return null;
     progress.rootRevealed = p.rootRevealed === true || progress.chapterComplete;
     progress.bellRung = p.bellRung === true || progress.chapterComplete;
     progress.storyChoices = parseStoryChoices(p.storyChoices);
@@ -226,7 +251,7 @@ export function parseSave(raw: string | null): SaveData | null {
 }
 
 export function freshSave(): SaveData {
-  return { version: 2, mapId: 'yard', player: { ...START }, progress: { ...EMPTY_PROGRESS, chapterTwo: freshChapterTwo(), discoveries: [], talaTopics: [], mangTopics: [], lolaTopics: [], mindaTopics: [], residentChats: {}, storyChoices: {} } };
+  return { version: 2, mapId: 'yard', player: { ...START }, progress: { ...EMPTY_PROGRESS, rainlit: freshRainlit(), chapterTwo: freshChapterTwo(), discoveries: [], talaTopics: [], mangTopics: [], lolaTopics: [], mindaTopics: [], residentChats: {}, storyChoices: {} } };
 }
 
 export type TrailPoint = Point & { distance: number };

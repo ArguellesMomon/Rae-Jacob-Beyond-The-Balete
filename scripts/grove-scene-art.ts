@@ -1,3 +1,4 @@
+import { WORLD_PROPS, PROP_MOTION } from '../src/art/worldPropArt.ts';
 import { readFile } from 'node:fs/promises';
 import { groveBaseMarkup, groveForegroundMarkup, groveLightSvg, grovePerchMarkup, groveRasterDefs, groveSeedPosition } from '../src/art/groveEnvironmentArt.ts';
 import { mangUbanSvg } from '../src/art/groveArt.ts';
@@ -12,10 +13,9 @@ export function groveActor(id: 'rae' | 'tala', x: number, y: number) {
 }
 export function groveSceneArt(progress: Progress, player: Point = { x: 232, y: 302 }, clock = 3, { companion = { x: 211, y: 320 }, line, seedProgress = 1 }: { companion?: Point; line?: DialogueLine; seedProgress?: number } = {}) {
   const speaking = line?.speaker === 'Mang Uban';
-  let s = groveRasterDefs(groveImageUri) + groveBaseMarkup() + groveSvgBody(groveLightSvg(progress, clock, 'ground'));
+  let s = groveRasterDefs(groveImageUri) + groveBaseMarkup() + groveSvgBody(WORLD_PROPS.grove) + groveSvgBody(PROP_MOTION.grove[2]) + groveSvgBody(groveLightSvg(progress, clock, 'ground'));
   s += `<g transform="translate(182 108)">${groveSvgBody(mangUbanSvg(clock % 6.2 < .18, false, { emotion: speaking ? line?.emotion : 'neutral', mouth: speaking && Math.floor(clock * 4) % 3 === 0 ? 1 : 0, hand: speaking && Math.floor(clock * 1.2) % 2 ? -2 : 0 }))}</g>`;
   s += grovePerchMarkup();
-  if (progress.bellRung && !progress.ubanGiftReceived) s += '<path d="M229 267h2v-3h2v3h2v2h-2v3h-2v-3h-2z" fill="#edd7a0" opacity=".6"/>';
   const actors = [
     { y: 301, s: `<rect x="126" y="300" width="12" height="2" fill="#183b35" opacity=".35"/><svg x="123" y="279" width="18" height="22" viewBox="0 0 32 40">${groveSvgBody(residentSpriteSvg('doro', clock, line?.speaker === 'Doro'))}</svg>` },
     { y: player.y, s: groveActor('rae', player.x, player.y) },

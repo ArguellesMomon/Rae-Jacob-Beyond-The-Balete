@@ -22,13 +22,13 @@ Lola, Tala, Minda and Mang receive longer introductions and personal topics. Min
 
 ## Lola's Yard
 
-The familiar warm yard gains a worn stepping-stone path, a woven porch mat, basket, hanging fern, chimes, watering can, detailed sungka board, herb labels, tree mulch and covered earthen rain jar. In the scene, butterflies drift, Muning moves her tail, and water catches the light. The center stays open for play and the new jar has a matching foot collider.
+The familiar warm yard gains a worn stepping-stone path, a woven porch mat, basket, hanging fern, chimes, watering can, detailed sungka board, herb labels, tree mulch and covered earthen rain jar. In the scene, butterflies drift, Mingming moves her tail, and water catches the light. The center stays open for play and the new jar has a matching foot collider.
 
 Five optional interactions join the original five:
 
 | Place or object | Action and story purpose |
 | --- | --- |
-| Muning on the porch | Rae offers a hand gently and learns to notice a small friend's signals. Repeat inspection acknowledges the sleeping cat. |
+| Mingming on the porch | Rae offers a hand gently and learns to notice a small friend's signals. Repeat inspection acknowledges the sleeping cat. |
 | Calamansi tree | Lola recalls a seedling from her mother; Rae considers caring for his own tree beyond its exciting first day. |
 | Kitchen garden | Rae checks the soil and moves a loose twig without trampling new growth. The twig appears beside the bed after completion. |
 | Lolo's sungka board | Rae handles a shell and leaves the family game waiting for his return. This is an inspection/story interaction, not a separate sungka minigame. |

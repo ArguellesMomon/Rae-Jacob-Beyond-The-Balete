@@ -91,7 +91,10 @@ test('Tala follows ground paths across the plank bridge and stays near Rae at th
   }
   for (let i = 0; i < 400; i++) companion = followTrail(companion, trail, leader, 1 / 60, 'clearing');
   assert.ok(Math.hypot(leader.x - companion.x, leader.y - companion.y) <= 25, 'Tala should settle nearby, not get stranded.');
-  assert.equal(nearbyInteraction(leader, undefined, 'clearing', companion)?.id, 'tala');
+  assert.notEqual(nearbyInteraction({ ...leader, moving: true }, undefined, 'clearing', companion)?.id, 'tala', 'Walking never auto-targets the companion.');
+  const dx = companion.x - leader.x, dy = companion.y - leader.y;
+  const facing = Math.abs(dx) > Math.abs(dy) ? dx < 0 ? 'left' : 'right' : dy < 0 ? 'up' : 'down';
+  assert.equal(nearbyInteraction({ ...leader, moving: false, facing }, undefined, 'clearing', companion)?.id, 'tala', 'Rae can stop and turn to talk.');
 });
 
 test('clearing water blocks movement and map interactions never leak between scenes', () => {
@@ -107,4 +110,13 @@ test('a following Tala does not monopolize the contextual action button near clu
   assert.equal(nearbyInteraction({ x: 382, y: 350, facing: 'up' }, 'tala', 'clearing', { x: 382, y: 368 })?.id, 'bellArch');
   assert.equal(nearbyInteraction({ x: 408, y: 243, facing: 'up' }, 'tala', 'clearing', { x: 390, y: 243 })?.id, 'minda');
   assert.equal(nearbyInteraction({ x: 280, y: 280, facing: 'left' }, undefined, 'clearing', { x: 262, y: 280 })?.id, 'tala');
+});
+
+test('Tala only gets a companion focus when Rae stops close by and faces him', () => {
+  const point = { x: 280, y: 280 }, companion = { x: 262, y: 280 };
+  assert.equal(nearbyInteraction({ ...point, moving: false, facing: 'left' }, undefined, 'clearing', companion)?.id, 'tala');
+  assert.notEqual(nearbyInteraction({ ...point, moving: true, facing: 'left' }, 'tala', 'clearing', companion)?.id, 'tala');
+  assert.notEqual(nearbyInteraction({ ...point, moving: false, facing: 'right' }, 'tala', 'clearing', companion)?.id, 'tala');
+  assert.notEqual(nearbyInteraction({ x: 287, y: 280, moving: false, facing: 'left' }, 'tala', 'clearing', companion)?.id, 'tala');
+  assert.equal(nearbyInteraction({ x: 188, y: 306, moving: true, facing: 'up' }, undefined, 'clearing')?.id, 'tala', 'First meeting remains discoverable.');
 });

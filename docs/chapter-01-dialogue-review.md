@@ -52,7 +52,7 @@ Generated from the playable dialogue with `npm.cmd run opening:preview`. This is
 
 ## yardCat · 6 lines
 
-**Rae Jacob:** Muning! You found the one place the sun cannot reach.
+**Rae Jacob:** Mingming! You found the one place the sun cannot reach.
 
 **Lola Selya:** Let her sniff your hand first. She decides whether it is visiting time.
 

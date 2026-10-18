@@ -1,3 +1,10 @@
+import { CodexButton } from './src/components/CodexButton';
+import { RainlitScene, RAINROAD_IMAGE, HAMLET_IMAGE, SPRING_IMAGE } from './src/components/RainlitScene';
+import { SPRING_PROP_IMAGES } from './src/components/SpringPuzzleProps';
+import { SPRING_SURFACE_IMAGES } from './src/components/SpringSurface';
+import { WORKS_PROP_IMAGES } from './src/components/WorksPuzzleProp';
+import { isRainlitMap } from './src/game/rainlit';
+import type { MayumiTopic } from './src/game/model';
 import { BambooScene } from './src/components/BambooScene';
 import { isChapterTwoMap } from './src/game/chapterTwo';
 import { FramePacing } from './src/components/FramePacing';
@@ -42,8 +49,11 @@ import { useGameAudio } from './src/hooks/useGameAudio';
 import { DialoguePanel } from './src/components/DialoguePanel';
 import { ConversationMenu } from './src/components/ConversationMenu';
 import { CharacterJournal } from './src/components/CharacterJournal';
+import { CreatureCodex } from './src/components/CreatureCodex';
+import { encounteredCreatures } from './src/game/creatureCodex';
 import { knownCharacters } from './src/game/characters';
-type NotePage = MapId | 'people';
+type NotePage = MapId | 'people' | 'codex';
+const notebookLabel = (page: NotePage) => ({ yard: 'Home', clearing: 'Clearing', grove: 'Grove', waterworks: 'Waterworks', bamboo: 'Bamboo', turning: 'Turning paths', rainroad: 'Rainlit Road', hamlet: 'Hamlet', spring: 'Spring', people: 'People', codex: 'Creature codex' })[page];
 
 const C = { cream: '#f5ecd6', ink: '#344332', green: '#294b3b', muted: '#8a9272', gold: '#d8ba78' };
 
@@ -63,37 +73,40 @@ function Game() {
   const insets = useSafeAreaInsets();
   const compact = height < 520;
   const narrow = width < 760;
+  const hudTight = width < 620;
   const [confirmNew, setConfirmNew] = useState(false);
   const showReplay = game.mode === 'replayMenu';
   const [showPacing, setShowPacing] = useState(false);
   const [notePage, setNotePage] = useState<NotePage | null>(null);
   const [hint, setHint] = useState({ stage: '', level: 0 });
-  const hintStage = [game.progress.branchMoved, game.progress.flowDiverted, game.progress.bellRecovered, game.progress.waterRestored, game.progress.bellReturned, game.progress.bellHung, game.progress.bellRung, game.progress.chapterComplete, game.progress.chapterTwo.trailStep, game.progress.chapterTwo.debriefSeen].join(':');
+  const hintStage = [game.progress.branchMoved, game.progress.flowDiverted, game.progress.bellRecovered, game.progress.waterRestored, game.progress.bellReturned, game.progress.bellHung, game.progress.bellRung, game.progress.chapterComplete, game.progress.chapterTwo.trailStep, game.progress.chapterTwo.debriefSeen, ...Object.values(game.progress.rainlit)].join(':');
   const hintLevel = hint.stage === hintStage ? hint.level : 0;
   const map = getMap(game.mapId, game.progress);
   const inChapterTwo = isChapterTwoMap(game.mapId);
+  const inRainlit = isRainlitMap(game.mapId);
   const inClearing = game.mapId === 'clearing';
   const inGrove = game.mapId === 'grove';
   const inWorks = game.mapId === 'waterworks';
   const inSilong = game.mapId !== 'yard';
   const target = map.interactions.find(item => item.id === game.targetId);
   const notebookMap = notePage ?? game.mapId;
-  const notebookItems = notebookMap === 'people' ? [] : getMap(notebookMap, game.progress).interactions.filter(item => item.note);
+  const notebookItems = notebookMap === 'people' || notebookMap === 'codex' ? [] : getMap(notebookMap, game.progress).interactions.filter(item => item.note);
   const seenNote = (id: string) => game.progress.discoveries.some(entry => entry === id);
   const title = game.mode === 'title';
   const playing = game.mode === 'playing';
   const currentLine = game.dialogue?.lines[game.dialogue.index];
-  const cinematic = ['crossing', 'revealing', 'retrieving', 'sealRevealing', 'watching', 'pathTurning'].includes(game.mode);
-  const conversation = game.mode === 'bagtasQuestions' ? 'bagtas' : game.mode === 'questions' ? 'tala' : game.mode === 'mangQuestions' ? 'uban' : game.mode === 'lolaQuestions' ? 'lola' : game.mode === 'mindaQuestions' ? 'minda' : null;
-  const conversationTopics = conversation === 'bagtas' ? game.progress.chapterTwo.topics : conversation === 'tala' ? game.progress.talaTopics : conversation === 'uban' ? game.progress.mangTopics : conversation === 'lola' ? game.progress.lolaTopics : game.progress.mindaTopics;
-  const overlay = showReplay || game.mode === 'reply' || game.mode === 'history' || game.mode === 'paused' || game.mode === 'notebook' || game.mode === 'ending' || game.mode === 'questions' || game.mode === 'mangQuestions' || game.mode === 'tools' || game.mode === 'settings' || !!conversation;
+  const cinematic = ['crossing', 'revealing', 'retrieving', 'sealRevealing', 'watching', 'pathTurning', 'springRestoring', 'springSealing'].includes(game.mode);
+  const conversation = game.mode === 'mayumiQuestions' ? 'mayumi' : game.mode === 'bagtasQuestions' ? 'bagtas' : game.mode === 'questions' ? 'tala' : game.mode === 'mangQuestions' ? 'uban' : game.mode === 'lolaQuestions' ? 'lola' : game.mode === 'mindaQuestions' ? 'minda' : null;
+  const conversationTopics = conversation === 'mayumi' ? game.progress.rainlit.topics : conversation === 'bagtas' ? game.progress.chapterTwo.topics : conversation === 'tala' ? game.progress.talaTopics : conversation === 'uban' ? game.progress.mangTopics : conversation === 'lola' ? game.progress.lolaTopics : game.progress.mindaTopics;
+  const overlay = showReplay || game.mode === 'reply' || game.mode === 'history' || game.mode === 'paused' || game.mode === 'notebook' || game.mode === 'ending' || game.mode === 'chapterTwoEnding' || game.mode === 'questions' || game.mode === 'mangQuestions' || game.mode === 'tools' || game.mode === 'settings' || !!conversation;
   const startNew = () => { if (game.saved) setConfirmNew(true); else game.start(false); };
   const margins = { left: Math.max(20, insets.left + 12), right: Math.max(20, insets.right + 12) };
 
   return <View onStartShouldSetResponderCapture={() => { audio.unlock(); return false; }} style={[styles.root, inSilong && { backgroundColor: inGrove ? '#2a4248' : '#2f4b4b' }]}>
     <StatusBar hidden />
-    <View style={StyleSheet.absoluteFill} accessibilityLabel={inChapterTwo ? 'Rainlit bamboo paths, a traveler shelter and three changing landmark posts' : inWorks ? 'A waterworks with a splitter, western bypass, eastern waterwheel, footbridge and a pale seal on a severed root' : inGrove ? 'An enormous balete, a giant in its branches, and a bamboo line leading through the forest' : inClearing ? 'A twilight village of lantern-lit homes among enormous roots' : "A sunny pixel-art yard outside Lola's wooden house"}>
-      {inChapterTwo ? <BambooScene mapId={game.mapId as 'bamboo' | 'turning'} width={width} height={height} player={game.player} companion={game.companion} progress={game.progress} clock={game.clock} line={playing ? currentLine : undefined} targetId={playing && !game.dialogue ? game.targetId : undefined} gentleCamera={options.preferences.gentleCamera} ambientMotion={options.preferences.ambientMotion} />
+    <View style={StyleSheet.absoluteFill} accessibilityLabel={inRainlit ? 'A rainlit road, riverside hamlet, and a spring with a dry bank and a repair shared by four travelers' : inChapterTwo ? 'Rainlit bamboo paths, a traveler shelter and three changing landmark posts' : inWorks ? 'A waterworks with a splitter, western bypass, eastern waterwheel, footbridge and a pale seal on a severed root' : inGrove ? 'An enormous balete, a giant in its branches, and a bamboo line leading through the forest' : inClearing ? 'A twilight village of lantern-lit homes among enormous roots' : "A sunny pixel-art yard outside Lola's wooden house"}>
+      {isRainlitMap(game.mapId) ? <RainlitScene mapId={game.mapId} width={width} height={height} player={game.player} companion={game.companion} progress={game.progress} clock={game.clock} line={playing ? currentLine : undefined} targetId={playing && !game.dialogue ? game.targetId : undefined} gentleCamera={options.preferences.gentleCamera} ambientMotion={options.preferences.ambientMotion} waterMotion={options.preferences.waterMotion} restoring={game.mode === 'springRestoring' ? game.sceneTime : undefined} sealing={game.mode === 'springSealing' ? game.sceneTime : undefined} />
+        : inChapterTwo ? <BambooScene mapId={game.mapId as 'bamboo' | 'turning'} width={width} height={height} player={game.player} companion={game.companion} progress={game.progress} clock={game.clock} line={playing ? currentLine : undefined} targetId={playing && !game.dialogue ? game.targetId : undefined} gentleCamera={options.preferences.gentleCamera} ambientMotion={options.preferences.ambientMotion} />
         : inWorks ? <WaterworksScene ambientMotion={options.preferences.ambientMotion} active={playing} waterMotion={options.preferences.waterMotion} width={width} height={height} player={game.player} companion={game.companion} progress={game.progress} clock={game.clock} targetId={playing && !game.dialogue ? game.targetId : undefined} retrieving={game.mode === 'retrieving' ? game.sceneTime : undefined} focusRoot={game.mode === 'sealRevealing' || game.dialogue?.id === 'rootSeal'} reveal={game.mode === 'sealRevealing' ? game.sceneTime : 1} gentleCamera={options.preferences.gentleCamera} line={playing ? currentLine : undefined} />
         : inGrove ? <GroveScene ambientMotion={options.preferences.ambientMotion} giftScene={playing && game.dialogue?.id === 'mangGift'} progress={game.progress} width={width} height={height} player={game.player} companion={game.companion} clock={game.clock} targetId={playing && !game.dialogue ? game.targetId : undefined} overview={title} focusMang={game.mode === 'revealing' || game.mode === 'mangQuestions' || !!game.dialogue?.id.startsWith('mang')} reveal={game.mode === 'revealing' ? game.reveal : 1} quiet={game.progress.bellRecovered || game.progress.flowDiverted} gentleCamera={options.preferences.gentleCamera} line={playing ? currentLine : undefined} />
         : inClearing ? <ClearingScene reflecting={game.mode === 'watching' || playing && game.dialogue?.id === 'afterBell'} ambientMotion={options.preferences.ambientMotion} width={width} height={height} player={game.player} companion={game.companion} metTala={game.progress.metTala} progress={game.progress} clock={game.clock} targetId={playing && !game.dialogue ? game.targetId : undefined} overview={title} gentleCamera={options.preferences.gentleCamera} line={playing ? currentLine : undefined} />
@@ -103,20 +116,21 @@ function Game() {
     <View pointerEvents="none" style={[styles.topShade, { height: compact ? 92 : 118 }]} />
 
     {!title && !cinematic && <View pointerEvents="box-none" style={[styles.header, margins, { top: Math.max(16, insets.top + 10), gap: compact ? 10 : 18 }]}>
-      <View style={[styles.location, compact && { paddingVertical: 10, paddingHorizontal: 12 }]}>
-        <View style={styles.locationIcon}><Icon name={inSilong ? 'leaf' : 'sun'} color={C.gold} size={22} /></View>
-        <View><Text style={styles.eyebrow}>{inChapterTwo ? game.slot === 'replay' ? 'CHAPTER 02 / REPLAY' : 'CHAPTER 02 / SILONG' : game.slot === 'replay' ? 'CHAPTER 01 \u00b7 REPLAY' : inSilong ? 'CHAPTER 01 · SILONG' : 'CHAPTER 01 · AN AFTERNOON'}</Text><Text style={[styles.locationName, compact && { fontSize: 21 }]}>{map.name}</Text></View>
+      <View style={[styles.location, (compact || hudTight) && { paddingVertical: 10, paddingHorizontal: 12 }]}>
+        {!hudTight && <View style={styles.locationIcon}><Icon name={inSilong ? 'leaf' : 'sun'} color={C.gold} size={22} /></View>}
+        <View style={{ flexShrink: 1 }}><Text numberOfLines={1} style={[styles.eyebrow, hudTight && { fontSize: 7, letterSpacing: .6 }]}>{inChapterTwo ? game.slot === 'replay' ? 'CHAPTER 02 / REPLAY' : 'CHAPTER 02 / SILONG' : game.slot === 'replay' ? 'CHAPTER 01 \u00b7 REPLAY' : inSilong ? 'CHAPTER 01 · SILONG' : 'CHAPTER 01 · AN AFTERNOON'}</Text><Text numberOfLines={1} style={[styles.locationName, compact && { fontSize: 21 }, hudTight && { fontSize: 18 }]}>{map.name}</Text></View>
       </View>
       {!narrow && <View style={[styles.objective, compact && { paddingVertical: 9 }]}>
         <View style={styles.objectiveTop}><View style={styles.goldDot} /><Text style={styles.objectiveLabel}>{inSilong ? 'A ROAD BACK HOME' : 'ONE MORE MINUTE'}</Text></View>
         <Text style={styles.objectiveText} numberOfLines={2}>{objective(game.progress, game.mapId)}</Text>
       </View>}
-      <View style={styles.headerActions}><Pressable accessibilityRole="button" accessibilityLabel="Open dialogue history" onPress={game.openHistory} style={styles.iconButton}><PixelFrame fill="#263e30e8" border="#aaa982" /><Text style={{ fontFamily: 'PixelifySans_400Regular', fontSize: 14, color: C.cream }}>LOG</Text></Pressable>
-        <Pressable accessibilityRole="button" accessibilityLabel="Sound and comfort settings" onPress={game.openSettings} style={styles.iconButton}><PixelFrame fill="#263e30e8" border="#aaa982" light="#c9c29a" /><Icon name={options.preferences.music || options.preferences.effects ? 'sound' : 'muted'} size={20} /></Pressable>
+      <View style={styles.headerActions}>{!hudTight && <Pressable accessibilityRole="button" accessibilityLabel="Open dialogue history" onPress={game.openHistory} style={styles.iconButton}><PixelFrame fill="#263e30e8" border="#aaa982" /><Text style={{ fontFamily: 'PixelifySans_400Regular', fontSize: 14, color: C.cream }}>LOG</Text></Pressable>}
+        {!hudTight && <Pressable accessibilityRole="button" accessibilityLabel="Sound and comfort settings" onPress={game.openSettings} style={styles.iconButton}><PixelFrame fill="#263e30e8" border="#aaa982" light="#c9c29a" /><Icon name={options.preferences.music || options.preferences.effects ? 'sound' : 'muted'} size={20} /></Pressable>}
         <Pressable accessibilityRole="button" accessibilityLabel="Open notebook" onPress={() => { setNotePage(null); game.changeMode('notebook'); }} style={({ pressed }) => [styles.iconButton, pressed && { opacity: 0.65 }]}>
           <PixelFrame fill="#263e30e8" border="#aaa982" light="#c9c29a" /><Icon name="book" size={21} />
           {game.progress.discoveries.length > 0 && <View style={styles.noteCount}><Text style={styles.noteCountText}>{game.progress.discoveries.length}</Text></View>}
         </Pressable>
+        <CodexButton onOpen={() => { setNotePage('codex'); game.changeMode('notebook'); }} />
         <Pressable accessibilityRole="button" accessibilityLabel="Pause game" onPress={game.pause} style={({ pressed }) => [styles.iconButton, pressed && { opacity: 0.65 }]}><PixelFrame fill="#263e30e8" border="#aaa982" light="#c9c29a" /><Icon name="pause" size={19} /></Pressable>
       </View>
     </View>}
@@ -132,7 +146,6 @@ function Game() {
         </Pressable>
         <Text style={styles.actionCaption}>{target?.action.toUpperCase() ?? 'EXPLORE'}</Text>
       </View>
-      {inSilong && game.progress.metTala && <View pointerEvents="none" style={[styles.companionBadge, { left: Math.max(29, insets.left + 16), bottom: compact ? 164 : 179 }]}><Icon name="leaf" size={12} color="#d8c18a" /><Text style={styles.companionText}>TALA · MAPMAKER</Text></View>}
       {Platform.OS === 'web' && !narrow && <View pointerEvents="none" style={[styles.keyboardHint, { bottom: compact ? 19 : 26 }]}>
         <Text style={styles.keyText}>WASD / ARROWS</Text><Text style={styles.keyDescription}> move</Text><View style={styles.hintDivider} /><Text style={styles.keyText}>E</Text><Text style={styles.keyDescription}> interact</Text><View style={styles.hintDivider} /><Text style={styles.keyText}>N</Text><Text style={styles.keyDescription}> notes</Text>
       </View>}
@@ -153,7 +166,7 @@ function Game() {
           <View style={{ flexDirection: 'row', gap: 18, alignItems: 'center' }}><Pressable accessibilityRole="button" accessibilityLabel="Replay story scenes without replacing my journey" onPress={game.openReplay} style={styles.newGameButton}><Text style={styles.newGameText}>Revisit a scene</Text></Pressable>{game.saved && <Pressable accessibilityRole="button" onPress={startNew} style={styles.newGameButton}><Text style={styles.newGameText}>Start a new afternoon</Text></Pressable>}</View>
         </View>}
       </View>
-      {!narrow && <View style={[styles.chapterCard, { right: width * 0.065, bottom: compact ? 52 : 90 }]}><Text style={styles.chapterCardNumber}>{game.saved?.progress.chapterTwo.visited ? '02' : '01'}</Text><View style={styles.chapterCardRule} /><Text style={styles.chapterCardTitle}>{game.saved?.progress.chapterTwo.visited ? 'The Path That\nWalks Back' : 'The Bell Beneath\nthe Balete'}</Text><Text style={styles.chapterCardCaption}>EVERY PATH HAS A STORY.</Text></View>}
+      {!narrow && <View style={[styles.chapterCard, { right: width * 0.065, bottom: compact ? 52 : 90 }]}><Text style={styles.chapterCardNumber}>{game.saved?.progress.chapterTwo.visited ? '02' : '01'}</Text><View style={styles.chapterCardRule} /><Text style={styles.chapterCardTitle}>{game.saved?.progress.chapterTwo.visited ? 'The Rainlit\nRoad' : 'The Bell Beneath\nthe Balete'}</Text><Text style={styles.chapterCardCaption}>EVERY PATH HAS A STORY.</Text></View>}
       <View style={[styles.titleFooter, margins, { bottom: Math.max(20, insets.bottom + 10) }]}><Text style={styles.titleFooterText}>A Philippine folklore adventure</Text><View style={styles.footerDots}><View style={[styles.footerDot, { backgroundColor: C.gold }]} /><View style={styles.footerDot} /><View style={styles.footerDot} /></View></View>
     </View>}
 
@@ -165,8 +178,8 @@ function Game() {
         {!showReplay && game.mode === 'paused' && <>
           {!compact && <View style={styles.modalIcon}><Icon name="sun" size={27} color="#7d895a" /></View>}
           <Text style={styles.modalEyebrow}>{game.slot === 'replay' ? 'REPLAY \u00b7 YOUR JOURNEY IS SAFE' : 'NO NEED TO HURRY'}</Text><Text style={styles.modalTitle}>Take a breather.</Text>
-          <Text style={styles.modalDescription}>{inChapterTwo ? 'The bamboo can keep its own time for a moment.' : inWorks ? 'Let the water do the hurrying for a while.' : inGrove ? 'Even the forest watcher needs a rest.' : inClearing ? 'The lanterns will keep you company.' : 'The afternoon can wait.'}</Text>
-          <View style={styles.menuButtons}><Button label={inChapterTwo ? 'Back to the bamboo paths' : inWorks ? 'Back to the waterworks' : inGrove ? 'Back to the grove' : inClearing ? 'Back to the clearing' : 'Back to the yard'} arrow onPress={() => game.changeMode('playing')} /><Button label="Open field notes" secondary onPress={() => { setNotePage(null); game.changeMode('notebook'); }} /><Button label="Sound & comfort" secondary onPress={game.openSettings} /><Button label="Read conversations" secondary onPress={game.openHistory} /><Button label="Revisit a story scene" secondary onPress={game.openReplay} />{game.slot === 'replay' && <Button label={showPacing ? 'Hide frame pacing' : 'Show frame pacing'} secondary onPress={() => setShowPacing(value => !value)} />}{game.slot === 'replay' && game.saved && <Button label="Return to my saved journey" onPress={() => game.start(true)} />}<Pressable accessibilityRole="button" onPress={game.title} style={styles.textButton}><Text style={styles.textButtonLabel}>Return to title</Text></Pressable></View>
+          <Text style={styles.modalDescription}>{inRainlit ? 'The road can wait. So can the next question.' : inChapterTwo ? 'The bamboo can keep its own time for a moment.' : inWorks ? 'Let the water do the hurrying for a while.' : inGrove ? 'Even the forest watcher needs a rest.' : inClearing ? 'The lanterns will keep you company.' : 'The afternoon can wait.'}</Text>
+          <View style={styles.menuButtons}><Button label={inRainlit ? 'Back to the rainlit road' : inChapterTwo ? 'Back to the bamboo paths' : inWorks ? 'Back to the waterworks' : inGrove ? 'Back to the grove' : inClearing ? 'Back to the clearing' : 'Back to the yard'} arrow onPress={() => game.changeMode('playing')} /><Button label="Open field notes" secondary onPress={() => { setNotePage(null); game.changeMode('notebook'); }} /><Button label="Sound & comfort" secondary onPress={game.openSettings} /><Button label="Read conversations" secondary onPress={game.openHistory} /><Button label="Revisit a story scene" secondary onPress={game.openReplay} />{game.slot === 'replay' && <Button label={showPacing ? 'Hide frame pacing' : 'Show frame pacing'} secondary onPress={() => setShowPacing(value => !value)} />}{game.slot === 'replay' && game.saved && <Button label="Return to my saved journey" onPress={() => game.start(true)} />}<Pressable accessibilityRole="button" onPress={game.title} style={styles.textButton}><Text style={styles.textButtonLabel}>Return to title</Text></Pressable></View>
         </>}
         {!showReplay && game.mode === 'settings' && <>
           <View style={styles.notebookHeader}><View><Text style={[styles.modalEyebrow, { textAlign: 'left' }]}>MAKE YOURSELF AT HOME</Text><Text style={[styles.modalTitle, { textAlign: 'left', fontSize: 31 }]}>Sound & comfort</Text></View><Pressable accessibilityRole="button" accessibilityLabel="Close settings" onPress={game.closeSettings} style={styles.closeButton}><Icon name="close" color={C.ink} size={21} /></Pressable></View>
@@ -182,12 +195,14 @@ function Game() {
           </>}
         </>}
         {!showReplay && game.mode === 'notebook' && <>
-          <View style={styles.notebookHeader}><View><Text style={styles.modalEyebrow}>RAE JACOB'S NOTEBOOK</Text><Text style={[styles.modalTitle, { textAlign: 'left', marginTop: 4 }]}>{notebookMap === 'people' ? 'People we meet' : 'Small discoveries'}</Text></View><Pressable accessibilityRole="button" accessibilityLabel="Close notebook" onPress={() => game.changeMode('playing')} style={styles.closeButton}><Icon name="close" color={C.ink} size={21} /></Pressable></View>
+          <View style={styles.notebookHeader}><View><Text style={styles.modalEyebrow}>RAE JACOB'S NOTEBOOK</Text><Text style={[styles.modalTitle, { textAlign: 'left', marginTop: 4 }]}>{notebookMap === 'codex' ? 'Creature codex' : notebookMap === 'people' ? 'People we meet' : 'Small discoveries'}</Text></View><Pressable accessibilityRole="button" accessibilityLabel="Close notebook" onPress={() => game.changeMode('playing')} style={styles.closeButton}><Icon name="close" color={C.ink} size={21} /></Pressable></View>
           <Button label="Read conversations" secondary onPress={game.openHistory} />
-          <View style={styles.noteTabs}>{(['yard', ...(game.progress.crossed ? ['clearing'] : []), ...(game.progress.visitedGrove ? ['grove'] : []), ...(game.progress.visitedWaterworks ? ['waterworks'] : []), ...(game.progress.chapterTwo.visited ? ['bamboo'] : []), ...(game.progress.chapterTwo.turningVisited ? ['turning'] : []), 'people'] as NotePage[]).map(page => <Pressable key={page} accessibilityRole="button" accessibilityLabel={`Notebook: ${page === 'people' ? 'People' : page === 'bamboo' ? 'Bamboo' : page === 'turning' ? 'Turning paths' : page === 'yard' ? 'Home' : page === 'grove' ? 'Grove' : page === 'waterworks' ? 'Waterworks' : 'Clearing'}`} onPress={() => setNotePage(page)} style={[styles.noteTab, notebookMap === page && styles.noteTabActive]}><Text style={[styles.noteTabText, notebookMap === page && { color: '#f5ecd6' }]}>{page === 'people' ? 'People' : page === 'bamboo' ? 'Bamboo' : page === 'turning' ? 'Turning paths' : page === 'yard' ? 'Home' : page === 'grove' ? 'Grove' : page === 'waterworks' ? 'Waterworks' : 'Clearing'}</Text></Pressable>)}</View>
-          {notebookMap !== 'people' && game.progress.crossed && <PocketContents progress={game.progress} onInspect={game.inspectKeepsake} />}
-          {notebookMap !== 'people' && game.progress.visitedWaterworks && <View style={{ gap: 10, marginTop: 14 }}><Text style={styles.noteTitle}>{objective(game.progress, game.mapId)}</Text>{hintLevel > 0 && <Text accessibilityLiveRegion="polite" style={styles.noteBody}>{puzzleHint(game.progress, hintLevel, game.mapId)}</Text>}<Button label={hintLevel === 0 ? 'A little nudge?' : hintLevel < 3 ? 'Tell me a little more' : 'Show that hint again'} secondary onPress={() => setHint({ stage: hintStage, level: Math.min(3, hintLevel + 1) })} /></View>}
-          {notebookMap === 'people' ? <CharacterJournal progress={game.progress} clock={game.clock} /> : <View style={{ marginTop: 16, paddingBottom: 12 }}>
+          <View style={{ marginTop: 10 }}><Button label={`Creature codex (${encounteredCreatures(game.progress).length} encountered)`} secondary onPress={() => setNotePage('codex')} /></View>
+          <View style={styles.noteTabs}>{(['yard', ...(game.progress.crossed ? ['clearing'] : []), ...(game.progress.visitedGrove ? ['grove'] : []), ...(game.progress.visitedWaterworks ? ['waterworks'] : []), ...(game.progress.chapterTwo.visited ? ['bamboo'] : []), ...(game.progress.chapterTwo.turningVisited ? ['turning'] : []), ...(game.progress.rainlit.visited ? ['rainroad'] : []), ...(game.progress.rainlit.hamletSeen ? ['hamlet'] : []), ...(game.progress.rainlit.springSeen ? ['spring'] : []), 'people'] as NotePage[]).map(page => <Pressable key={page} accessibilityRole="button" accessibilityLabel={`Notebook: ${notebookLabel(page)}`} onPress={() => setNotePage(page)} style={[styles.noteTab, notebookMap === page && styles.noteTabActive]}><Text style={[styles.noteTabText, notebookMap === page && { color: '#f5ecd6' }]}>{notebookLabel(page)}</Text></Pressable>)}</View>
+          {notebookMap === 'spring' && game.progress.rainlit.metMayumi && <View style={{ marginTop: 18, gap: 8 }}><Text style={styles.noteTitle}>Words beside the water</Text><Text style={styles.noteBody}>Bukal: a spring or source. Batis: a small stream. Agos: water’s movement or flow. Observe the source, the channel, and what changes along it.</Text><Text style={styles.noteTitle}>A story has a place</Text><Text style={styles.noteBody}>Mayumi is our original character. A recorded Diwata sa Bukal account belongs to Namayan, Santa Ana, Manila. Anggoy Doronoon belongs to a separate central Panay Hinilawod account. These traditions have their own names and contexts. Read the sources under People; one character cannot represent every Philippine tradition.</Text>{game.progress.rainlit.complete && <><Text style={styles.noteTitle}>What we witnessed</Text><Text style={styles.noteBody}>The rill reached the hamlet. A distant voice sounded familiar to Rae; its source is unconfirmed. A pale seal formed on a hollow that was unmarked when we arrived. We do not yet know who made it or why.</Text></>}</View>}
+          {notebookMap !== 'people' && notebookMap !== 'codex' && game.progress.crossed && <PocketContents progress={game.progress} onInspect={game.inspectKeepsake} />}
+          {notebookMap !== 'people' && notebookMap !== 'codex' && game.progress.visitedWaterworks && <View style={{ gap: 10, marginTop: 14 }}><Text style={styles.noteTitle}>{objective(game.progress, game.mapId)}</Text>{hintLevel > 0 && <Text accessibilityLiveRegion="polite" style={styles.noteBody}>{puzzleHint(game.progress, hintLevel, game.mapId)}</Text>}<Button label={hintLevel === 0 ? 'A little nudge?' : hintLevel < 3 ? 'Tell me a little more' : 'Show that hint again'} secondary onPress={() => setHint({ stage: hintStage, level: Math.min(3, hintLevel + 1) })} /></View>}
+          {notebookMap === 'codex' ? <CreatureCodex progress={game.progress} clock={game.clock} /> : notebookMap === 'people' ? <CharacterJournal progress={game.progress} clock={game.clock} /> : <View style={{ marginTop: 16, paddingBottom: 12 }}>
             <View style={styles.lolaNote}><Icon name="leaf" size={20} color="#73805a" /><Text style={styles.lolaNoteText}>{game.progress.talkedToLola ? '“If you lose your way, stop first. Look around.”\n— Lola' : 'Lola is calling from the porch. I should probably answer.'}</Text></View>
             {notebookItems.map((item, i) => {
               const seen = seenNote(item.id);
@@ -200,13 +215,20 @@ function Game() {
             {notebookMap === 'grove' && game.progress.metMang && <View style={styles.lolaNote}><Icon name="leaf" size={21} color="#73805a" /><Text style={styles.lolaNoteText}>Mang Uban knows the older paths. The Heart Balete may hold a crossing home. {game.progress.bellRung ? 'Our local crossing is restored. Next: find Bagtas in the bamboo paths.' : game.progress.waterRestored ? 'The wheel is repaired. The waybell still needs to be hung and rung.' : 'First, the flooded local crossing needs help.'}{game.progress.mangTopics.includes('home') && !game.progress.bellRung ? '\nAfter that: find Bagtas in the bamboo paths.' : ''}</Text></View>}
             {notebookMap === 'grove' && game.progress.mangTopics.includes('ringing') && <View style={styles.lolaNote}><Icon name="book" size={21} color="#73805a" /><Text style={styles.lolaNoteText}>The surge, the missing bell, and the crooked ringing all began the same evening. Two things happening together... could they belong together?</Text></View>}
           </View>}
-          <View style={styles.notebookFooter}><Text style={styles.notebookFooterText}>{notebookMap === 'bamboo' ? 'BAMBOO VERGE / PAGE 05' : notebookMap === 'turning' ? 'TURNING PATHS / PAGE 06' : notebookMap === 'people' ? 'PEOPLE · STORIES & MEMORIES' : notebookMap === 'yard' ? "LOLA'S YARD · PAGE 01" : notebookMap === 'grove' ? 'OLD BALETE GROVE · PAGE 03' : notebookMap === 'waterworks' ? 'ROOTWATER WORKS · PAGE 04' : 'LANTERN CLEARING · PAGE 02'}</Text><Text style={styles.notebookFooterText}>{notebookMap === 'people' ? `${knownCharacters(game.progress).length + Object.values(game.progress.residentChats).filter(n => (n ?? 0) > 0).length} PEOPLE MET` : `${notebookItems.filter(item => seenNote(item.id)).length} / ${notebookItems.length} DISCOVERIES`}</Text></View>
+          <View style={styles.notebookFooter}><Text style={styles.notebookFooterText}>{notebookMap === 'codex' ? 'CREATURE CODEX' : notebookMap === 'bamboo' ? 'BAMBOO VERGE / PAGE 05' : notebookMap === 'turning' ? 'TURNING PATHS / PAGE 06' : notebookMap === 'people' ? 'PEOPLE · STORIES & MEMORIES' : notebookMap === 'yard' ? "LOLA'S YARD · PAGE 01" : notebookMap === 'grove' ? 'OLD BALETE GROVE · PAGE 03' : notebookMap === 'waterworks' ? 'ROOTWATER WORKS · PAGE 04' : 'LANTERN CLEARING · PAGE 02'}</Text><Text style={styles.notebookFooterText}>{notebookMap === 'codex' ? `${encounteredCreatures(game.progress).length} CREATURE KINDS MET` : notebookMap === 'people' ? `${knownCharacters(game.progress).length + Object.values(game.progress.residentChats).filter(n => (n ?? 0) > 0).length} PEOPLE MET` : `${notebookItems.filter(item => seenNote(item.id)).length} / ${notebookItems.length} DISCOVERIES`}</Text></View>
         </>}
-        {conversation && <ConversationMenu who={conversation} visited={conversationTopics} clock={game.clock} onClose={() => game.changeMode('playing')} closeLabel={conversation === 'lola' ? 'Back to the kite mission' : conversation === 'minda' && game.progress.bellReturned && !game.progress.bellHung ? 'Meet Minda at the arch' : 'Keep exploring'} onAsk={topic => { if (conversation === 'bagtas') game.askBagtas(topic as BagtasTopic); else if (conversation === 'tala') game.askTala(topic as TalaTopic); else if (conversation === 'uban') game.askMang(topic as MangTopic); else if (conversation === 'lola') game.askLola(topic as LolaTopic); else game.askMinda(topic as MindaTopic); }} />}
+        {conversation && <ConversationMenu who={conversation} visited={conversationTopics} clock={game.clock} onClose={() => game.changeMode('playing')} closeLabel={conversation === 'lola' ? 'Back to the kite mission' : conversation === 'minda' && game.progress.bellReturned && !game.progress.bellHung ? 'Meet Minda at the arch' : 'Keep exploring'} onAsk={topic => { if (conversation === 'mayumi') game.askMayumi(topic as MayumiTopic); else if (conversation === 'bagtas') game.askBagtas(topic as BagtasTopic); else if (conversation === 'tala') game.askTala(topic as TalaTopic); else if (conversation === 'uban') game.askMang(topic as MangTopic); else if (conversation === 'lola') game.askLola(topic as LolaTopic); else game.askMinda(topic as MindaTopic); }} />}
         {!showReplay && game.mode === 'tools' && <>
           <Text style={styles.modalEyebrow}>A HANDLE JUST OUT OF REACH</Text><Text style={styles.modalTitle}>In my pocket…</Text>
           <Text style={styles.modalDescription}>The wheel is stopped. Rae can safely work from the grating. Choose something to reach the bell.</Text>
           <View style={styles.menuButtons}><Pressable accessibilityRole="button" accessibilityLabel="Use spare kite string" onPress={game.useString} style={styles.topicButton}><Icon name="kite" size={25} color="#798551" /><View style={{ flex: 1, marginLeft: 12 }}><Text style={styles.topicText}>Spare kite string</Text><Text style={[styles.noteBody, { marginTop: 4 }]}>Long enough for a loop. Strong enough for a bell.</Text></View><Icon name="arrow" size={19} color="#798551" /></Pressable><Button label="Keep looking" secondary onPress={() => game.changeMode('playing')} /></View>
+        </>}
+        {!showReplay && game.mode === 'chapterTwoEnding' && <>
+          <Text style={styles.modalEyebrow}>CHAPTER 02 / COMPLETE</Text><Text style={styles.modalTitle}>The water runs.{ '\n' }The road remembers.</Text>
+          <Text style={styles.modalDescription}>A spring restored together. A voice Rae hopes was Lola’s. A fresh seal witnessed as it formed.</Text>
+          <View style={styles.lolaNote}><Icon name="leaf" size={22} color="#73805a" /><Text style={styles.lolaNoteText}>Next question: Who is still closing the roads—and whom are those closures meant to protect?</Text></View>
+          <View style={styles.menuButtons}><Button label="Rest beside the spring" onPress={() => game.changeMode('playing')} arrow /><Button secondary label="Read our notes" onPress={() => { setNotePage('spring'); game.changeMode('notebook'); }} /><Button secondary label="Return to title" onPress={game.title} /></View>
+          <Text style={styles.previewEnd}>Chapter 2 is saved. All return paths remain open. The next chapter has not begun.</Text>
         </>}
         {!showReplay && game.mode === 'ending' && <>
           {!compact && <View style={styles.modalIcon}><Icon name="kite" size={30} color="#7d895a" /></View>}
@@ -222,6 +244,7 @@ function Game() {
     {confirmNew && <View style={styles.modalBackdrop}><View style={[styles.paper, { width: 410, padding: 26 }]}><Text style={styles.modalTitle}>Start from home?</Text><Text style={styles.modalDescription}>Your current adventure progress will be replaced.</Text><View style={styles.menuButtons}><Button label="Keep my journey" onPress={() => setConfirmNew(false)} /><Button label="Start again" secondary onPress={() => { setConfirmNew(false); game.start(false); }} /></View></View></View>}
     {game.saveIssue && !title && <View pointerEvents="none" style={[styles.saveNotice, { top: 99 + insets.top }]}><Text style={styles.saveNoticeText}>Saving is unavailable right now. You can keep playing.</Text></View>}
     {width < height && playing && !game.dialogue && <View pointerEvents="none" style={styles.rotateHint}><Text style={styles.rotateHintText}>Turn your phone sideways for a little more room.</Text></View>}
+    {(game.mode === 'springRestoring' || game.mode === 'springSealing') && <View style={styles.revealOverlay} pointerEvents="box-none"><View pointerEvents="none" style={[styles.revealCaption, { bottom: Math.max(28, insets.bottom + 16) }]}><Text style={styles.revealEyebrow}>THE QUIET SPRING</Text><Text style={styles.revealTitle}>{game.mode === 'springRestoring' ? 'A little room. A way for the water.' : 'A mark that was not here before.'}</Text></View><Pressable accessibilityRole="button" accessibilityLabel="Finish spring scene" onPress={game.skipScene} style={[styles.revealSkip, { top: 20, right: 24 }]}><Text style={styles.revealSkipText}>Continue</Text></Pressable></View>}
     {game.mode === 'pathTurning' && <View style={styles.revealOverlay} pointerEvents="box-none"><View pointerEvents="none" style={[StyleSheet.absoluteFill, { backgroundColor: '#1d3434', opacity: 1 - game.sceneTime }]} /><View pointerEvents="none" style={[styles.revealCaption, { bottom: Math.max(28, insets.bottom + 16) }]}><Text style={styles.revealEyebrow}>THE TURNING PATHS</Text><Text style={styles.revealTitle}>{game.progress.chapterTwo.routeVerified ? 'A checked route reaches the shelter.' : 'The path bends. Our notes stay.'}</Text></View><Pressable accessibilityRole="button" accessibilityLabel="Finish the path transition" onPress={game.skipScene} style={[styles.revealSkip, { top: 20, right: 24 }]}><Text style={styles.revealSkipText}>Continue</Text></Pressable></View>}
     {game.mode === 'crossing' && <RootCrossing progress={game.transition} width={width} height={height} onSkip={game.skipCrossing} />}
     {game.mode === 'revealing' && <View pointerEvents="box-none" style={styles.revealOverlay}>
@@ -237,7 +260,7 @@ function Game() {
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({ DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold, DMSans_700Bold, PixelifySans_400Regular, PixelifySans_700Bold });
-  const [environmentAssets, environmentAssetError] = useAssets([YARD_MAP_IMAGE, CLEARING_MAP_IMAGE, ROOT_DESCENT_IMAGE, GROVE_MAP_IMAGE, WORKS_MAP_IMAGE, VERGE_MAP_IMAGE, TURNING_MAP_IMAGE]);
+  const [environmentAssets, environmentAssetError] = useAssets([YARD_MAP_IMAGE, CLEARING_MAP_IMAGE, ROOT_DESCENT_IMAGE, GROVE_MAP_IMAGE, WORKS_MAP_IMAGE, VERGE_MAP_IMAGE, TURNING_MAP_IMAGE, RAINROAD_IMAGE, HAMLET_IMAGE, SPRING_IMAGE, ...Object.values(SPRING_PROP_IMAGES), ...Object.values(SPRING_SURFACE_IMAGES), ...Object.values(WORKS_PROP_IMAGES)]);
   if ((!fontsLoaded && !fontError) || (!environmentAssets && !environmentAssetError)) return <View style={styles.loading}><StatusBar hidden /><ActivityIndicator color={C.gold} /><Text style={styles.loadingText}>A little adventure is waking up…</Text></View>;
   return <SafeAreaProvider><Game /></SafeAreaProvider>;
 }
@@ -252,7 +275,7 @@ const styles = StyleSheet.create({
   loadingText: { color: '#ead9ad', fontSize: 14 },
   topShade: { position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: '#1f342b12' },
   header: { position: 'absolute', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' },
-  location: { backgroundColor: '#223e30e8', borderWidth: 1, borderColor: '#d7ce9d36', borderRadius: 13, paddingVertical: 13, paddingHorizontal: 17, flexDirection: 'row', alignItems: 'center', gap: 11, boxShadow: '0px 4px 16px #23332520' },
+  location: { flexShrink: 1, backgroundColor: '#223e30e8', borderWidth: 1, borderColor: '#d7ce9d36', borderRadius: 13, paddingVertical: 13, paddingHorizontal: 17, flexDirection: 'row', alignItems: 'center', gap: 11, boxShadow: '0px 4px 16px #23332520' },
   locationIcon: { width: 30, height: 30, alignItems: 'center', justifyContent: 'center' },
   eyebrow: { color: '#c0c3a1', fontSize: 8, letterSpacing: 1.4, fontFamily: 'DMSans_600SemiBold', marginBottom: 3 },
   locationName: { color: '#f7edce', fontSize: 25, fontFamily: 'PixelifySans_400Regular', lineHeight: 28 },
@@ -339,8 +362,6 @@ const styles = StyleSheet.create({
   saveNoticeText: { color: '#765e3b', fontFamily: 'DMSans_500Medium', fontSize: 11 },
   rotateHint: { position: 'absolute', alignSelf: 'center', bottom: '31%', padding: 10, backgroundColor: '#253e2dd9', borderRadius: 7 },
   rotateHintText: { color: '#f3e7c9', fontFamily: 'DMSans_500Medium', fontSize: 10 },
-  companionBadge: { position: 'absolute', flexDirection: 'row', alignItems: 'center', gap: 7, backgroundColor: '#253e37d9', paddingHorizontal: 10, paddingVertical: 7, borderRadius: 7, borderWidth: 1, borderColor: '#c5cfab38' },
-  companionText: { color: '#d8ddbd', fontFamily: 'DMSans_600SemiBold', fontSize: 8, letterSpacing: 1 },
   noteTabs: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 14 },
   noteTab: { paddingHorizontal: 12, minHeight: 42, justifyContent: 'center', borderWidth: 1, borderColor: '#c8c8ab', borderRadius: 0 },
   noteTabActive: { backgroundColor: '#53694b', borderColor: '#53694b' },

@@ -1,10 +1,11 @@
+import { WORLD_PROPS, PROP_MOTION } from '../src/art/worldPropArt.ts';
 import { readFileSync } from 'node:fs';
 import { VERGE_WAYFINDING_SVG, vergeRasterDefs, vergeForegroundMarkup, vergeWeatherSvg } from '../src/art/bambooEnvironmentArt.ts';
 import { bagtasSpriteSvg } from '../src/art/bagtasArt.ts';
 import { characterSpriteSvg } from '../src/art/characterArt.ts';
 import type { DialogueLine, Point, Progress } from '../src/game/model.ts';
 
-const uri = `data:image/png;base64,${readFileSync('assets/maps/bamboo-verge-v2.png').toString('base64')}`;
+const uri = `data:image/png;base64,${readFileSync('assets/maps/bamboo-verge-v3.png').toString('base64')}`;
 export const vergeBody = (svg: string) => svg.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '');
 export function vergeActor(id: 'rae' | 'tala', point: Point, clock = 3, line?: DialogueLine) {
   const w = id === 'rae' ? 20 : 18, h = id === 'rae' ? 30 : 22, speaking = line?.speaker === (id === 'rae' ? 'Rae Jacob' : 'Tala');
@@ -14,7 +15,7 @@ export function vergeActor(id: 'rae' | 'tala', point: Point, clock = 3, line?: D
 export function bambooVergeSceneArt(progress: Progress, player: Point = { x: 400, y: 268 }, clock = 3, options: { companion?: Point; line?: DialogueLine; still?: boolean } = {}) {
   const companion = options.companion ?? { x: player.x - 21, y: player.y + 14 }, time = options.still ? 1 : clock;
   const speaking = options.line?.speaker === 'Bagtas';
-  let s = vergeRasterDefs(uri) + '<use href="#verge-preview-map"/>' + vergeBody(VERGE_WAYFINDING_SVG) + vergeBody(vergeWeatherSvg(time, 'ground'));
+  let s = vergeRasterDefs(uri) + '<use href="#verge-preview-map"/>' + vergeBody(WORLD_PROPS.bamboo) + vergeBody(PROP_MOTION.bamboo[2]) + vergeBody(VERGE_WAYFINDING_SVG) + vergeBody(vergeWeatherSvg(time, 'ground'));
   const actors = [
     { y: player.y, art: vergeActor('rae', player, clock, options.line) },
     { y: companion.y, art: vergeActor('tala', companion, clock, options.line) },
@@ -22,6 +23,5 @@ export function bambooVergeSceneArt(progress: Progress, player: Point = { x: 400
   ];
   s += actors.sort((a, b) => a.y - b.y).map(actor => actor.art).join('');
   s += vergeForegroundMarkup(player) + vergeBody(vergeWeatherSvg(time));
-  s += `<rect x="381" y="154" width="39" height="10" fill="#ead9ac"/><text x="400" y="161" font-size="6" text-anchor="middle" fill="#425a45">${progress.chapterTwo.metBagtas ? 'Bagtas' : 'A traveler'}</text>`;
   return s;
 }

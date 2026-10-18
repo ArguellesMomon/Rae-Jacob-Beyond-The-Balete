@@ -13,7 +13,7 @@ export type PlaybackPort = {
   dispose: () => void;
 };
 export type SoundSnapshot = { mode: string; mapId: MapId; progress: Progress; player: Player; dialogue: Dialogue | null; clock: number; focused: boolean };
-const activeMode = (mode: string) => ['playing', 'reply', 'watching', 'pathTurning', 'questions', 'mangQuestions', 'bagtasQuestions', 'lolaQuestions', 'mindaQuestions', 'crossing', 'revealing', 'retrieving', 'sealRevealing', 'ending', 'tools'].includes(mode);
+const activeMode = (mode: string) => ['springRestoring', 'springSealing', 'mayumiQuestions', 'chapterTwoEnding', 'playing', 'reply', 'watching', 'pathTurning', 'questions', 'mangQuestions', 'bagtasQuestions', 'lolaQuestions', 'mindaQuestions', 'crossing', 'revealing', 'retrieving', 'sealRevealing', 'ending', 'tools'].includes(mode);
 
 export class SoundDirector {
   private previous: SoundSnapshot | null = null;
@@ -40,7 +40,7 @@ export class SoundDirector {
     const reflective = snapshot.mode === 'watching' || snapshot.dialogue?.id === 'afterBell';
     const groveHush = snapshot.mapId === 'grove' ? .72 : snapshot.mapId === 'bamboo' || snapshot.mapId === 'turning' ? .84 : 1;
     this.port.loop('music', settings.music ? snapshot.mapId === 'yard' ? 'afternoon' : 'silong' : null, settings.music * groveHush * (reflective ? .6 : 1) * (talking ? .48 : 1));
-    const nearWater = snapshot.mapId === 'waterworks' || snapshot.mapId === 'clearing' && snapshot.player.x > 420;
+    const nearWater = snapshot.mapId === 'spring' || snapshot.mapId === 'hamlet' || snapshot.mapId === 'waterworks' || snapshot.mapId === 'clearing' && snapshot.player.x > 420;
     const bed: Track = nearWater ? 'water' : snapshot.mapId === 'yard' ? 'garden' : 'forest';
     const channelX = snapshot.progress.flowDiverted ? 222 : 432;
     const proximity = snapshot.mapId === 'waterworks' ? .5 + .5 * Math.max(0, 1 - Math.hypot(snapshot.player.x - channelX, snapshot.player.y - 333) / 320) : 1;
@@ -53,7 +53,10 @@ export class SoundDirector {
     };
     if (snapshot.mode === 'crossing' && before?.mode !== 'crossing') play('crossing', .65, 1.5);
     if (continuing && before) {
-      if (!before.progress.chapterComplete && snapshot.progress.chapterComplete) play('complete', .8, 3.2);
+      if (!before.progress.rainlit.complete && snapshot.progress.rainlit.complete) play('complete', .75, 3.2);
+      else if (!before.progress.rainlit.restored && snapshot.progress.rainlit.restored) play('found', .5, 1.1);
+      else if (!before.progress.rainlit.rootBraced && snapshot.progress.rainlit.rootBraced) play('push', .5, .8);
+      else if (!before.progress.chapterComplete && snapshot.progress.chapterComplete) play('complete', .8, 3.2);
       else if (!before.progress.ubanGiftReceived && snapshot.progress.ubanGiftReceived) play('found', .55, 1.1);
       else if (!before.progress.bellRung && snapshot.progress.bellRung) play('bell', .85, 2.6);
       else if (before.mode === 'retrieving' && snapshot.mode === 'playing') play('found', .7, 1.1);

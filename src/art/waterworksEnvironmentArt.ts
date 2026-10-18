@@ -1,3 +1,4 @@
+import { lettering } from './propMaterials.ts';
 import type { Point, Progress } from '../game/model.ts';
 import { pixelPath as p, pixelRect as r, wrapSvg } from './pixelArt.ts';
 
@@ -44,28 +45,13 @@ export function worksPickupY(retrieving: number) {
   return retrieving < .5 ? 324 + retrieving * 40 : 344 - (retrieving - .5) * 105;
 }
 
-const label = (x: number, y: number, text: string, size = 5, color = '#eddfb2') => `<text x="${x}" y="${y}" text-anchor="middle" font-family="monospace" font-size="${size}" fill="${color}">${text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</text>`;
 /** Mutable puzzle art stays independent from the generated environment. */
 export function worksStateSvg(progress: Progress) {
-  let s = '';
-  // The lever, float and board remain legible even when their scenery is richly textured.
-  s += r(306, 154, 32, 23, '#d8c393') + r(307, 155, 30, 1, '#f1dfb0') + r(307, 176, 30, 1, '#99835c');
-  for (let i = 0; i < 23; i++) s += r(308 + i * 7 % 28, 156 + i * 5 % 19, 2, 1, i % 2 ? '#9b835b' : '#f7e5b9', .3);
-  s += p('M321 156h3v5h10v9h-3v-6h-7v3h-3v-3h-7v6h-3v-9h10z', '#376d70');
-  s += label(312, 175, 'W', 5, '#36534f') + label(332, 175, 'E', 5, '#36534f');
-  s += r(316, 196, 10, 10, '#494c3b') + r(317, 196, 8, 3, '#bc9c60');
-  s += p(progress.flowDiverted ? 'M320 198l-14-16h-5l17 20z' : 'M320 198l14-16h5l-17 20z', '#6e5133');
-  s += p(progress.flowDiverted ? 'M319 197l-14-15h-3l17 18z' : 'M321 197l14-15h3l-17 18z', '#d0ac6c');
-  s += r(progress.flowDiverted ? 299 : 332, 179, 9, 5, '#a75f3e') + r(progress.flowDiverted ? 300 : 333, 179, 7, 1, '#e0ac6b');
-  s += r(254, 113, 7, 18, '#6f6547') + r(255, 114, 2, 16, '#ceb16e');
-  for (const y of [115, 121, 127]) s += r(253, y, 10, 1, '#f0d79d');
-  s += r(257, progress.flowDiverted ? 114 : 123, 6, 3, '#b86646');
-  s += p(progress.flowDiverted ? 'M351 109h-10v4h10z' : 'M354 109h11v4h-11z', '#f0d28b');
-  const bx = progress.branchMoved ? 255 : 198, by = progress.branchMoved ? 245 : 265;
-  s += p(`M${bx} ${by + 2}h43v3h10v5h-26v4h-9v-5h-18z`, '#172c28', .7);
-  s += p(`M${bx} ${by}h44v5h9v5h-26v4h-9v-7h-18z`, '#60462e') + r(bx + 3, by + 1, 38, 2, '#ae8350') + r(bx + 26, by - 6, 4, 8, '#84623a');
-  for (let i = 0; i < 12; i++) s += r(bx + 3 + i * 3, by + 3 + i % 3, 2, 1, i % 2 ? '#c4a56a' : '#382d23');
-  s += r(bx + 35, by + 1, 2, 6, '#4c6447') + r(bx + 19, by - 1, 4, 1, '#8c9c5b');
+  // Ink on the existing painted splitter board, rather than a second board.
+  let s = p('M321 156h2v5h9v8h-2v-6h-7v3h-2v-3h-7v6h-2v-8h9z', '#447d76');
+  s += lettering('W', 313, 171, 4, '#385b4c', .55) + lettering('E', 332, 171, 4, '#385b4c', .55);
+  s += r(257, progress.flowDiverted ? 115 : 124, 4, 2, '#c49c64');
+  // Generated lever and fallen branch are independent, depth-sorted sprites.
   if (!progress.waterRestored) {
     const fill = progress.flowDiverted ? '#3d686b' : '#2c6b80';
     s += p('M363 346h41v16h-19v7h-30v-14h8z M83 406h66v15H83z', fill, .68);
@@ -73,16 +59,6 @@ export function worksStateSvg(progress: Progress) {
       s += r(359 + i * 4 % 40, 351 + i * 3 % 10, 3, 1, '#a6c4b2', .4);
       s += r(85 + i * 7 % 59, 408 + i * 3 % 10, 2 + i % 3, 1, '#9cc6bb', .4);
     }
-  }
-  if (!progress.bellRung) {
-    s += r(411, 366, 42, 22, '#b7c7b4', .2) + p('M416 370h13v3h-7v5h10v3h-16v-3h3v-5h-3z M439 370h8v11h-8z', '#d7dfc4', .75);
-  } else {
-    s += r(408, 352, 48, 10, '#513e2c') + r(409, 352, 46, 1, '#d2b17c');
-    s += label(432, 356, 'BAMBOO', 3.4) + label(432, 360, 'CROSSING', 3.4);
-  }
-  for (const [x, y, text] of [[83, 312, 'GROVE <'], [117, 393, 'CLEARING'], [626, 271, 'BAMBOO >']] as const) {
-    const w = text === 'BAMBOO >' ? 44 : 39;
-    s += r(x - w / 2, y - 7, w, 9, '#795733') + r(x - w / 2 + 1, y - 7, w - 2, 1, '#d5ac70') + label(x, y - 1, text, 4.5);
   }
   return wrapSvg(s, 704, 480);
 }
@@ -120,20 +96,27 @@ export function worksMotionSvg(progress: Progress, clock: number, layer: 'water'
   if (motionCache.size > 240) motionCache.clear(); motionCache.set(key, result); return result;
 }
 
-/** Stepped timber rim and rasterized spokes keep the moving wheel on the native pixel grid. */
+/** Open spokes show the real canal through the wheel. Fine timber grain uses the map's half-pixel grid. */
 export function worksWheelSvg(angle: number) {
-  let s = p('M17 0h22v3h9v5h4v9h4v22h-4v9h-5v4h-9v4H17v-4H8v-5H4v-8H0V17h4V8h5V4h8z', '#18342f');
-  const buckets = new Map<string, string>();
-  const radians = angle * Math.PI / 180;
-  for (let y = 2; y < 54; y++) for (let x = 2; x < 54; x++) {
-    const dx = x - 27.5, dy = y - 27.5, distance = Math.hypot(dx, dy), theta = Math.atan2(dy, dx) - radians;
-    const spoke = Math.abs(Math.sin(theta * 4)) * distance / 4 < 2.2;
-    if (distance > 25.5 || (distance < 19.5 && !spoke && distance > 6)) continue;
-    const grain = (x * 7 + y * 3) % 17, edge = distance > 24 || (distance > 18.5 && distance < 20.5);
-    const c = edge ? '#d2b178' : grain < 3 ? '#60442a' : grain < 6 ? '#a27a48' : y < 26 ? '#b89357' : '#8b663c';
-    buckets.set(c, (buckets.get(c) ?? '') + `M${x} ${y}h1v1h-1z`);
+  const buckets = new Map<string, string>(), radians = angle * Math.PI / 180;
+  for (let y = 1; y < 55; y += .5) for (let x = 1; x < 55; x += .5) {
+    const dx = x - 28, dy = y - 28, distance = Math.hypot(dx, dy), theta = Math.atan2(dy, dx) - radians;
+    const spoke = Math.abs(Math.sin(theta * 4)) * distance / 4 < 1.1;
+    if (distance > 25.5 || (distance < 20.5 && !spoke && distance > 4)) continue;
+    const grain = (Math.round(x * 2) * 7 + Math.round(y * 2) * 13) % 23;
+    const edge = distance > 24.7 || (distance > 20.5 && distance < 21.2);
+    const color = edge ? y < 28 ? '#b09a64' : '#384d3a' : grain < 5 ? '#4b4b31' : grain < 9 ? '#9f8750' : x + y < 56 ? '#8c7847' : '#655b38';
+    buckets.set(color, (buckets.get(color) ?? '') + `M${x} ${y}h.5v.5h-.5z`);
   }
-  s += [...buckets].map(([color, pixels]) => p(pixels, color)).join('');
-  s += p('M23 21h10v2h2v10h-2v2H23v-2h-2V23h2z', '#d6b77b') + r(25, 25, 6, 6, '#50625a') + r(26, 26, 3, 2, '#9ca98b');
+  let s = [...buckets].map(([color, pixels]) => p(pixels, color)).join('');
+  for (let i = 0; i < 8; i++) {
+    const t = radians + i * Math.PI / 4, x = Math.round(28 + Math.cos(t) * 23), y = Math.round(28 + Math.sin(t) * 23);
+    s += r(x, y, 1.5, 1.5, '#364c3e') + r(x, y, .5, .5, '#a4b18a');
+  }
+  s += p('M25 24h6v1h1v6h-1v1h-6v-1h-1v-6h1z', '#415747') + r(26, 25, 3, 2, '#b7b58a');
   return wrapSvg(s, 56, 56);
+}
+export function worksWheelFrame(progress: Progress, clock: number, motion = true) {
+  if (!motion || progress.flowDiverted) return 0;
+  return progress.waterRestored ? Math.floor(clock * 9) % 16 : Math.floor(clock * 6) % 2;
 }

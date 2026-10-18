@@ -6,6 +6,8 @@ export function walkFrame(id: CharacterId, stride: number) {
   return Math.floor(Math.max(0, Number.isFinite(stride) ? stride : 0) / (id === 'tala' ? 3 : traveler ? 4 : 5)) % (traveler ? 8 : 6);
 }
 export function idleActing(id: CharacterId, clock: number, map?: MapId): { gesture: Gesture; emotion: Emotion } {
+  if (id === 'lola') return { gesture: 'idle', emotion: 'warm' };
+  if (id === 'mayumi') return { gesture: 'idle', emotion: 'warm' };
   if (id === 'rae') {
     const t = clock % 13;
     if (t < 1.4) return { gesture: 'brush', emotion: 'neutral' };

@@ -1,3 +1,4 @@
+import { bellBody } from './propMaterials.ts';
 import { pixelCanopy, pixelNoise, pixelPath as path, pixelRect as rect, wrapSvg } from './pixelArt.ts';
 import type { Progress } from '../game/model.ts';
 
@@ -69,7 +70,7 @@ export const WATERWORKS_CANOPY_SVG = wrapSvg(
   [[22, 26, 84, 55], [142, 23, 90, 43], [331, 15, 79, 42], [546, 17, 96, 48], [692, 96, 32, 99], [16, 232, 40, 103], [45, 472, 86, 26], [657, 470, 63, 22]].map(([x, y, rx, ry], i) => pixelCanopy(x, y, rx, ry, i + 62, true)).join('')
     + path('M12 56h2v81h-2z M157 37h1v47h-1z M655 27h2v116h-2z', '#97a380', .5), 704, 480);
 
-export const BELL_SVG = wrapSvg(path('M8 2h7v3h3v11h3v3H2v-3h3V5h3z', '#735c39') + path('M9 4h5v3h2v10H7V7h2z', '#d1ae62') + rect(10, 1, 3, 4, '#e5cb8a') + rect(9, 7, 2, 8, '#edcf84') + rect(3, 17, 17, 2, '#ebca7f') + rect(10, 20, 3, 2, '#9d8251'), 23, 24);
+export const BELL_SVG = wrapSvg(bellBody(), 23, 24);
 
 export function waterworksStateSvg(p: Progress) {
   let s = '';

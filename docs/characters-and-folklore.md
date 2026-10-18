@@ -1,5 +1,7 @@
 # Character and folklore pass
 
+Research update, 2026-10-18: [Mayumi and cast research notes](folklore-research-mayumi-and-cast.md) distinguish documented motifs, regional accounts and original character design. The planned continuation introduces **Mayumi, The Diwata ng Bukal**; her personal identity is an adaptation informed by spring-spirit references.
+
 Implemented 2026-10-16 for the existing Chapter 1 route. The five on-screen characters receive new source art, acting and conversations. Bagtas remains an unseen voice at the ending; his full design belongs to the next chapter.
 
 ## Cast and voice

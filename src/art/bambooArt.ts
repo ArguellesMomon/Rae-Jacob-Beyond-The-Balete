@@ -1,3 +1,4 @@
+import { bamboo, plank } from './propMaterials.ts';
 import { pixelPath as p, pixelRect as r, wrapSvg } from './pixelArt.ts';
 import type { Progress } from '../game/model.ts';
 import { landmarkAt, type Landmark } from '../game/chapterTwo.ts';
@@ -115,20 +116,15 @@ export function landmarkGlyph(name: Landmark, x: number, y: number) {
   if (name === 'Bent bamboo') return p(`M${x - 3} ${y + 6}h2v-8h3v-4h5v-2H${x + 1}v2h-3v5h-1z`, '#d6c78b') + r(x - 8, y - 4, 8, 2, '#a8bb86') + r(x + 2, y - 2, 8, 2, '#a8bb86');
   return p(`M${x - 8} ${y - 4}h6v2h7v-2h5v2h-5v2h-7v-2h-6z M${x - 8} ${y + 2}h6v2h7v-2h5v2h-5v2h-7v-2h-6z`, '#b6d1ba');
 }
-export function turningStateSvg(p: Progress) {
+export function turningStateSvg(progress: Progress) {
   let s = '';
-  for (const [id, x, y, label] of [['forkWest', 110, 230, 'LEFT PATH'], ['forkNorth', 320, 108, 'TOP PATH'], ['forkEast', 528, 230, 'RIGHT PATH']] as const) {
-    s += r(x - 15, y - 37, 30, 24, '#3b594a') + r(x - 17, y - 40, 34, 3, '#e5cf94') + r(x - 2, y - 13, 4, 10, '#a59567');
-    s += r(x - 15, y - 37, 2, 24, '#203f35') + r(x + 13, y - 37, 2, 24, '#243d31') + r(x - 1, y - 12, 1, 8, '#d0b783');
-    for (let i = 0; i < 14; i++) s += r(x - 12 + i * 7 % 24, y - 35 + i * 5 % 19, 2, 1, i % 2 ? '#8c9c75' : '#1e3e32', .28);
-    s += landmarkGlyph(landmarkAt(id, p.chapterTwo.trailStep), x, y - 27);
-    s += r(x - 43, y - 57, 86, 14, '#213e37') + r(x - 43, y - 57, 86, 1, '#b39c68') + pixelLettering(label, x, y - 55, '#f1dfad', 2);
+  for (const [id, x, y] of [['forkWest', 110, 230], ['forkNorth', 320, 108], ['forkEast', 528, 230]] as const) {
+    s += bamboo(x - 1.5, y - 16, 12, 'story-fork-post-' + id, 3) + plank(x - 12, y - 34, 24, 19, 'story-fork-' + id);
+    s += landmarkGlyph(landmarkAt(id, progress.chapterTwo.trailStep), x, y - 25);
   }
-  s += landmarkGlyph('Split stone', 151, 283) + landmarkGlyph('Bent bamboo', 423, 283) + landmarkGlyph('Running water', 370, 184);
-  s += r(377, 330, 86, 29, '#2c493d') + r(377, 330, 86, 2, '#c4b181');
-  s += pixelLettering(`CHECKED ${p.chapterTwo.trailStep}/3`, 420, 337, '#e7d6a4');
-  for (let i = 0; i < 3; i++) s += r(403 + i * 12, 349, 8, 3, i < p.chapterTwo.trailStep ? '#e4d39e' : '#596e59');
-  s += r(278, 444, 84, 13, '#213e37') + pixelLettering('TO BAGTAS', 320, 446, '#ead7a4', 2);
+  for (const [name, x, y] of [['Split stone', 151, 290], ['Bent bamboo', 423, 290], ['Running water', 370, 191]] as const) {
+    s += bamboo(x - 1, y - 1, 9, 'story-study-post-' + x, 3) + plank(x - 11, y - 16, 22, 16, 'story-study-' + x) + landmarkGlyph(name, x, y - 8);
+  }
   return wrapSvg(s, 640, 480);
 }
 export function bambooAirSvg(clock: number) {

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { ClipPath, Defs, Image as SvgImage, Path, Rect, SvgXml, Use } from 'react-native-svg';
+import { ClipPath, Defs, Image as SvgImage, Path, SvgXml, Use } from 'react-native-svg';
 import { GROVE_DEPTH, GROVE_PERCH_EDGE, groveDepthOpacity, groveLightSvg } from '../art/groveEnvironmentArt';
 import type { Point, Progress } from '../game/model';
 
@@ -11,8 +11,6 @@ export const GroveBase = memo(function GroveBase({ prefix = 'grove' }: { prefix?
       {GROVE_DEPTH.map(region => <ClipPath key={region.id} id={`${prefix}-${region.id}`}><Path d={region.path} /></ClipPath>)}
       <ClipPath id={`${prefix}-perch`}><Path d={GROVE_PERCH_EDGE} /></ClipPath>
     </Defs>
-    <Rect x={-240} y={-256} width={960} height={1024} fill="#142d36" />
-    <Use href={`#${prefix}-map`} transform="translate(-240 -256) scale(2)" opacity={.45} />
     <Use href={`#${prefix}-map`} />
   </>;
 });

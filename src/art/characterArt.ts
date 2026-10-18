@@ -1,3 +1,6 @@
+import { springPortraitSvg, springSpriteSvg } from './springCharacterArt.ts';
+import { lolaPortraitSvg, lolaSpriteSvg } from './lolaArt.ts';
+import { duwendePortraitSvg, duwendeSpriteSvg } from './duwendeArt.ts';
 import { bagtasSpriteSvg, bagtasPortraitSvg } from './bagtasArt.ts';
 import { kaprePortraitSvg } from './kapreArt.ts';
 import { travelerPortraitSvg, travelerSpriteSvg } from './travelerArt.ts';
@@ -17,7 +20,7 @@ const palettes = {
   uban: { skin: '#80583f', light: '#b08a60', shade: '#563c31', hair: '#343a33', shine: '#a6a18a', cloth: '#68705a', fold: '#414f42', trim: '#b6a279' },
 };
 
-function eyes(x: number, y: number, emotion: Emotion, blink: boolean, large = false, mouth = 0, face: CharacterId = 'rae') {
+function eyes(x: number, y: number, emotion: Emotion, blink: boolean, large = false, mouth = 0, face: keyof typeof palettes = 'rae') {
   const unit = large ? 2 : 1, gap = large ? face === 'uban' ? 23 : face === 'rae' ? 20 : 18 : 8, eyeW = large ? face === 'uban' ? 9 : face === 'rae' ? 8 : 7 : 3;
   const ink = '#332e28', warm = '#f0d8ac';
   let out = '';
@@ -41,12 +44,15 @@ function eyes(x: number, y: number, emotion: Emotion, blink: boolean, large = fa
 
 const frameCache = new Map<string, string>();
 export function characterSpriteSvg(id: Exclude<CharacterId, 'uban'>, direction: Direction = 'down', frame = 0, gesture: Gesture = 'idle', emotion: Emotion = 'neutral', blink = false, mouth = 0): string {
+  if (id === 'lola') return lolaSpriteSvg(direction, frame, gesture, emotion, blink, mouth);
+  if (id === 'minda' || id === 'luning') return duwendeSpriteSvg(id, direction, frame, gesture, emotion, blink, mouth);
+  if (id === 'mayumi') return springSpriteSvg(id, blink, mouth, emotion, frame < 0 ? Math.abs(frame) : frame);
   if (id === 'rae' || id === 'tala') return travelerSpriteSvg(id, direction, frame, gesture, emotion, blink, mouth);
   return supportingSpriteSvg(id, direction, frame, gesture, emotion, blink, mouth);
 }
 
 // Preserve the supporting cast's established poses while the travelers use their own rig.
-function supportingSpriteSvg(id: Exclude<CharacterId, 'uban'>, direction: Direction, frame: number, gesture: Gesture, emotion: Emotion, blink: boolean, mouth: number): string {
+function supportingSpriteSvg(id: Exclude<keyof typeof palettes, 'uban'>, direction: Direction, frame: number, gesture: Gesture, emotion: Emotion, blink: boolean, mouth: number): string {
   if (id === 'bagtas') return bagtasSpriteSvg(blink, mouth, emotion, frame === -3 ? 1 : 0, direction);
   const key = `${id}:${direction}:${frame}:${gesture}:${emotion}:${blink}:${mouth}`;
   const cached = frameCache.get(key); if (cached) return cached;
@@ -146,11 +152,14 @@ function supportingSpriteSvg(id: Exclude<CharacterId, 'uban'>, direction: Direct
 
 const portraitCache = new Map<string, string>();
 export function characterPortraitSvg(id: CharacterId, emotion: Emotion = 'neutral', blink = false, mouth = 0): string {
+  if (id === 'lola') return lolaPortraitSvg(emotion, blink, mouth);
+  if (id === 'minda' || id === 'luning') return duwendePortraitSvg(id, emotion, blink, mouth);
+  if (id === 'mayumi') return springPortraitSvg(id, emotion, blink, mouth);
   if (id === 'rae' || id === 'tala') return travelerPortraitSvg(id, emotion, blink, mouth);
   return supportingPortraitSvg(id, emotion, blink, mouth);
 }
 
-function supportingPortraitSvg(id: CharacterId, emotion: Emotion, blink: boolean, mouth: number): string {
+function supportingPortraitSvg(id: keyof typeof palettes, emotion: Emotion, blink: boolean, mouth: number): string {
   if (id === 'bagtas') return bagtasPortraitSvg(emotion, blink, mouth);
   if (id === 'uban') return kaprePortraitSvg(emotion, blink, mouth);
   const key = `${id}:${emotion}:${blink}:${mouth}`, cached = portraitCache.get(key); if (cached) return cached;

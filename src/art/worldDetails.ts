@@ -1,3 +1,5 @@
+import { duwendeSpriteSvg } from './duwendeArt.ts';
+import { basket, material, rect as detailRect } from './propMaterials.ts';
 import { pixelPath as p, pixelRect as r, wrapSvg } from './pixelArt.ts';
 import { RESIDENTS } from '../game/residents.ts';
 import type { ResidentId } from '../game/model.ts';
@@ -46,26 +48,9 @@ works += p('M117 281h22v2h-22z M118 286h20v2h-20z M120 291h18v2h-18z', '#798668'
 works += r(385, 146, 10, 5, '#b4a074') + r(387, 143, 6, 4, '#d5bd89') + r(390, 142, 1, 2, '#eee0ad');
 export const WORKS_DETAILS_SVG = wrapSvg(works, 704, 480);
 
-export function residentSpriteSvg(id: ResidentId, clock = 1, speaking = false) {
-  const person = RESIDENTS[id], blink = (clock + id.length) % 5.7 < .15, mouth = speaking && Math.floor(clock * 5) % 3 === 0;
-  const skin = id === 'sela' ? '#ba875e' : id === 'doro' ? '#9d7451' : '#b47f54';
-  let s = r(8, 31, 5, 6, skin) + r(20, 31, 5, 6, skin) + r(7, 37, 7, 2, '#725039') + r(19, 37, 7, 2, '#725039');
-  s += p('M10 22h13v3h4v10H6V25h4z', person.tint) + r(10, 31, 13, 3, '#62745a') + r(7, 25, 3, 8, skin) + r(24, 24 + Math.floor(clock * 2) % 2, 3, 8, skin);
-  s += p('M9 2h13v3h4v17h-4v3H9v-3H5V8h4z', id === 'sela' ? '#938f7f' : id === 'doro' ? '#ada58a' : '#393a2c');
-  s += p('M10 9h13v3h2v8h-4v4H11v-3H8V12h2z', skin) + r(10, 12, 2, 8, '#d6a67c');
-  s += r(11, 14, 3, blink ? 1 : 2, '#343428') + r(19, 14, 3, blink ? 1 : 2, '#343428') + r(15, 21, 4, mouth ? 2 : 1, '#76503b');
-  s += p('M8 6h16v5h-5v2h-4v-3H8z', id === 'sela' ? '#b4ae92' : '#454735');
-  s += r(10, 24, 13, 3, person.trim);
-  if (id === 'nilo') s += r(24, 29, 6, 8, '#b19a5f') + r(26, 30, 2, 5, '#ffe1a1') + r(25, 28, 4, 1, '#d1bf89') + r(7, 6, 3, 8, '#a0a189');
-  if (id === 'sela') s += r(4, 8, 4, 8, '#b4ae92') + r(11, 29, 12, 7, '#a3865c') + r(12, 30, 10, 1, '#dcc38d') + r(17, 31, 1, 4, '#d1b47d');
-  if (id === 'doro') s += r(12, 22, 10, 2, '#b5ab8c') + r(13, 29, 9, 7, '#90734f') + r(14, 28, 7, 1, '#cdb689') + r(17, 25, 1, 4, '#c5d09a');
-  if (id === 'pilo') s += r(12, 28, 12, 7, '#e0d1a0') + r(14, 30, 7, 1, '#6b8a79') + r(18, 29, 1, 4, '#6b8a79');
-  const work = Math.floor(clock * 2) % 2;
-  if (id === 'nilo') s += r(24, 29 - work, 3, 2, skin) + r(26, 30 - work, 2, 2, '#ffe7a6');
-  if (id === 'sela') s += r(11 + work * 7, 29, 4, 2, skin) + r(12 + work * 7, 30, 2, 1, '#dfbc85');
-  if (id === 'doro') s += r(17 + work * 2, 28, 3, 2, '#d6bb83') + r(24, 28 + work, 3, 3, skin);
-  if (id === 'pilo') s += r(20 - work * 4, 29, 4, 2, skin) + r(18 - work * 4, 31, 4, 1, '#6b8a79');
-  return wrapSvg(s, 32, 40);
+export function residentSpriteSvg(id: ResidentId, clock = 1, speaking = false, celebrating = false) {
+  const phase = Math.floor(clock * 3 + id.length) % 2;
+  return duwendeSpriteSvg(id, 'down', phase ? -3 : -4, celebrating ? 'celebrate' : speaking ? 'talk' : 'work', celebrating ? 'delighted' : 'warm', (clock + id.length) % 5.7 < .15, speaking && Math.floor(clock * 5) % 3 === 0 ? 1 : 0);
 }
 
-export const LISTENING_SEED_SVG = wrapSvg(p('M3 6h18v3h3v12H0V9h3z', '#806440') + r(2, 10, 20, 9, '#b08a53') + r(4, 12, 16, 1, '#dfbe7b') + p('M9 1h6v2h3v6h-3v2H9V9H6V3h3z', '#9ca76f') + r(11, 2, 2, 7, '#f0dfac') + r(9, 3, 1, 4, '#d0ce8d'), 24, 22);
+export const LISTENING_SEED_SVG = wrapSvg(basket(1, 9, 22, 12, 'seed-pouch') + material('M9 1h6v2h3v6h-3v2H9V9H6V3h3z', [6, 1, 12, 10], 'leaf', 'listening-seed', 28, 1.5) + detailRect(11, 2, 1, 7, '#eee0aa') + detailRect(9, 3, 1, 4, '#bec591'), 24, 24);

@@ -1,3 +1,4 @@
+import { WORLD_PROPS, PROP_MOTION } from '../src/art/worldPropArt.ts';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import sharp from 'sharp';
 import { characterSpriteSvg } from '../src/art/characterArt.ts';
@@ -13,7 +14,7 @@ const uri = `data:image/png;base64,${(await readFile('assets/maps/lolas-yard-v2.
 const defs = yardRasterDefs(uri);
 const actor = (id: 'rae' | 'lola', x: number, y: number) => `<rect x="${x - 8}" y="${y - 1}" width="16" height="3" fill="#142e2b" opacity=".28"/><svg x="${x - 10}" y="${y - 30}" width="20" height="30" viewBox="0 0 32 48">${body(characterSpriteSvg(id, 'down', -1, id === 'lola' ? 'wave' : 'idle'))}</svg>`;
 function scene(x = 270, y = 252, clock = 3, guide = false) {
-  let s = defs + '<use href="#yard-preview-map"/>' + body(yardLightSvg(clock, 'ground'));
+  let s = defs + '<use href="#yard-preview-map"/>' + body(WORLD_PROPS.yard) + body(PROP_MOTION.yard[2]) + body(yardLightSvg(clock, 'ground'));
   const laundry = body(yardLaundrySvg(Math.floor(clock * 1.3)));
   if (y >= 249) s += laundry;
   s += actor('lola', 203, 186) + `<path d="M${x - 6} ${y - 1}h11l14 9h-11z" fill="#5b4430" opacity=".18"/>` + actor('rae', x, y);

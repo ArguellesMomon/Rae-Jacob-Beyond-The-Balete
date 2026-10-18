@@ -1,6 +1,6 @@
+import { bamboo, lash, lettering, plank } from './propMaterials.ts';
 import type { Point, Progress } from '../game/model.ts';
 import { pixelPath as p, pixelRect as r, wrapSvg } from './pixelArt.ts';
-import { pixelLettering } from './pixelLettering.ts';
 
 export const CLEARING_ART = { width: 576, height: 448, imageWidth: 1152, imageHeight: 896 };
 export const CLEARING_LAMPS = [[80, 241], [130, 253], [181, 246], [232, 223], [282, 215], [332, 229], [386, 213], [92, 325], [262, 112], [447, 262]] as const;
@@ -40,32 +40,15 @@ export function clearingStateSvg(progress: Progress) {
   if (!progress.waterRestored) {
     // The base depicts a clear bank. The closed barrier is an independent, removable object.
     s += p('M461 288h25l7 5h-25z', '#182f32', .42);
-    for (const x of [461, 482]) {
-      s += r(x, 266, 4, 24, '#604a30') + r(x, 266, 1, 23, '#b69a63') + r(x + 2, 267, 1, 21, '#877047');
-      s += r(x - 1, 265, 6, 2, '#c4aa72') + r(x + 1, 270, 2, 1, '#e1c38b');
-    }
-    s += r(461, 275, 25, 6, '#d2ae67') + r(461, 280, 25, 2, '#745637');
+    for (const x of [461, 482]) s += bamboo(x, 266, 24, 'barrier-' + x, 4) + lash(x - 1, 273, 6);
+    s += plank(461, 275, 25, 7, 'water-path-barrier', 'bamboo');
     for (const x of [463, 472, 481]) s += p(`M${x} 275h4l-3 6h-4z`, '#4b5343');
-    s += r(461, 274, 25, 1, '#f1d79a') + r(464, 277, 1, 1, '#f7e0a1') + r(482, 277, 1, 1, '#f7e0a1');
-    // Closed wooden leaves cover the light until the waterkeeper's repair is complete.
-    s += r(82, 135, 14, 18, '#543f2d');
-    for (let i = 0; i < 6; i++) s += r(83 + i * 2, 136, 1, 16, i % 2 ? '#987044' : '#795836');
-    s += r(82, 135, 14, 1, '#ba925c') + r(82, 152, 14, 1, '#342f28') + r(88, 136, 1, 16, '#3e3427');
-    s += r(83, 140, 5, 1, '#c39a62') + r(89, 147, 6, 1, '#b58c56') + r(86, 143, 1, 2, '#dfbb7b');
-  } else {
-    s += r(111, 166, 3, 2, '#d4b98b') + r(116, 167, 3, 2, '#b08764');
   }
   if (progress.bellHung) {
     // A tidy new cord replaces the painted snapped end, drawn over the detailed scene.
     s += p('M381 295h3v14h-3z', '#354738') + r(382, 295, 1, 10, '#e7ce98') + r(381, 299, 3, 1, '#b79a69');
   }
-  if (progress.bellRung) {
-    s += r(365, 317, 36, 15, '#694c30') + r(365, 317, 36, 1, '#dbbb7e') + r(366, 318, 34, 13, '#b38c54');
-    s += r(367, 319, 32, 10, '#c1a16a') + r(366, 330, 34, 1, '#473c2c');
-    for (let i = 0; i < 16; i++) s += r(368 + i * 7 % 29, 319 + i * 3 % 11, 2 + i % 4, 1, i % 2 ? '#d2b77f' : '#a58250', .32);
-    s += r(366, 319, 1, 1, '#ecd7a3') + r(399, 319, 1, 1, '#ecd7a3');
-    s += pixelLettering('BAMBOO', 383, 319, '#354d3c') + pixelLettering('CROSSING', 383, 325, '#354d3c');
-  }
+  if (progress.bellRung) s += lettering('BAMBOO CROSSING', 382.5, 297, 31, '#d1bd88', .36);
   const result = wrapSvg(s, 576, 448); stateCache.set(key, result); return result;
 }
 
@@ -103,19 +86,10 @@ export function clearingLightSvg(progress: Progress, clock: number, layer: 'grou
   if (atmosphereCache.size > 240) atmosphereCache.clear(); atmosphereCache.set(key, result); return result;
 }
 
-export function clearingRecoverySvg(progress: Progress, clock: number) {
-  if (!progress.waterRestored) return wrapSvg('', 576, 448);
+export function clearingRecoverySvg(progress: Progress, _clock: number) {
+  if (!progress.bellRung) return wrapSvg('', 576, 448);
+  // Shared leaf packets on the existing bench. People are depth-sorted in ClearingScene.
   let s = '';
-  if (progress.bellRung) {
-    s += r(115, 169, 8, 4, '#a27d4b') + r(116, 168, 6, 1, '#e2be7f');
-    // Existing background neighbor returns home with a basket during the quiet aftermath.
-    const phase = (((Math.floor(clock * 3) / 3) % 18) + 18) % 18 / 18;
-    if (phase < .42) {
-      const t = phase / .42, x = Math.round(148 - t * 30), y = Math.round(183 - t * 13), bob = Math.floor(t * 18) % 2;
-      s += r(x, y, 2, 2, '#71533a') + r(x + 4, y - bob, 2, 2, '#71533a');
-      s += r(x - 1, y - 6, 8, 6, '#8b9d76') + r(x, y - 12, 6, 6, '#bd8b5e') + r(x - 1, y - 13, 8, 3, '#464d37');
-      s += r(x + 1, y - 9, 1, 1, '#303c30') + r(x + 4, y - 9, 1, 1, '#303c30') + r(x - 3, y - 4, 6, 4, '#ba9a65');
-    }
-  }
+  for (const x of [288, 298, 309, 320]) s += p(`M${x} 349h7v2h2v3h-9v-3z`, '#8c9e68') + r(x + 3, 350, 1, 4, '#dac98b');
   return wrapSvg(s, 576, 448);
 }

@@ -1,3 +1,7 @@
+import { propFootprints } from './propFootprints.ts';
+import { celebrationFootprints } from './celebration.ts';
+import { isRainlitMap } from './rainlit.ts';
+import { rainlitMap } from './rainlitWorld.ts';
 import { chapterTwoMap } from './chapterTwoWorld.ts';
 import type { Interaction, MapId, Progress, Rect } from './model.ts';
 import { CLEARING_START, EMPTY_PROGRESS, GROVE_START, START, WATERWORKS_START } from './model.ts';
@@ -42,7 +46,7 @@ export const INTERACTIONS: readonly Interaction[] = [
   { id: 'clothesline', name: 'Clothesline', action: 'Inspect', point: { x: 410, y: 248 }, note: 'The shirts point toward the old tree. Excellent wind report.' },
   { id: 'basin', name: 'Washing basin', action: 'Inspect', point: { x: 120, y: 330 }, note: 'Definitely not a swimming pool. Lola was very clear.' },
   { id: 'balete', name: 'Old balete', action: 'Inspect', point: { x: 548, y: 182 } },
-  { id: 'yardCat', name: 'Muning in the shade', action: 'Inspect', point: { x: 118, y: 194 }, note: 'Muning likes slow hands and the cool porch. Some friends need no words.' },
+  { id: 'yardCat', name: 'Mingming in the shade', action: 'Inspect', point: { x: 118, y: 194 }, note: 'Mingming likes slow hands and the cool porch. Some friends need no words.' },
   { id: 'calamansi', name: "Lola's calamansi", action: 'Inspect', point: { x: 412, y: 147 }, note: 'Lola planted this tree when she was small. A little shade can hold a long family story.' },
   { id: 'herbBed', name: 'Kitchen garden', action: 'Inspect', point: { x: 104, y: 382 }, note: 'Check the soil before watering. Care starts by noticing what is needed.' },
   { id: 'sungka', name: "Lolo's sungka board", action: 'Use', point: { x: 192, y: 351 }, note: 'One shell at a time. Lolo made the old board; Lola still knows a patient move.' },
@@ -157,7 +161,8 @@ export const WATERWORKS_INTERACTIONS: readonly Interaction[] = [
   { id: 'rootSeal', name: 'A mark on the severed root', action: 'Inspect', point: { x: 584, y: 214 }, note: 'The side passage was intact on Tala’s earlier sketch. Its root has a smooth cut and a pale circular seal. The bamboo road is still open.' },
 ];
 
-export function getMap(id: MapId, progress: Progress = EMPTY_PROGRESS) {
+function mapDefinition(id: MapId, progress: Progress) {
+  if (isRainlitMap(id)) return rainlitMap(id, progress);
   if (id === 'bamboo' || id === 'turning') return chapterTwoMap(id, progress);
   if (id === 'yard') return { ...WORLD, name: "Lola's Yard", spawn: START, colliders: COLLIDERS, interactions: INTERACTIONS };
   if (id === 'clearing') {
@@ -182,4 +187,9 @@ export function getMap(id: MapId, progress: Progress = EMPTY_PROGRESS) {
     return { ...WATERWORKS_WORLD, name: 'Rootwater Works', spawn: WATERWORKS_START, colliders: [...WATERWORKS_COLLIDERS, ...(!progress.bellRung ? [{ x: 412, y: 365, width: 40, height: 24 }] : [])], interactions };
   }
   return { ...GROVE_WORLD, name: 'Old Balete Grove', spawn: GROVE_START, colliders: GROVE_COLLIDERS, interactions: GROVE_INTERACTIONS };
+}
+
+export function getMap(id: MapId, progress: Progress = EMPTY_PROGRESS) {
+  const map = mapDefinition(id, progress), feet = [...propFootprints(id, progress), ...(id === 'clearing' ? celebrationFootprints(progress) : [])];
+  return feet.length ? { ...map, colliders: [...map.colliders, ...feet] } : map;
 }

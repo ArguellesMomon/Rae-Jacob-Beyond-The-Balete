@@ -1,6 +1,11 @@
 import type { InteractionId } from './model.ts';
 type Topic = { key: string; label: string; id: InteractionId; group: 'road' | 'story' };
-export const CONVERSATION_TOPICS: Record<'lola' | 'tala' | 'minda' | 'uban' | 'bagtas', readonly Topic[]> = {
+export const CONVERSATION_TOPICS: Record<'lola' | 'tala' | 'minda' | 'uban' | 'bagtas' | 'mayumi', readonly Topic[]> = {
+  mayumi: [
+    { key: 'water', id: 'mayumiWater', label: 'Can a diwata tell water where to go?', group: 'story' },
+    { key: 'stories', id: 'mayumiStories', label: 'Lola told me stories about diwata.', group: 'story' },
+    { key: 'roads', id: 'mayumiRoads', label: 'What if the seals protect someone?', group: 'road' },
+  ],
   bagtas: [
     { key: 'paths', id: 'bagtasPaths', label: 'How do you check a changing path?', group: 'road' },
     { key: 'stories', id: 'bagtasStories', label: 'Lola told stories about tikbalang.', group: 'story' },

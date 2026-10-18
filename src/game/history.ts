@@ -1,10 +1,10 @@
 import type { Dialogue, HistoryEntry, MapId } from './model.ts';
 export const HISTORY_LIMIT = 600;
-const speakers = ['Bagtas', 'Rae Jacob', 'Lola Selya', 'Someone?', 'Tala', 'Minda', 'Mang Uban', 'Nilo', 'Sela', 'Doro', 'Pilo'];
+const speakers = ['Mayumi', 'Luning', 'Bagtas', 'Rae Jacob', 'Lola Selya', 'Someone?', 'Tala', 'Minda', 'Mang Uban', 'Nilo', 'Sela', 'Doro', 'Pilo'];
 export function parseHistory(value: unknown): HistoryEntry[] {
   if (!Array.isArray(value)) return [];
   return value.slice(-HISTORY_LIMIT).flatMap((entry, index) => {
-    if (!entry || !['yard', 'clearing', 'grove', 'waterworks', 'bamboo', 'turning'].includes(entry.mapId) || !speakers.includes(entry.speaker) || typeof entry.text !== 'string' || !entry.text.trim()) return [];
+    if (!entry || !['yard', 'clearing', 'grove', 'waterworks', 'bamboo', 'turning', 'rainroad', 'hamlet', 'spring'].includes(entry.mapId) || !speakers.includes(entry.speaker) || typeof entry.text !== 'string' || !entry.text.trim()) return [];
     return [{ seq: index + 1, mapId: entry.mapId as MapId, scene: typeof entry.scene === 'string' ? entry.scene.slice(0, 60) : '', speaker: entry.speaker as HistoryEntry['speaker'], text: entry.text.slice(0, 1800), ...(typeof entry.beat === 'string' ? { beat: entry.beat.slice(0, 500) } : {}) }];
   });
 }

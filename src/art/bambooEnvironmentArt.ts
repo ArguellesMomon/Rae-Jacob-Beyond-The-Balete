@@ -1,6 +1,5 @@
 import type { Point } from '../game/model.ts';
 import { pixelPath as p, pixelRect as r, wrapSvg } from './pixelArt.ts';
-import { pixelLettering } from './pixelLettering.ts';
 import { landmarkGlyph } from './bambooArt.ts';
 
 export const VERGE_ART = { width: 640, height: 480, imageWidth: 1280, imageHeight: 960 };
@@ -28,16 +27,8 @@ export function vergeForegroundMarkup(player?: Point, prefix = 'verge-preview') 
   return VERGE_DEPTH.map(region => `<use href="#${prefix}-map" clip-path="url(#${prefix}-${region.id})" opacity="${vergeDepthOpacity(region.id, player)}"/>`).join('');
 }
 
-let wayfinding = p('M497 162h106v16H497z', '#183329', .82);
-wayfinding += r(498, 162, 104, 1, '#ddbd7c', .85) + r(498, 178, 104, 1, '#c5a868', .8);
-wayfinding += pixelLettering('TURNING PATHS', 550, 165, '#f8e6b0', 2);
-wayfinding += p('M540 234h15v-5l10 9-10 9v-5h-15z', '#192f28', .7) + p('M540 233h15v-5l10 9-10 9v-5h-15z', '#f0d69a');
-wayfinding += r(531, 247, 45, 1, '#d9c28a', .7);
-// Small sketches remain on the existing verse board; the readable verse is in dialogue.
-for (const [index, glyph] of ['Split stone', 'Bent bamboo', 'Running water'].entries()) {
-  wayfinding += `<g transform="translate(493 ${201 + index * 6}) scale(.38)">${landmarkGlyph(glyph as Parameters<typeof landmarkGlyph>[0], 0, 0)}</g>`;
-}
-export const VERGE_WAYFINDING_SVG = wrapSvg(wayfinding, 640, 480);
+// The painted arch and verse board are interacted with directly.
+export const VERGE_WAYFINDING_SVG = wrapSvg(['Split stone', 'Bent bamboo', 'Running water'].map((name, i) => `<g transform="translate(502 ${201 + i * 6}) scale(.32)">${landmarkGlyph(name as Parameters<typeof landmarkGlyph>[0], 0, 0)}</g>`).join(''), 640, 480);
 
 const cache = new Map<string, string>();
 export function vergeWeatherSvg(clock: number, layer: 'ground' | 'air' = 'air') {

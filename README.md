@@ -1,6 +1,6 @@
 # Rae Jacob: Beyond the Balete
 
-A React Native + TypeScript + Expo SDK 57 adventure prototype with a complete playable Chapter 1 and the first playable Chapter 2 arc. Chapter 1, *The Bell Beneath the Balete*, follows this route: **Lola's Yard → Lantern Clearing → Old Balete Grove → Rootwater Works → the restored crossing and root-seal ending**.
+A React Native + TypeScript + Expo SDK 57 adventure prototype with a complete playable Chapter 1 and a complete playable Chapter 2 story arc. Chapter 1, *The Bell Beneath the Balete*, follows this route: **Lola's Yard → Lantern Clearing → Old Balete Grove → Rootwater Works → the restored crossing and root-seal ending**.
 
 ## Play
 
@@ -25,6 +25,20 @@ If Metro is already running on port 8081, open http://localhost:8081 instead of 
 
 Expo currently directs physical-device Expo Go projects to SDK 57 during the SDK 58 transition: [official setup guidance](https://docs.expo.dev/get-started/create-a-project/). Native versions were selected using `expo install`, including [react-native-svg](https://docs.expo.dev/versions/v57.0.0/sdk/svg/).
 
+## Continue to Mayumi
+
+Continue your existing save. After checking the three Turning Paths landmarks and speaking to Bagtas, go up behind him to the gold **RAINLIT ROAD** sign below the shelter. Choose **Travel**. No restart is needed.
+
+The continuation adds **Rainlit Road → Riverside Hamlet → The Quiet Spring**, **Mayumi, The Diwata ng Bukal**, and **Luning**, a duwende basket-maker. Rae’s first encounter with Mayumi has time for surprise, questions and homesickness. Bagtas travels with the party, and Tala makes observations that determine the repair.
+
+At the spring: ask Mayumi, inspect Tala’s narrow rill, use the forked support beside Bagtas, free the trapped basket, then use the same support to settle the root. A visible current reaches the outlet and the hamlet’s domestic spout. Return the basket to Luning whenever you like. Speak to Mayumi after the repair for the chapter’s quiet scene and fresh-seal ending. The optional Listening Seed provides a memory and is never a required key.
+
+For a separate replay, choose **Revisit a scene ? Chapter 2: The rainlit road**; **The Diwata ng Bukal**, **A little room for water**, and **The spring remembers** start at later review points. These keep the main journey separate.
+
+The notebook distinguishes Mayumi’s original biography and costume from documented local traditions and includes sources and a bukal/batis/agos vocabulary note. See [the implemented story and play guide](docs/chapter-02-the-rainlit-road.md), [folklore research](docs/folklore-research-mayumi-and-cast.md), and [map art prompts and saved assets](docs/rainlit-art-prompts.md).
+
+Run `npm.cmd run rainlit:preview` for [three new scene previews](artifacts/rainlit-scenes-review.png), [Mayumi and Luning’s cast sheet](artifacts/spring-cast-review.png), and the before/braced/restored spring states. These are source-art renders, not device screenshots.
+
 ## Controls
 
 | Action | Phone / touch | Browser keyboard |
@@ -42,11 +56,11 @@ Expo currently directs physical-device Expo Go projects to SDK 57 during the SDK
 
 ## Chapter 2 opening - The Path That Walks Back
 
-The first playable Chapter 2 arc adds **Bamboo Verge → Turning Paths → Bagtas's checked route**. Choose **Begin Chapter 2** after the Chapter 1 ending, or continue an existing completed save and follow **Road into the bamboo** on the eastern bank of Rootwater Works. **Revisit a scene** also offers three separate Chapter 2 replay checkpoints.
+The first playable Chapter 2 arc adds **Bamboo Verge → Turning Paths → Bagtas's checked route**. Choose **Begin Chapter 2** after the Chapter 1 ending, or continue an existing completed save and follow **Road into the bamboo** on the eastern bank of Rootwater Works. **Revisit a scene** offers the bamboo opening and four new Rainlit Road replay checkpoints.
 
 Meet Bagtas, explore his traveler shelter and choose how Rae asks for help. Three optional conversations cover wayfinding, family stories and the pale seals. Check the remembered landmarks through changing fork posts: split stone, bent bamboo, running water. Incorrect branches loop safely and preserve checked steps. Return to Bagtas to finish the opening arc, then revisit the bamboo maps or travel back to Chapter 1.
 
-The new maps have original layered pixel artwork, shelter details, sunshower motion, readable landmark sketches and short navigation fades. Bagtas has a new sprite, portrait, expressions, speech and idle animation. Earlier choices, discoveries, the optional Listening Seed, settings and dialogue history carry forward. No new packages are required. The rainlit road and the rest of Chapter 2 are subsequent work.
+The new maps have original layered pixel artwork, shelter details, sunshower motion, readable landmark sketches and short navigation fades. Bagtas has a new sprite, portrait, expressions, speech and idle animation. Earlier choices, discoveries, the optional Listening Seed, settings and dialogue history carry forward. No new packages are required. Continue through the RAINLIT ROAD sign behind the shelter after Bagtas’s debrief.
 
 See [story, implementation and folklore references](docs/chapter-02-the-path-that-walks-back.md), [new map artwork](artifacts/chapter-02-bamboo-verge.png), [Bagtas animation](artifacts/bagtas-animation.gif), [playable dialogue](docs/chapter-02-dialogue-review.md) and [phone review](docs/chapter-02-device-check.md). Artwork previews render source functions; they are not running-app screenshots.
 
@@ -82,9 +96,9 @@ Run `npm.cmd run turning:preview` for four puzzle states, route scenes, screen f
 
 ## Ground and movement boundaries
 
-Rae and Tala now stay on explicit ground/path surfaces in all six maps. Their entire foot area must fit on supported ground, while existing solid objects and puzzle gates still apply. Forest backgrounds, roofs, water beds and decorative space beyond the maps are blocked. The clearing's trickle is crossed on its plank bridge. Tala spawns on the same connected surface and follows without catching on floating-point bridge seams. Older saves outside the legal ground recover safely while retaining discoveries and story progress.
+Rae and Tala now stay on explicit ground/path surfaces in all nine maps. Their entire foot area must fit on supported ground, while existing solid objects and puzzle gates still apply. Forest backgrounds, roofs, water beds and decorative space beyond the maps are blocked. The clearing's trickle is crossed on its plank bridge. Tala spawns on the same connected surface and follows without catching on floating-point bridge seams. Older saves outside the legal ground recover safely while retaining discoveries and story progress.
 
-Run `npm.cmd run navigation:review` for [the six-map alignment review](artifacts/navigation-all-maps-review.png) and [state-by-state reachability results](docs/movement-boundary-review.md). Regression tests cover held/diagonal movement, large frame delays, narrow crossings, companion following, every replay/travel spawn and old saves. The real controller completes the waterworks and Chapter 2 using the legal paths. Physical-phone touch/performance review remains pending.
+Run `npm.cmd run navigation:review` for [the nine-map alignment review](artifacts/navigation-all-maps-review.png) and [state-by-state reachability results](docs/movement-boundary-review.md). Regression tests cover held/diagonal movement, large frame delays, narrow crossings, companion following, every replay/travel spawn and old saves. The real controller completes the waterworks and Chapter 2 using the legal paths. Physical-phone touch/performance review remains pending.
 
 ## Bamboo Verge environmental art
 
@@ -128,7 +142,7 @@ Buttons and the joystick now have pixel corners and beveled edges. Rae and Tala 
 
 The clearing, grove and waterworks now have nine new optional scenery discoveries, more household/work details, and four original duwende neighbors: Nilo the lampkeeper, Sela the basket mender, Doro the seed tender and Pilo the apprentice. They introduce themselves, then offer short, varied remarks that respond to repairs. Met neighbors appear in People; completed visits and discoveries save locally.
 
-After ringing the restored waybell, visit Mang Uban for his **Listening Seed** gift scene. The dormant keepsake remains in Rae's pocket for a later chapter, without a Chapter 2 commitment. Examine it from the notebook. Existing completed saves can receive it; no restart is needed.
+After ringing the restored waybell, visit Mang Uban for his **Listening Seed** gift scene. The keepsake remains in Rae's pocket. An optional dry-bank memory at Mayumi's spring acknowledges it in Chapter 2; it is never consumed or required. Examine it from the notebook. Existing completed saves can receive it; no restart is needed.
 
 Lever changes now show a traveling surge, current marks, a route caption, and a brief camera move with a soft tremble. **Sound & comfort → Water scene motion → Steady view** removes that camera motion while retaining visual water feedback. Blocked lever attempts and loading old saves do not replay the effect.
 
@@ -192,7 +206,7 @@ Existing Lantern Clearing saves remain compatible with the grove addition. New p
 - Original bundled music, environmental ambience and story/puzzle cues; lifecycle-aware playback, independent saved volume controls, and a waybell preview.
 - Gentle/direct camera choices, improved short-screen framing, continuous walk-to-jog speed, and repaired-state NPC/quest reminders.
 
-The complete Chapter 1 story and puzzle route are playable at prototype quality, including audio, comfort, and character/story passes. Physical-phone animation, dialogue pacing, listening/performance review, further production polish, and the remainder of Chapter 2 remain future work. The accepted chapter and visual direction remain in `docs/`. The concept board is an art-direction reference; it is not the playable map or final production asset quality.
+The complete Chapter 1 story and puzzle route are playable at prototype quality, including audio, comfort, and character/story passes. Physical-phone animation, dialogue pacing, listening/performance review, further production polish, and the next chapter remain future work. The accepted chapter and visual direction remain in `docs/`. The concept board is an art-direction reference; it is not the playable map or final production asset quality.
 
 ## Validation
 
@@ -203,11 +217,11 @@ npm.cmd exec --yes --package=expo-doctor -- expo-doctor
 npm.cmd exec -- expo export --platform all --output-dir dist-preview
 ```
 
-The current build has **109 passing tests** plus TypeScript checking. Checks cover all six maps' connectivity, save migration and recovery, interrupted crossing/reveal checkpoints, question order, companion following, contextual targeting, the reversible puzzle, guarded bell retrieval, hints, restored bridge collision, and travel. Twenty-two controller integration tests mount the real React game hook with mocked native storage/lifecycle services. These include walking the puzzle route, returning and ringing the bell, completing the ending across interruptions, cancelling tool selection, automatic scene completion, and returning safely from settings to title, pause, or unfinished dialogue. New character checks cover optional-topic persistence without quest mutation, character discovery, authored animation frame distinctions, valid raster output, and ending cue metadata. Additional checks cover preference persistence, smooth speed/camera behavior, audio cue timing, independent mute, preview/background behavior, native voice cleanup and delayed seeks, web autoplay rejection/retry, and valid WAV signals with quiet loop seams. New Chapter 2 checks cover all fork layouts, safe loops, optional discoveries, save gates/recovery, Bagtas replies, the full route and return journey, and replay isolation. The connected-story checks cover six Chapter 1 reply branches, reached-line history, interruption recovery, optional clue callbacks, the post-bell scene and save recaps. The polish checks also cover separate replay saves, rapid scene switching, reached-line history and return context, safe replay presets, thin-wall targeting and frame-pacing statistics. Node.js 24 is used for these tests and their native-service mock loader.
+The current build has **118 passing tests** plus TypeScript checking. Checks cover all nine maps' connectivity, save migration and recovery, interrupted crossing/reveal checkpoints, question order, companion following, contextual targeting, the reversible puzzle, guarded bell retrieval, hints, restored bridge collision, and travel. Twenty-four controller integration tests mount the real React game hook with mocked native storage/lifecycle services. These include walking the puzzle route, returning and ringing the bell, completing the ending across interruptions, cancelling tool selection, automatic scene completion, and returning safely from settings to title, pause, or unfinished dialogue. New character checks cover optional-topic persistence without quest mutation, character discovery, authored animation frame distinctions, valid raster output, and ending cue metadata. Additional checks cover preference persistence, smooth speed/camera behavior, audio cue timing, independent mute, preview/background behavior, native voice cleanup and delayed seeks, web autoplay rejection/retry, and valid WAV signals with quiet loop seams. New Chapter 2 checks cover all fork layouts, safe loops, optional discoveries, save gates/recovery, Bagtas replies, the full route and return journey, and replay isolation. The connected-story checks cover six Chapter 1 reply branches, reached-line history, interruption recovery, optional clue callbacks, the post-bell scene and save recaps. The polish checks also cover separate replay saves, rapid scene switching, reached-line history and return context, safe replay presets, thin-wall targeting and frame-pacing statistics. Node.js 24 is used for these tests and their native-service mock loader.
 
 The current polish build passes TypeScript. The earlier sound-and-comfort build passed all 21 Expo Doctor checks with its SDK-matched audio/asset packages; no dependencies changed in this pass and Doctor was not rerun. Android/iOS/web production exports validate both platform-specific playback adapters and package the WAV assets. The running local preview returns HTTP 200.
 
-All six maps and the character artwork have source-art previews, including initial, diverted, and restored waterworks states and the repaired clearing. The user playtested the first yard build. The agent has not playtested the expanded sequence interactively in a browser or on a physical phone, so the mobile UI, camera comfort, frame rate, and audible mix still require device playtesting. Automated signal checks do not substitute for listening. Use [the short device check](docs/chapter-01-device-check.md) to review this build. Headless controller tests and bundle success are not claims of physical-device testing.
+All nine maps and the character artwork have source-art previews, including initial, diverted, and restored waterworks states and the repaired clearing. The user playtested the first yard build. The agent has not playtested the expanded sequence interactively in a browser or on a physical phone, so the mobile UI, camera comfort, frame rate, and audible mix still require device playtesting. Automated signal checks do not substitute for listening. Use [the short device check](docs/chapter-01-device-check.md) to review this build. Headless controller tests and bundle success are not claims of physical-device testing.
 
 An npm audit on 2026-10-16 reported 22 advisories (15 high, 7 moderate), inherited through Expo/React Native's CLI, Metro, code-signing, and native project tooling dependencies. Registry versions of `braces` (3.0.3) and `node-forge` (1.4.0) were still in the affected ranges at this check. No forced SDK downgrades or unverified transitive overrides were applied. Recheck upstream patches before a release; the prototype does not invoke code signing or process user-supplied build patterns.
 
@@ -268,8 +282,15 @@ npm.cmd run opening:preview
 npm.cmd run world:preview
 npm.cmd run story:review
 npm.cmd run chapter2:preview
+npm.cmd run props:preview
 ```
 
 The PNG/SVG previews in `artifacts/` show the game's actual source artwork. They are not screenshots of a running UI. Google Fonts files are supplied by the font packages and retain their respective licenses; all scene drawing code is original to this project.
 
 Regenerate the original audio with `npm.cmd run audio:generate`. Its manifest records duration, bytes, peak and RMS levels for each mono PCM16 asset. No third-party music or sound samples are included.
+
+The current [story-object restoration](docs/story-object-restoration.md) preserves essential clue signs, the waterwheel, laundry and interactive scenery. The Rainlit Road sign and hamlet baskets/water lesson are baked into the map artwork. Floating brackets, arrows and character nameplates remain removed.
+
+Story objects are restored: wheel, animated laundry, changing fork clues, a baked Rainlit Road sign and the hamlet's baskets/water lesson. See [the restoration review](docs/story-object-restoration.md) and [image-generation prompts](docs/story-map-edit-prompts.md). The final maps are `bamboo-verge-v3.png` and `riverside-hamlet-v2.png`.
+
+The [remaining overlay and grove framing fix](docs/grove-framing-fix.md) removes duplicate marker/tube/cord/window graphics and the magnified side fill. Normal cameras stay inside each map at uniform scale; the baked hamlet baskets and their interactions remain.

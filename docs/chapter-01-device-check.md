@@ -31,7 +31,7 @@ Open the running project in Expo Go, reload it and hold the phone in landscape. 
 
 ## Opening and yard review
 
-1. To review the beginning safely, choose replay's **A new afternoon**. Walk past the stepping stones, jar and garden; all routes to Lola and the old tree should stay clear. Try Muning, the calamansi, herbs, sungka board and rain jar. Each should add one notebook entry without advancing the crossing.
+1. To review the beginning safely, choose replay's **A new afternoon**. Walk past the stepping stones, jar and garden; all routes to Lola and the old tree should stay clear. Try Mingming, the calamansi, herbs, sungka board and rain jar. Each should add one notebook entry without advancing the crossing.
 2. Move Rae left and right, then watch Tala follow later. Check for a single readable eye/nose/mouth, no doubled face, no clipping and consistent head movement across strides. Check the stepped joystick and action button over both bright and dark ground; fine movement should feel the same as before.
 3. After talking to Lola, read the complete conversation at the tree. The label should show **???**. Rae remains in the yard until the final line. The animation should fade completely black, hold briefly, show the root passage, and fade into the clearing without an abrupt bright flash. Try Skip on a later review.
 4. Background the app during that blackout, then resume. Rae should be safely at the clearing's arrival conversation. Read the longer arrival at your own pace; verify long lines scroll and each next line starts at the top. Check whether the explanation and Rae's emotions give the scene enough breathing room.

@@ -18,8 +18,11 @@ function mapLesson(p: Progress): DialogueLine[] {
 
 export function afterBellLines(p: Progress): DialogueLine[] {
   const lines: DialogueLine[] = [
-    T('Before the next road... shall we watch this one for a moment?', 'warm', 'The last bell note fades. They turn toward the little homes. A shutter opens; a basket goes back inside.'),
-    R('Nobody is running now. Even Minda has stopped counting things.', 'warm'),
+    T('Before the next road... shall we watch this one for a moment?', 'warm', 'Neighbors fill the square with waving hands and warm lanterns. The bell’s last note becomes a cheer.'),
+    R('Look how many came out! That little one is dancing. Are they all duwende, like you?', 'delighted'),
+    T('Our neighbors. Some heard the bell from inside the roots. They have been waiting to hear that sound all evening.'),
+    { speaker: 'Nilo', text: 'A light for every safe journey! Leave the middle open, everyone. Our guests still need room for their feet.', emotion: 'delighted', gesture: 'celebrate' },
+    { speaker: 'Sela', text: 'And save them a packet before you eat all the good ones. A crossing repaired is a reason to share.', emotion: 'warm', gesture: 'wave' },
     M('Only for a moment. This packet is for sharing. You have both earned time to eat.'),
     R(p.discoveries.includes('merienda') ? 'Lola saved the soft pandesal for me. There were two cups on the table. I thought I had all afternoon.' : 'Lola always sets out a second cup before she calls me. I can almost hear it touch the table.', 'wistful', 'Rae holds the warm leaf packet without opening it yet.'),
     T('You helped us. You are allowed to feel glad about that.'),

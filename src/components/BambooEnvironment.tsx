@@ -3,15 +3,14 @@ import { ClipPath, Defs, Image as SvgImage, Path, SvgXml, Use } from 'react-nati
 import { VERGE_DEPTH, VERGE_WAYFINDING_SVG, vergeDepthOpacity, vergeWeatherSvg } from '../art/bambooEnvironmentArt';
 import type { Point } from '../game/model';
 
-export const VERGE_MAP_IMAGE = require('../../assets/maps/bamboo-verge-v2.png');
+export const VERGE_MAP_IMAGE = require('../../assets/maps/bamboo-verge-v3.png');
 export const VergeBase = memo(function VergeBase({ prefix = 'verge' }: { prefix?: string }) {
   return <>
     <Defs>
       <SvgImage id={`${prefix}-map`} href={VERGE_MAP_IMAGE} width={640} height={480} preserveAspectRatio="none" />
       {VERGE_DEPTH.map(region => <ClipPath key={region.id} id={`${prefix}-${region.id}`}><Path d={region.path} /></ClipPath>)}
     </Defs>
-    <Use href={`#${prefix}-map`} />
-    <SvgXml xml={VERGE_WAYFINDING_SVG} width={640} height={480} />
+    <Use href={`#${prefix}-map`} /><SvgXml xml={VERGE_WAYFINDING_SVG} width={640} height={480} />
   </>;
 });
 export const VergeForeground = memo(function VergeForeground({ player, prefix = 'verge' }: { player: Point; prefix?: string }) {

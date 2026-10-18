@@ -1,6 +1,6 @@
 import { pixelPath as p, pixelRect as r, wrapSvg } from './pixelArt.ts';
 import type { MapId, Progress } from '../game/model.ts';
-const sizes = { bamboo: [640, 480], turning: [640, 480], yard: [640, 448], clearing: [576, 448], grove: [480, 512], waterworks: [704, 480] };
+const sizes = { rainroad: [640, 480], hamlet: [640, 480], spring: [640, 480], bamboo: [640, 480], turning: [640, 480], yard: [640, 448], clearing: [576, 448], grove: [480, 512], waterworks: [704, 480] };
 const cache = new Map<string, string>();
 export function atmosphereSvg(map: MapId, progress: Progress, clock: number, layer: 'ground' | 'air' = 'air') {
   const time = Math.floor(clock * 3) / 3, key = `${map}:${layer}:${time % 120}:${progress.bellRung}:${progress.flowDiverted}`;

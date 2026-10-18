@@ -1,3 +1,4 @@
+import { rainlitLines } from './rainlitDialogue.ts';
 import { chapterTwoLines } from './chapterTwoDialogue.ts';
 import type { DialogueLine, InteractionId, MapId, Progress } from './model.ts';
 import { characterLines } from './characterDialogues.ts';
@@ -6,8 +7,10 @@ import { worldLines } from './worldDialogues.ts';
 import { chapterOneMoments } from './chapterOneMoments.ts';
 
 export function linesFor(id: InteractionId, progress: Progress, mapId: MapId = 'yard'): DialogueLine[] {
+  const rainlit = rainlitLines(id, progress, mapId);
+  if (rainlit) return rainlit.map(line => ({ ...line, gesture: id === 'springChannel' && line.speaker === 'Tala' ? 'work' : id === 'springBasket' && line.speaker === 'Rae Jacob' ? 'pull' : id === 'springSettle' && line.speaker === 'Rae Jacob' ? 'reach' : line.gesture ?? 'talk' }));
   const chapterTwo = chapterTwoLines(id, progress, mapId);
-  if (chapterTwo) return chapterTwo;
+  if (chapterTwo) return id === 'bagtasDebrief' ? [...chapterTwo, { speaker: 'Bagtas', text: 'The onward road is behind my shelter, at the gold RAINLIT ROAD sign. Walk up to the arrow and choose Travel. I will meet you there.', emotion: 'warm' }] : chapterTwo;
   const scene = worldLines(id, progress) ?? expandedScene(id, progress);
   const authored = scene ?? deepenConversation(id, progress, characterLines(id, progress, mapId) ?? baseLinesFor(id, progress, mapId));
   const lines: DialogueLine[] = id === 'bellArch' && progress.bellHung && !progress.bellRung ? [...authored, { speaker: 'Minda', text: 'Mang Uban asked you to stop by before you leave. A quiet thank-you, he said. No hurry—the road will wait.', emotion: 'warm' }] : authored;

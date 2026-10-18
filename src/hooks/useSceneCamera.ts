@@ -3,7 +3,7 @@ import { cameraTarget, followCamera, sceneViewport } from '../game/camera';
 import type { Point } from '../game/model';
 
 export function useSceneCamera(width: number, height: number, world: { width: number; height: number }, center: Point, clock: number, gentle: boolean, overview?: { width: number; height: number }, cinematic = false) {
-  const view = sceneViewport(width, height, overview);
+  const view = sceneViewport(width, height, overview, world);
   const target = cameraTarget(center, world, view);
   const previous = useRef<{ point: Point; clock: number; width: number; height: number } | null>(null);
   const last = previous.current;

@@ -124,7 +124,7 @@ See [world enrichment](world-enrichment.md), [the resident gallery](../artifacts
 - Corrected side profiles: a single face and all of its features move inside the same head group. The whole left view mirrors the right.
 - A 29-line exchange with the unknown caller explains the accidental crossing. A skippable 9.6-second scene fades through full black before the root journey and into the clearing; arrival has 17 lines. All spoken dialogue remains player-paced.
 - Longer NPC introductions, personal memories, return conversations and ending, with an explicit distinction between the first caller and the ending voice.
-- More yard detail, ambient animation and five optional discoveries: Muning, calamansi, kitchen garden, sungka board and covered rain jar. All ten interaction targets remain reachable; new discoveries migrate under the existing save key.
+- More yard detail, ambient animation and five optional discoveries: Mingming, calamansi, kitchen garden, sungka board and covered rain jar. All ten interaction targets remain reachable; new discoveries migrate under the existing save key.
 
 See [the opening and yard notes](opening-and-yard-pass.md), [controls preview](../artifacts/pixel-controls-preview.png), [animated profiles](../artifacts/profile-walk-preview.gif), and [generated script review](chapter-01-dialogue-review.md).
 

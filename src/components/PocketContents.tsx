@@ -6,7 +6,7 @@ import { Icon } from './Icons';
 import { PixelFrame } from './PixelFrame';
 
 export function PocketContents({ progress, onInspect }: { progress: Progress; onInspect: () => void }) {
-  return <View style={s.card}><Text style={s.heading}>IN MY POCKET</Text><Text style={s.text}>Spare kite string · kept for another adventure{progress.bellRecovered && !progress.bellReturned ? '\nRecovered waybell · return to Minda' : ''}</Text>
+  return <View style={s.card}><Text style={s.heading}>IN MY POCKET</Text><Text style={s.text}>Spare kite string · kept for another adventure{progress.rainlit.basketFreed && !progress.rainlit.basketReturned ? '\nLuning’s rescued basket \u00b7 return at the riverside hamlet' : ''}{progress.bellRecovered && !progress.bellReturned ? '\nRecovered waybell · return to Minda' : ''}</Text>
     {progress.ubanGiftReceived ? <Pressable accessibilityRole="button" accessibilityLabel="Examine Mang Uban's Listening Seed" onPress={onInspect} style={s.item}><PixelFrame fill="#e0e4c7" border="#a3ae7d" /><SvgXml xml={LISTENING_SEED_SVG} width={34} height={31} /><View style={{ flex: 1 }}><Text style={s.name}>Listening Seed</Text><Text style={s.hint}>Mang Uban's gift · examine</Text></View><Icon name="arrow" color="#647b51" size={17} /></Pressable> : progress.bellRung && <Text style={s.hint}>A quiet thank-you is waiting in Mang Uban's grove. Visit when you like.</Text>}
   </View>;
 }

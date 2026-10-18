@@ -18,14 +18,13 @@ export const BAMBOO_INTERACTIONS: readonly Interaction[] = [
   { id: 'rainLeaves', name: 'Rain on sunlit leaves', action: 'Inspect', point: { x: 535, y: 190 }, note: 'Rain and a shaft of light share the bamboo. A story may explain a sight; looking tells us what is here.' },
   { id: 'trailVerse', name: 'The wayfinder verse', action: 'Inspect', point: { x: 496, y: 240 }, note: 'First the stone with a seam; then the crown that bends; then the water that runs. Follow landmarks, not the direction a post happens to face.' },
   { id: 'turningEntry', name: 'Into the turning paths', action: 'Travel', point: { x: 553, y: 246 } },
+  { id: 'rainroadEntry', name: 'Rainlit Road', action: 'Travel', point: { x: 392, y: 185 } },
   { id: 'bambooReturn', name: 'Return to Rootwater Works', action: 'Travel', point: { x: 84, y: 420 } },
 ];
 export const TURNING_COLLIDERS: readonly Rect[] = [
   { x: 35, y: 55, width: 215, height: 102 }, { x: 389, y: 55, width: 215, height: 102 },
   { x: 35, y: 310, width: 160, height: 110 }, { x: 449, y: 310, width: 155, height: 110 },
   { x: 211, y: 182, width: 58, height: 64 }, { x: 378, y: 235, width: 48, height: 36 },
-  { x: 141, y: 278, width: 21, height: 12 }, { x: 414, y: 277, width: 17, height: 12 },
-  { x: 360, y: 178, width: 20, height: 13 },
 ];
 export const TURNING_INTERACTIONS: readonly Interaction[] = [
   { id: 'forkWest', name: 'Western fork', action: 'Travel', point: { x: 110, y: 230 } },
@@ -38,6 +37,6 @@ export const TURNING_INTERACTIONS: readonly Interaction[] = [
   { id: 'tala', name: 'Tala', action: 'Talk', point: { x: 302, y: 390 } },
 ];
 export function chapterTwoMap(id: 'bamboo' | 'turning', p: Progress) {
-  return id === 'bamboo' ? { ...BAMBOO_WORLD, name: 'Bamboo Verge', spawn: BAMBOO_START, colliders: BAMBOO_COLLIDERS, interactions: BAMBOO_INTERACTIONS.map(item => item.id === 'turningEntry' && !p.chapterTwo.metBagtas ? { ...item, action: 'Inspect' as const } : item) }
+  return id === 'bamboo' ? { ...BAMBOO_WORLD, name: 'Bamboo Verge', spawn: BAMBOO_START, colliders: BAMBOO_COLLIDERS, interactions: BAMBOO_INTERACTIONS.map(item => item.id === 'rainroadEntry' && !p.chapterTwo.debriefSeen ? { ...item, action: 'Inspect' as const } : item.id === 'turningEntry' && !p.chapterTwo.metBagtas ? { ...item, action: 'Inspect' as const } : item) }
     : { ...BAMBOO_WORLD, name: 'Turning Paths', spawn: TURNING_START, colliders: TURNING_COLLIDERS, interactions: TURNING_INTERACTIONS.map(item => item.id === 'forkWest' || item.id === 'forkNorth' || item.id === 'forkEast' ? { ...item, name: p.chapterTwo.routeVerified ? 'Checked route to Bagtas' : `${item.id === 'forkWest' ? 'Left path' : item.id === 'forkNorth' ? 'Top path' : 'Right path'} · ${landmarkAt(item.id, p.chapterTwo.trailStep)}` } : item) };
 }

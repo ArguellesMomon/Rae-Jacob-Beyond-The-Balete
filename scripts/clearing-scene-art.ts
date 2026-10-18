@@ -1,3 +1,6 @@
+import { celebrationNeighbors } from '../src/game/celebration.ts';
+import { celebrantSvg } from '../src/art/celebrationArt.ts';
+import { WORLD_PROPS, PROP_MOTION } from '../src/art/worldPropArt.ts';
 import { readFile } from 'node:fs/promises';
 import { characterSpriteSvg } from '../src/art/characterArt.ts';
 import { residentSpriteSvg } from '../src/art/worldDetails.ts';
@@ -13,11 +16,12 @@ export function clearingActor(id: Exclude<CharacterId, 'uban' | 'bagtas'>, x: nu
 }
 export function clearingSceneArt(progress: Progress, player: Point = { x: 174, y: 313 }, clock = 3, companion: Point = { x: 188, y: 286 }) {
   const minda = progress.bellReturned ? { x: 411, y: 337 } : { x: 408, y: 227 };
-  let s = clearingRasterDefs(clearingImageUri) + '<use href="#clearing-preview-map"/>' + svgBody(clearingStateSvg(progress));
+  let s = clearingRasterDefs(clearingImageUri) + '<use href="#clearing-preview-map"/>' + svgBody(WORLD_PROPS.clearing) + svgBody(PROP_MOTION.clearing[2]) + svgBody(clearingStateSvg(progress));
   s += svgBody(clearingLightSvg(progress, clock, 'ground')) + svgBody(clearingRecoverySvg(progress, clock));
   if (progress.bellHung) s += `<svg x="375" y="302" width="15" height="16" viewBox="0 0 23 24">${svgBody(BELL_SVG)}</svg>`;
   const actors = [
-    ...residentsIn('clearing').map(id => { const person = RESIDENTS[id]; return { y: person.y - 8, s: `<rect x="${person.x - 6}" y="${person.y - 9}" width="12" height="2" fill="#183b35" opacity=".35"/><svg x="${person.x - 9}" y="${person.y - 30}" width="18" height="22" viewBox="0 0 32 40">${svgBody(residentSpriteSvg(id, clock))}</svg>` }; }),
+    ...celebrationNeighbors(progress).map(n => ({ y: n.y, s: `<g transform="translate(${n.x - 9} ${n.y - 22})">${svgBody(celebrantSvg(n, clock, progress.bellRung))}</g>` })),
+    ...residentsIn('clearing').map(id => { const person = RESIDENTS[id]; return { y: person.y - 8, s: `<rect x="${person.x - 6}" y="${person.y - 9}" width="12" height="2" fill="#183b35" opacity=".35"/><svg x="${person.x - 9}" y="${person.y - 30}" width="18" height="22" viewBox="0 0 32 40">${svgBody(residentSpriteSvg(id, clock, false, progress.bellRung))}</svg>` }; }),
     { y: player.y, s: clearingActor('rae', player.x, player.y, 'up') },
     { y: companion.y, s: clearingActor('tala', companion.x, companion.y) },
     { y: minda.y, s: clearingActor('minda', minda.x, minda.y) },

@@ -24,13 +24,7 @@ export function turningForegroundMarkup(player?: Point, prefix = 'turning-previe
   return TURNING_DEPTH.map(region => `<use href="#${prefix}-map" clip-path="url(#${prefix}-${region.id})" opacity="${turningDepthOpacity(region.id, player)}"/>`).join('');
 }
 
-let clues = '';
-for (const [x, y] of [[151, 290], [423, 290], [370, 191]]) {
-  clues += r(x - 12, y - 16, 24, 16, '#5c442c') + r(x - 11, y - 16, 22, 2, '#d2b278') + r(x - 10, y - 13, 20, 12, '#284b3e');
-  clues += r(x - 1, y, 3, 9, '#88734a') + r(x - 1, y + 1, 1, 7, '#c1a66d');
-  for (let i = 0; i < 7; i++) clues += r(x - 9 + i * 3, y - 15 + i % 2, 2, 1, '#87653e', .6);
-}
-export const TURNING_CLUE_BOARDS_SVG = wrapSvg(clues, 640, 480);
+export const TURNING_CLUE_BOARDS_SVG = wrapSvg('', 640, 480);
 
 const cache = new Map<string, string>();
 export function turningWeatherSvg(clock: number, layer: 'ground' | 'air' = 'air') {

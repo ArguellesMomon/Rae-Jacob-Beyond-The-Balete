@@ -32,9 +32,9 @@ await sharp(Buffer.from(whole)).resize(960, 1024, { kernel: 'nearest' }).png().t
 await writeFile('artifacts/old-balete-grove-art-preview.svg', whole);
 
 function framed(source: string, width: number, height: number, player: { x: number; y: number }, options: Parameters<typeof groveShot>[3] = {}) {
-  const shot = groveShot(player, width, height, options), view = sceneViewport(width, height, shot.view);
+  const shot = groveShot(player, width, height, options), view = sceneViewport(width, height, shot.view, { width: 480, height: 512 });
   const camera = cameraTarget(shot.center, { width: 480, height: 512 }, view);
-  const marginX = options.giftScene ? 240 : 0, marginY = options.giftScene ? 256 : 0;
+  const marginX = 0, marginY = 0;
   if (camera.x < -marginX - .01 || camera.y < -marginY - .01 || camera.x + view.vw > 480 + marginX + .01 || camera.y + view.vh > 512 + marginY + .01) throw new Error('The scene view must stay inside its painted forest backdrop.');
   if (options.giftScene && (camera.y > 108 || camera.y + view.vh < player.y)) throw new Error('The gift must frame Mang Uban\'s head and Rae\'s feet.');
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="${Math.round(camera.x)} ${Math.round(camera.y)} ${view.vw} ${view.vh}" shape-rendering="crispEdges">${source}</svg>`;
@@ -50,6 +50,7 @@ await sharp(Buffer.from(framed(groveSceneArt(met), 844, 390, { x: 232, y: 302 },
 const offering = groveSceneArt(gift, { x: 232, y: 302 }, 3, { line: giftLine, seedProgress: .6 });
 await sharp(Buffer.from(framed(offering, 844, 390, { x: 232, y: 302 }, { giftScene: true }))).png().toFile('artifacts/mang-uban-gift-preview.png');
 await sharp(Buffer.from(framed(groveSceneArt(initial, GROVE_START), 844, 390, GROVE_START))).png().toFile('artifacts/grove-phone-framing.png');
+for (const [name, w, h] of [['desktop', 1914, 994], ['ultrawide', 2560, 1080], ['portrait', 390, 844]] as const) await sharp(Buffer.from(framed(groveSceneArt(met, { x: 331, y: 342 }), w, h, { x: 331, y: 342 }))).png().toFile(`artifacts/grove-${name}-framing.png`);
 for (const [width, height] of [[960, 320], [844, 390], [1024, 768], [390, 844]]) for (const y of [286, 302, 326]) framed(offering, width, height, { x: 232, y }, { giftScene: true });
 
 const native = await sharp(Buffer.from(whole)).png().toBuffer();
@@ -82,4 +83,4 @@ for (let frame = 0; frame < 16; frame++) {
   frames.push(await sharp(Buffer.from(wrapSvg(scene, 480, 512))).extract({ left: 214, top: 190, width: 95, height: 125 }).resize(380, 500, { kernel: 'nearest' }).ensureAlpha().raw().toBuffer());
 }
 await sharp(Buffer.concat(frames), { raw: { width: 380, height: 500 * frames.length, channels: 4, pageHeight: 500 } }).gif({ loop: 0, delay: Array(frames.length).fill(100) }).toFile('artifacts/grove-seed-offering.gif');
-console.log('Rendered five grove states, the reveal/conversation/gift scenes, material close-ups, phone framing, six depth views and seed animation. All interactions are reachable; gift/title framing stays within the map or its decorative forest backdrop, with both participants framed. Source-art renders only.');
+console.log('Rendered five grove states, the reveal/conversation/gift scenes, material close-ups, phone framing, six depth views and seed animation. All interactions are reachable; gift/title framing stays within the actual map, with both participants framed. Source-art renders only.');

@@ -1,6 +1,19 @@
+import { isRainlitMap } from './rainlit.ts';
 import type { MapId, Progress } from './model.ts';
 /** Only completed events appear. The live objective supplies the next step separately. */
 export function journeyRecap(p: Progress, map: MapId): string {
+  if (isRainlitMap(map)) {
+    const r = p.rainlit;
+    if (r.complete) return 'We restored Mayumi’s spring and witnessed a fresh seal form. The water runs; the mystery is still changing. We will ask who is closing the roads, and why.';
+    if (r.sealSeen) return 'After the repair, we heard a distant voice. Then a new pale ring formed on the closed hollow, in front of all of us.';
+    if (r.restored) return 'Tala surveyed, Bagtas braced, and I untangled the basket. The spring reaches the hamlet again. Mayumi is waiting on the left bank.';
+    if (r.basketFreed) return 'Luning’s basket is safe. The root still needs to be lowered onto its stone cradle.';
+    if (r.rootBraced) return 'Bagtas set the forked support firmly beneath the root. The trapped basket can be freed safely.';
+    if (r.channelRead) return 'Tala found a basket strap and reeds pinching the rill. We need to support the root before pulling.';
+    if (r.metMayumi) return 'Mayumi, the Diwata ng Bukal, welcomed us onto the dry bank. She gave us an honest answer about home, and a careful plan for the spring.';
+    if (r.metLuning) return 'Luning’s delivery is caught beneath a root upstream. We are going to ask Mayumi, keeper of the spring, how to help.';
+    return 'Beyond Bagtas’s checked route, the rainlit road reaches a riverside community and its spring.';
+  }
   if (map === 'bamboo' || map === 'turning') {
     const c = p.chapterTwo;
     if (c.debriefSeen) return 'We helped Bagtas check a route through the turning bamboo. He marked the shelter cord; Tala kept our dated notes.';

@@ -10,9 +10,9 @@ import { wrapSvg } from '../src/art/pixelArt.ts';
 
 await mkdir('artifacts', { recursive: true });
 const ready = replayCheckpoint('chapter2').progress, works = replayCheckpoint('works').progress;
-const maps: MapId[] = ['yard', 'clearing', 'grove', 'waterworks', 'bamboo', 'turning'];
-const baseProgress = (id: MapId) => id === 'yard' ? EMPTY_PROGRESS : id === 'waterworks' ? works : ready;
-const images: Record<MapId, string> = { yard: 'lolas-yard-v2.png', clearing: 'lantern-clearing-v2.png', grove: 'old-balete-grove-v2.png', waterworks: 'rootwater-works-v2.png', bamboo: 'bamboo-verge-v2.png', turning: 'turning-paths-v2.png' };
+const maps: MapId[] = ['yard', 'clearing', 'grove', 'waterworks', 'bamboo', 'turning', 'rainroad', 'hamlet', 'spring'];
+const baseProgress = (id: MapId) => ['rainroad', 'hamlet', 'spring'].includes(id) ? replayCheckpoint('springPuzzle').progress : id === 'yard' ? EMPTY_PROGRESS : id === 'waterworks' ? works : ready;
+const images: Record<MapId, string> = { rainroad: 'rainlit-road-v1.png', hamlet: 'riverside-hamlet-v3.png', spring: 'quiet-spring-v2.png', yard: 'lolas-yard-v2.png', clearing: 'lantern-clearing-v2.png', grove: 'old-balete-grove-v2.png', waterworks: 'rootwater-works-v2.png', bamboo: 'bamboo-verge-v3.png', turning: 'turning-paths-v2.png' };
 function reach(id: MapId, progress: Progress) {
   const map = getMap(id, progress), queue: Point[] = [{ ...map.spawn }], seen = new Set([`${map.spawn.x},${map.spawn.y}`]);
   for (let i = 0; i < queue.length; i++) for (const [dx, dy] of [[2, 0], [-2, 0], [0, 2], [0, -2]]) {
@@ -53,12 +53,16 @@ const checks: [string, MapId, Progress][] = [
   ['Works bell retrieved', 'waterworks', { ...works, branchMoved: true, flowDiverted: true, bellRecovered: true }],
   ['Works water restored', 'waterworks', { ...works, branchMoved: true, bellRecovered: true, waterRestored: true }],
   ['Works named crossing', 'waterworks', ready],
+  ['Verge onward road', 'bamboo', replayCheckpoint('rainroad').progress],
+  ['Spring with optional seed', 'spring', { ...replayCheckpoint('springPuzzle').progress, ubanGiftReceived: true }],
+  ['Spring root braced', 'spring', { ...replayCheckpoint('springPuzzle').progress, rainlit: { ...replayCheckpoint('springPuzzle').progress.rainlit, channelRead: true, rootBraced: true } }],
+  ['Spring after repair', 'spring', replayCheckpoint('springEnding').progress],
   ['Verge before Bagtas', 'bamboo', replayCheckpoint('chapter2').progress],
   ...[0, 1, 2].map(step => [`Turning Paths ${step + 1}`, 'turning', { ...ready, chapterTwo: { ...ready.chapterTwo, trailStep: step } }] as [string, MapId, Progress]),
 ];
 for (const [name, id, progress] of checks) { const result = reach(id, progress); review.push(`| ${name} | ${result.queue.length} | ${result.targets} |`); }
 for (const scene of REPLAY_SCENES) { const save = replayCheckpoint(scene.id); if (!canStand(save.player, getMap(save.mapId, save.progress).colliders, save.mapId)) throw new Error(`Invalid replay ${scene.title}`); }
-await sharp({ create: { width: 1440, height: 720, channels: 4, background: '#17352f' } }).composite(sheets).png().toFile('artifacts/navigation-all-maps-review.png');
+await sharp({ create: { width: 1440, height: Math.ceil(maps.length / 3) * 360, channels: 4, background: '#17352f' } }).composite(sheets).png().toFile('artifacts/navigation-all-maps-review.png');
 review.push('', 'All expected targets remain reachable in every reviewed state. Waterworks requires the named bridge for its eastern bank. Every replay starts on safe ground. Regression tests also drive Rae/Tala through real paths, test held/diagonal input and delayed frames, check old-save recovery, and verify bridge/corner foot support.', '', 'Physical-phone touch/performance review remains pending.');
 await writeFile('docs/movement-boundary-review.md', review.join('\n') + '\n');
-console.log('Reviewed all six map surfaces, 16 map/state reachability checks and every replay spawn. Wrote six alignment overlays and a contact sheet. Source geometry review only.');
+console.log('Reviewed all nine map surfaces, state reachability checks and every replay spawn. Wrote nine alignment overlays and a contact sheet. Source geometry review only.');

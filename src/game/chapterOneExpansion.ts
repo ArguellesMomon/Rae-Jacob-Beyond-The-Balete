@@ -87,8 +87,8 @@ export function expandedScene(id: InteractionId, p: Progress): DialogueLine[] | 
     R('Everything is a knot lesson today.'),
     L('Only because someone keeps finding new knots.', 'warm'),
   ];
-  if (id === 'yardCat') return p.discoveries.includes('yardCat') ? [R('Still guarding the cool patch, Muning?', 'warm'), R('I will go around. Important sleeping work is happening here.', 'wry')] : [
-    R('Muning! You found the one place the sun cannot reach.', 'delighted'),
+  if (id === 'yardCat') return p.discoveries.includes('yardCat') ? [R('Still guarding the cool patch, Mingming?', 'warm'), R('I will go around. Important sleeping work is happening here.', 'wry')] : [
+    R('Mingming! You found the one place the sun cannot reach.', 'delighted'),
     L('Let her sniff your hand first. She decides whether it is visiting time.'),
     R('Hello, most important porch inspector.', 'warm', 'Rae crouches. A striped tail uncurls without the rest of the cat getting up.'),
     R('A nose on my finger. Is that permission?'),

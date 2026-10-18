@@ -1,6 +1,7 @@
+import { isRainlitMap, rainlitHint, rainlitObjective } from './rainlit.ts';
 import type { BagtasTopic, BambooForkId, ChapterTwoProgress, InteractionId, Progress } from './model.ts';
 import { freshChapterTwo } from './model.ts';
-export const isChapterTwoMap = (id: string) => id === 'bamboo' || id === 'turning';
+export const isChapterTwoMap = (id: string) => id === 'bamboo' || id === 'turning' || isRainlitMap(id);
 export const FORKS: BambooForkId[] = ['forkWest', 'forkNorth', 'forkEast'];
 export const LANDMARKS = ['Split stone', 'Bent bamboo', 'Running water'] as const;
 export type Landmark = typeof LANDMARKS[number];
@@ -44,11 +45,13 @@ export function chapterTwoAction(p: Progress, id: InteractionId): Progress | nul
 }
 export function chapterTwoObjective(p: Progress, map: string) {
   const c = p.chapterTwo;
+  if (c.debriefSeen) return rainlitObjective(p, map);
   if (!c.metBagtas) return 'Find the owner of those hoofbeats. Speak to Bagtas.';
   if (!c.routeVerified) return map === 'turning' ? `Read the path signs. Follow ${LANDMARKS[c.trailStep].toLowerCase()} next. (${c.trailStep}/3)` : 'Enter Turning Paths: the gold-arrow arch to the right of Bagtas.';
   return c.debriefSeen ? 'A route verified together. Explore, or revisit the restored clearing.' : 'Return to Bagtas. Show him the route you checked together.';
 }
 export function chapterTwoHint(p: Progress, level: number) {
+  if (p.chapterTwo.debriefSeen) return rainlitHint(p, level);
   if (!p.chapterTwo.metBagtas) return 'The tall traveler stands by the shelter in Bamboo Verge. He knows who called from the bamboo.';
   if (p.chapterTwo.routeVerified) return p.chapterTwo.debriefSeen ? 'This first Chapter 2 route is complete. The clearing and both bamboo maps remain open to explore.' : 'Bagtas is waiting by the Bamboo Verge shelter. Tell him what stayed true in the turning paths.';
   return level < 2 ? 'In Bamboo Verge, go right of Bagtas to the TURNING PATHS arch and choose Travel. Inside, read the left, top and right path signs: split stone, bent bamboo, running water, in that order.' : `The next landmark is ${LANDMARKS[p.chapterTwo.trailStep].toLowerCase()}. Walk close to the path sign showing that sketch and choose Travel. A loop keeps the route steps you already checked.`;

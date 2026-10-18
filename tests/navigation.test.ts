@@ -9,10 +9,13 @@ import type { MapId, Point, Progress } from '../src/game/model.ts';
 import { REPLAY_SCENES, replayCheckpoint } from '../src/game/replay.ts';
 import { walkRoute } from './helpers/walkRoute.ts';
 
-const maps: MapId[] = ['yard', 'clearing', 'grove', 'waterworks', 'bamboo', 'turning'];
+const maps: MapId[] = ['yard', 'clearing', 'grove', 'waterworks', 'bamboo', 'turning', 'rainroad', 'hamlet', 'spring'];
 const complete = replayCheckpoint('chapter2').progress;
-const progressFor = (map: MapId) => map === 'yard' ? EMPTY_PROGRESS : complete;
+const progressFor = (map: MapId) => map === 'yard' ? EMPTY_PROGRESS : ['rainroad', 'hamlet', 'spring'].includes(map) ? replayCheckpoint('springPuzzle').progress : complete;
 const fixtures: Record<MapId, { floor: number[][]; blocked: number[][] }> = {
+  rainroad: { floor: [[95, 337], [208, 267], [420, 248], [575, 213]], blocked: [[100, 100], [300, 350], [580, 150], [450, 430]] },
+  hamlet: { floor: [[160, 329], [300, 270], [450, 250], [585, 240]], blocked: [[150, 150], [350, 120], [550, 330], [330, 330], [610, 300]] },
+  spring: { floor: [[90, 377], [282, 273], [390, 310], [490, 283]], blocked: [[400, 150], [473, 259], [270, 400], [550, 400], [130, 200]] },
   yard: { floor: [[270, 252], [150, 177], [203, 202], [412, 147], [548, 182], [290, 409]], blocked: [[350, 100], [550, 80], [210, 120], [130, 410], [620, 260]] },
   clearing: { floor: [[86, 358], [188, 286], [188, 301], [292, 106], [408, 243], [459, 307]], blocked: [[340, 75], [395, 145], [550, 250], [505, 400], [200, 60], [225, 300]] },
   grove: { floor: [[224, 448], [232, 302], [331, 342], [102, 377], [308, 433], [416, 373]], blocked: [[100, 120], [238, 150], [400, 240], [414, 470], [205, 485]] },
@@ -21,7 +24,7 @@ const fixtures: Record<MapId, { floor: number[][]; blocked: number[][] }> = {
   turning: { floor: [[320, 390], [320, 108], [110, 230], [528, 230], [151, 303], [423, 303], [355, 205]], blocked: [[250, 200], [370, 400], [450, 350], [600, 250], [320, 60], [200, 350]] },
 };
 
-test('all six maps distinguish real ground and paths from roofs, forests, water and distant scenery', () => {
+test('all nine maps distinguish real ground and paths from roofs, forests, water and distant scenery', () => {
   for (const id of maps) {
     const map = getMap(id, progressFor(id));
     assert.equal(map.width, MAP_GROUND[id].width); assert.equal(map.height, MAP_GROUND[id].height);
@@ -70,6 +73,7 @@ test('sustained directional, diagonal and delayed-frame movement never escapes a
 
 test('Rae and Tala traverse real floor routes and settle together in every map', () => {
   const goals: Record<MapId, Point> = {
+    rainroad: { x: 575, y: 213 }, hamlet: { x: 585, y: 240 }, spring: { x: 520, y: 279 },
     yard: { x: 548, y: 182 }, clearing: { x: 408, y: 243 }, grove: { x: 331, y: 342 },
     waterworks: { x: 584, y: 214 }, bamboo: { x: 553, y: 246 }, turning: { x: 110, y: 230 },
   };
@@ -137,4 +141,20 @@ test('bad frame input and invalid companion breadcrumbs cannot leave characters 
     const recoveredTrail = followTrail(recovered, [{ x: -100, y: -100, distance: 0 }], { ...leader, stride: 100 }, 1 / 60, id, progress);
     assert.ok(canStand(recoveredTrail, map.colliders, id));
   }
+});
+
+test('removed scenery overlays leave no invisible prop walls; movable puzzle items keep their feet', () => {
+  for (const [id, x, y] of [['bamboo', 330, 279], ['waterworks', 352, 266], ['rainroad', 208, 261], ['spring', 248, 285], ['turning', 151, 285], ['turning', 423, 285]] as const) {
+    const map = getMap(id, progressFor(id));
+    assert.equal(canStand({ x, y }, map.colliders, id), true, id + ': removed overlay must not leave a wall');
+  }
+  for (const restored of [false, true]) {
+    const p = progressFor('hamlet'); p.rainlit.restored = restored;
+    const map = getMap('hamlet', p);
+    assert.equal(map.interactions.some(i => String(i.id) === 'waterWords'), false);
+    for (let x = 420; x <= 590; x++) assert.ok(canStand({ x, y: 240 }, map.colliders, 'hamlet'), 'Cleared bridge approach at ' + x);
+  }
+  const before = progressFor('spring'), after = { ...before, rainlit: { ...before.rainlit, basketFreed: true } };
+  assert.equal(canStand({ x: 484, y: 274 }, getMap('spring', before).colliders, 'spring'), false);
+  assert.equal(canStand({ x: 484, y: 274 }, getMap('spring', after).colliders, 'spring'), true);
 });

@@ -1,3 +1,5 @@
+import { MAYUMI_TOPICS } from '../game/rainlit';
+import type { MayumiTopic } from '../game/model';
 import { FORKS } from '../game/chapterTwo';
 import { JOURNEY_KEY, REPLAY_KEY, replayCheckpoint } from '../game/replay';
 import type { SaveSlot, ReplayScene } from '../game/replay';
@@ -16,7 +18,7 @@ import { MANG_POINT } from '../game/world';
 import { TALA_START } from '../game/model';
 import type { Dialogue, HistoryEntry, InteractionId, LolaTopic, MindaTopic, MangTopic, MapId, Player, Point, Progress, ReplyTone, BagtasTopic, SaveData, TalaTopic } from '../game/model';
 
-type Mode = 'title' | 'playing' | 'paused' | 'notebook' | 'ending' | 'crossing' | 'questions' | 'revealing' | 'mangQuestions' | 'lolaQuestions' | 'mindaQuestions' | 'tools' | 'retrieving' | 'sealRevealing' | 'settings' | 'history' | 'replayMenu' | 'reply' | 'watching' | 'bagtasQuestions' | 'pathTurning';
+type Mode = 'springRestoring' | 'springSealing' | 'mayumiQuestions' | 'chapterTwoEnding' | 'title' | 'playing' | 'paused' | 'notebook' | 'ending' | 'crossing' | 'questions' | 'revealing' | 'mangQuestions' | 'lolaQuestions' | 'mindaQuestions' | 'tools' | 'retrieving' | 'sealRevealing' | 'settings' | 'history' | 'replayMenu' | 'reply' | 'watching' | 'bagtasQuestions' | 'pathTurning';
 const SAVE_KEY = JOURNEY_KEY;
 const LEGACY_KEY = '@rae-jacob/yard/v1';
 const ZERO = { x: 0, y: 0 };
@@ -87,7 +89,7 @@ export function useAdventureGame() {
     const destination = slotRef.current;
     const snapshot: SaveData = { version: 2, mapId: mapRef.current,
       player: { ...playerRef.current, moving: false, stride: 0 },
-      history: [...historyRef.current], progress: { ...progressRef.current, chapterTwo: { ...progressRef.current.chapterTwo, topics: [...progressRef.current.chapterTwo.topics] }, discoveries: [...progressRef.current.discoveries], talaTopics: [...progressRef.current.talaTopics], mangTopics: [...progressRef.current.mangTopics], lolaTopics: [...progressRef.current.lolaTopics], mindaTopics: [...progressRef.current.mindaTopics], residentChats: { ...progressRef.current.residentChats }, storyChoices: { ...progressRef.current.storyChoices } } };
+      history: [...historyRef.current], progress: { ...progressRef.current, rainlit: { ...progressRef.current.rainlit, topics: [...progressRef.current.rainlit.topics] }, chapterTwo: { ...progressRef.current.chapterTwo, topics: [...progressRef.current.chapterTwo.topics] }, discoveries: [...progressRef.current.discoveries], talaTopics: [...progressRef.current.talaTopics], mangTopics: [...progressRef.current.mangTopics], lolaTopics: [...progressRef.current.lolaTopics], mindaTopics: [...progressRef.current.mindaTopics], residentChats: { ...progressRef.current.residentChats }, storyChoices: { ...progressRef.current.storyChoices } } };
     snapshots.current[destination] = snapshot;
     const raw = JSON.stringify(snapshot);
     if (!force && raw === lastSaved.current[destination]) return;
@@ -109,6 +111,7 @@ export function useAdventureGame() {
   const showDialogue = useCallback((id: InteractionId) => {
     stop(); playerRef.current = { ...playerRef.current, moving: false }; setPlayer(playerRef.current);
     companionRef.current = { ...companionRef.current, moving: false }; setCompanion(companionRef.current);
+    if (id === 'listeningSeed' && mapRef.current === 'spring' && progressRef.current.rainlit.metMayumi) id = 'springSeed';
     if (id === 'mang' && progressRef.current.metMang && progressRef.current.bellRung && !progressRef.current.ubanGiftReceived) id = 'mangGift';
     if (id === 'bagtas' && progressRef.current.chapterTwo.routeVerified && !progressRef.current.chapterTwo.debriefSeen) id = 'bagtasDebrief';
     if (id === 'afterBell') {
@@ -119,7 +122,7 @@ export function useAdventureGame() {
     const next: Dialogue = { id, lines: linesFor(id, progressRef.current, mapRef.current), index: 0 };
     // World actions take effect on activation, so their visible result accompanies the dialogue.
     // The dialogue records the transaction to prevent a second lever toggle on its last line.
-    if (id === 'branch' || id === 'lever' || id === 'bellArch') {
+    if (id === 'springBrace' || id === 'springBasket' || id === 'branch' || id === 'lever' || id === 'bellArch') {
       progressRef.current = completeInteraction(progressRef.current, id); setProgress(progressRef.current);
       next.effectApplied = true;
     }
@@ -158,6 +161,10 @@ export function useAdventureGame() {
 
   const finishScene = useCallback((paused = false) => {
     const scene = modeRef.current;
+    if (scene === 'springRestoring' || scene === 'springSealing') {
+      setSceneTime(1); showDialogue(scene === 'springRestoring' ? 'springSettle' : 'springSeal');
+      changeMode(paused ? 'paused' : 'playing'); persist(true); return;
+    }
     if (scene === 'pathTurning') { setSceneTime(1); changeMode(paused ? 'paused' : 'playing'); persist(true); return; }
     if (scene !== 'retrieving' && scene !== 'sealRevealing' && scene !== 'watching') return;
     if (scene === 'sealRevealing') { progressRef.current = { ...progressRef.current, rootRevealed: true }; setProgress(progressRef.current); }
@@ -181,6 +188,12 @@ export function useAdventureGame() {
     trail.current = [{ x: next.player.x, y: next.player.y, distance: 0 }];
     dialogueRef.current = null; setDialogue(null); targetRef.current = undefined; setTargetId(undefined);
     changeMode('playing');
+    if (next.mapId === 'rainroad' && !next.progress.rainlit.roadSeen) showDialogue('rainroadArrival');
+    if (next.mapId === 'hamlet' && !next.progress.rainlit.hamletSeen) showDialogue('hamletArrival');
+    if (next.mapId === 'spring') {
+      if (!next.progress.rainlit.springSeen) showDialogue('springArrival');
+      else if (next.progress.rainlit.sealSeen && !next.progress.rainlit.complete) showDialogue('springSeal');
+    }
     if (next.mapId === 'bamboo' && !next.progress.chapterTwo.arrivalSeen) showDialogue('bambooArrival');
     if (next.mapId === 'turning' && !next.progress.chapterTwo.turningSeen) showDialogue('turningArrival');
     if (next.mapId === 'waterworks' && !next.progress.waterworksSeen) showDialogue('waterworksArrival');
@@ -204,7 +217,7 @@ export function useAdventureGame() {
     setSaveIssue(false);
     mapRef.current = next.mapId; setMapId(next.mapId);
     playerRef.current = { ...next.player, moving: false, stride: 0 }; setPlayer(playerRef.current);
-    progressRef.current = { ...next.progress, chapterTwo: { ...next.progress.chapterTwo, topics: [...next.progress.chapterTwo.topics] }, discoveries: [...next.progress.discoveries], talaTopics: [...next.progress.talaTopics], mangTopics: [...next.progress.mangTopics], lolaTopics: [...next.progress.lolaTopics], mindaTopics: [...next.progress.mindaTopics], residentChats: { ...next.progress.residentChats }, storyChoices: { ...next.progress.storyChoices } }; setProgress(progressRef.current);
+    progressRef.current = { ...next.progress, rainlit: { ...next.progress.rainlit, topics: [...next.progress.rainlit.topics] }, chapterTwo: { ...next.progress.chapterTwo, topics: [...next.progress.chapterTwo.topics] }, discoveries: [...next.progress.discoveries], talaTopics: [...next.progress.talaTopics], mangTopics: [...next.progress.mangTopics], lolaTopics: [...next.progress.lolaTopics], mindaTopics: [...next.progress.mindaTopics], residentChats: { ...next.progress.residentChats }, storyChoices: { ...next.progress.storyChoices } }; setProgress(progressRef.current);
     companionRef.current = next.progress.metTala ? companionSpawn(playerRef.current, next.mapId, next.progress) : { ...TALA_START }; setCompanion(companionRef.current);
     trail.current = [{ x: playerRef.current.x, y: playerRef.current.y, distance: 0 }];
     dialogueRef.current = null; setDialogue(null); hasStarted.current = true;
@@ -212,6 +225,12 @@ export function useAdventureGame() {
     // Old completed yard saves continue directly into the new sequence.
     if (next.mapId === 'yard' && next.progress.foundTree && next.progress.talkedToLola) { beginCrossing(); return; }
     changeMode('playing');
+    if (next.mapId === 'rainroad' && !next.progress.rainlit.roadSeen) showDialogue('rainroadArrival');
+    if (next.mapId === 'hamlet' && !next.progress.rainlit.hamletSeen) showDialogue('hamletArrival');
+    if (next.mapId === 'spring') {
+      if (!next.progress.rainlit.springSeen) showDialogue('springArrival');
+      else if (next.progress.rainlit.sealSeen && !next.progress.rainlit.complete) showDialogue('springSeal');
+    }
     if (next.mapId === 'bamboo' && !next.progress.chapterTwo.arrivalSeen) showDialogue('bambooArrival');
     if (next.mapId === 'turning' && !next.progress.chapterTwo.turningSeen) showDialogue('turningArrival');
     if (next.mapId === 'clearing' && !next.progress.arrivalSeen) showDialogue('arrival');
@@ -226,8 +245,18 @@ export function useAdventureGame() {
 
   const finishDialogue = useCallback((id: InteractionId, effectApplied = false) => {
     const chapterWasComplete = progressRef.current.chapterComplete;
+    const rainlitWasComplete = progressRef.current.rainlit.complete;
     const next = effectApplied ? progressRef.current : completeInteraction(progressRef.current, id);
     progressRef.current = next; setProgress(next);
+    const rainRoutes: Partial<Record<InteractionId, TravelRoute>> = { rainroadEntry: 'toRainroad', roadReturn: 'backToShelter', hamletEntry: 'toHamlet', hamletReturn: 'backToRoad', springEntry: 'toSpring', springReturn: 'backToHamlet' };
+    const onward = rainRoutes[id];
+    if (onward) { travel(onward); return; }
+    if (id === 'mayumi' && next.rainlit.restored && !next.rainlit.sealSeen) {
+      progressRef.current = { ...next, rainlit: { ...next.rainlit, sealSeen: true } }; setProgress(progressRef.current);
+      sceneElapsed.current = 0; setSceneTime(0); changeMode('springSealing'); persist(true); return;
+    }
+    if (id === 'springSeal' && next.rainlit.complete && !rainlitWasComplete) changeMode('chapterTwoEnding');
+    if (id === 'mayumi' || Object.values(MAYUMI_TOPICS).includes(id)) changeMode('mayumiQuestions');
     if (id === 'bambooDeparture' && next.chapterComplete) { travel('toBamboo'); return; }
     if (id === 'turningEntry' && next.chapterTwo.metBagtas) { travel('toTurning'); return; }
     if (id === 'bambooReturn') { travel('backToWorks'); return; }
@@ -259,6 +288,7 @@ export function useAdventureGame() {
     persist(true);
   }, [beginAfterBell, beginCrossing, changeMode, persist, showDialogue, travel]);
 
+  const askMayumi = useCallback((topic: MayumiTopic) => { if (progressRef.current.rainlit.metMayumi && MAYUMI_TOPICS[topic]) { changeMode('playing'); showDialogue(MAYUMI_TOPICS[topic]); } }, [changeMode, showDialogue]);
   const askBagtas = useCallback((topic: BagtasTopic) => { changeMode('playing'); showDialogue(BAGTAS_TOPIC_IDS[topic]); }, [changeMode, showDialogue]);
   const askTala = useCallback((topic: TalaTopic) => { changeMode('playing'); showDialogue(TOPIC_IDS[topic]); }, [changeMode, showDialogue]);
   const askMang = useCallback((topic: MangTopic) => { changeMode('playing'); showDialogue(MANG_TOPIC_IDS[topic]); }, [changeMode, showDialogue]);
@@ -275,6 +305,10 @@ export function useAdventureGame() {
     }
     const item = nearbyInteraction(playerRef.current, targetRef.current, mapRef.current, progressRef.current.metTala ? companionRef.current : undefined, progressRef.current);
     if (!item) return;
+    if (item.id === 'springBrace' && progressRef.current.rainlit.basketFreed && !progressRef.current.rainlit.restored) {
+      progressRef.current = completeInteraction(progressRef.current, 'springSettle'); setProgress(progressRef.current);
+      sceneElapsed.current = 0; setSceneTime(0); changeMode('springRestoring'); persist(true); return;
+    }
     if (item.id === 'mang' && !progressRef.current.groveRevealed) { beginReveal(); return; }
     if (item.id === 'rootSeal' && progressRef.current.bellRung && !progressRef.current.rootRevealed) { sceneElapsed.current = 0; setSceneTime(0); changeMode('sealRevealing'); return; }
     const dx = item.point.x - playerRef.current.x, dy = item.point.y - playerRef.current.y;
@@ -317,9 +351,9 @@ export function useAdventureGame() {
         revealElapsed.current += dt;
         if (revealElapsed.current >= 4.2) finishReveal();
       }
-      if ((modeRef.current === 'retrieving' || modeRef.current === 'sealRevealing' || modeRef.current === 'watching' || modeRef.current === 'pathTurning') && focus.current) {
+      if ((modeRef.current === 'retrieving' || modeRef.current === 'sealRevealing' || modeRef.current === 'watching' || modeRef.current === 'pathTurning' || modeRef.current === 'springRestoring' || modeRef.current === 'springSealing') && focus.current) {
         sceneElapsed.current += dt;
-        if (sceneElapsed.current >= (modeRef.current === 'pathTurning' ? 1.2 : 2.8)) finishScene();
+        if (sceneElapsed.current >= (modeRef.current === 'pathTurning' ? 1.2 : modeRef.current === 'springSealing' ? 4 : modeRef.current === 'springRestoring' ? 3.4 : 2.8)) finishScene();
       }
       if (modeRef.current === 'playing' && !dialogueRef.current && focus.current) {
         const k = keys.current;
@@ -336,7 +370,7 @@ export function useAdventureGame() {
         if (focus.current) setClock(elapsed);
         if (modeRef.current === 'crossing') setTransition(Math.min(1, transitionElapsed.current / CROSSING_DURATION));
         if (modeRef.current === 'revealing') setReveal(Math.min(1, revealElapsed.current / 4.2));
-        if (modeRef.current === 'retrieving' || modeRef.current === 'sealRevealing' || modeRef.current === 'watching' || modeRef.current === 'pathTurning') setSceneTime(Math.min(1, sceneElapsed.current / (modeRef.current === 'pathTurning' ? 1.2 : 2.8)));
+        if (modeRef.current === 'retrieving' || modeRef.current === 'sealRevealing' || modeRef.current === 'watching' || modeRef.current === 'pathTurning' || modeRef.current === 'springRestoring' || modeRef.current === 'springSealing') setSceneTime(Math.min(1, sceneElapsed.current / (modeRef.current === 'pathTurning' ? 1.2 : modeRef.current === 'springSealing' ? 4 : modeRef.current === 'springRestoring' ? 3.4 : 2.8)));
         if (modeRef.current === 'playing' && !dialogueRef.current) {
           setPlayer(playerRef.current); setCompanion(companionRef.current);
           const target = nearbyInteraction(playerRef.current, targetRef.current, mapRef.current, progressRef.current.metTala ? companionRef.current : undefined, progressRef.current)?.id;
@@ -357,8 +391,8 @@ export function useAdventureGame() {
         stop();
         if (modeRef.current === 'crossing') land(true);
         else if (modeRef.current === 'revealing') finishReveal(true);
-        else if (modeRef.current === 'retrieving' || modeRef.current === 'sealRevealing' || modeRef.current === 'watching' || modeRef.current === 'pathTurning') finishScene(true);
-        else if (['playing', 'reply', 'questions', 'mangQuestions', 'bagtasQuestions', 'lolaQuestions', 'mindaQuestions', 'tools'].includes(modeRef.current)) changeMode('paused');
+        else if (modeRef.current === 'retrieving' || modeRef.current === 'sealRevealing' || modeRef.current === 'watching' || modeRef.current === 'pathTurning' || modeRef.current === 'springRestoring' || modeRef.current === 'springSealing') finishScene(true);
+        else if (['playing', 'reply', 'questions', 'mangQuestions', 'bagtasQuestions', 'mayumiQuestions', 'lolaQuestions', 'mindaQuestions', 'tools'].includes(modeRef.current)) changeMode('paused');
         persist();
       }
     });
@@ -372,9 +406,9 @@ export function useAdventureGame() {
       if (modeRef.current === 'settings') { closeSettings(); return true; }
       if (modeRef.current === 'crossing') { land(true); return true; }
       if (modeRef.current === 'revealing') { finishReveal(true); return true; }
-      if (modeRef.current === 'retrieving' || modeRef.current === 'sealRevealing' || modeRef.current === 'watching' || modeRef.current === 'pathTurning') { finishScene(true); return true; }
+      if (modeRef.current === 'retrieving' || modeRef.current === 'sealRevealing' || modeRef.current === 'watching' || modeRef.current === 'pathTurning' || modeRef.current === 'springRestoring' || modeRef.current === 'springSealing') { finishScene(true); return true; }
       if (modeRef.current === 'playing' || modeRef.current === 'reply') { pause(); return true; }
-      if (['paused', 'notebook', 'ending', 'questions', 'mangQuestions', 'bagtasQuestions', 'lolaQuestions', 'mindaQuestions', 'tools'].includes(modeRef.current)) { changeMode('playing'); return true; }
+      if (['paused', 'notebook', 'ending', 'chapterTwoEnding', 'questions', 'mangQuestions', 'bagtasQuestions', 'mayumiQuestions', 'lolaQuestions', 'mindaQuestions', 'tools'].includes(modeRef.current)) { changeMode('playing'); return true; }
       return false;
     });
     return () => back.remove();
@@ -395,15 +429,15 @@ export function useAdventureGame() {
         else if (modeRef.current === 'settings') closeSettings();
         else if (modeRef.current === 'crossing') land(true);
         else if (modeRef.current === 'revealing') finishReveal(true);
-        else if (modeRef.current === 'retrieving' || modeRef.current === 'sealRevealing' || modeRef.current === 'watching' || modeRef.current === 'pathTurning') finishScene(true);
+        else if (modeRef.current === 'retrieving' || modeRef.current === 'sealRevealing' || modeRef.current === 'watching' || modeRef.current === 'pathTurning' || modeRef.current === 'springRestoring' || modeRef.current === 'springSealing') finishScene(true);
         else if (modeRef.current === 'playing' || modeRef.current === 'reply') pause();
-        else if (['paused', 'notebook', 'questions', 'mangQuestions', 'bagtasQuestions', 'lolaQuestions', 'mindaQuestions', 'ending', 'tools'].includes(modeRef.current)) changeMode('playing');
+        else if (['paused', 'notebook', 'questions', 'mangQuestions', 'bagtasQuestions', 'mayumiQuestions', 'lolaQuestions', 'mindaQuestions', 'ending', 'chapterTwoEnding', 'tools'].includes(modeRef.current)) changeMode('playing');
       }
       if (key === 'h' && (modeRef.current === 'playing' || modeRef.current === 'reply')) { event.preventDefault(); openHistory(); }
       if (key === 'n' && !dialogueRef.current) { if (modeRef.current === 'playing') changeMode('notebook'); else if (modeRef.current === 'notebook') changeMode('playing'); }
     };
     const up = (event: KeyboardEvent) => keys.current.delete(event.key.toLowerCase());
-    const blur = () => { stop(); if (modeRef.current === 'crossing') land(true); else if (modeRef.current === 'revealing') finishReveal(true); else if (modeRef.current === 'retrieving' || modeRef.current === 'sealRevealing' || modeRef.current === 'watching' || modeRef.current === 'pathTurning') finishScene(true); else if (['playing', 'reply', 'questions', 'mangQuestions', 'bagtasQuestions', 'lolaQuestions', 'mindaQuestions', 'tools'].includes(modeRef.current)) pause(); };
+    const blur = () => { stop(); if (modeRef.current === 'crossing') land(true); else if (modeRef.current === 'revealing') finishReveal(true); else if (modeRef.current === 'retrieving' || modeRef.current === 'sealRevealing' || modeRef.current === 'watching' || modeRef.current === 'pathTurning' || modeRef.current === 'springRestoring' || modeRef.current === 'springSealing') finishScene(true); else if (['playing', 'reply', 'questions', 'mangQuestions', 'bagtasQuestions', 'mayumiQuestions', 'lolaQuestions', 'mindaQuestions', 'tools'].includes(modeRef.current)) pause(); };
     window.addEventListener('keydown', down); window.addEventListener('keyup', up); window.addEventListener('blur', blur);
     return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up); window.removeEventListener('blur', blur); };
   }, [act, changeMode, chooseReply, closeHistory, closeReplay, closeSettings, finishReveal, finishScene, land, openHistory, pause, stop]);
@@ -412,6 +446,6 @@ export function useAdventureGame() {
     inspectKeepsake: () => { if (progressRef.current.ubanGiftReceived) { changeMode('playing'); showDialogue('listeningSeed'); } },
     beginChapterTwo: () => { if (progressRef.current.chapterComplete) travel('toBamboo'); },
     startReplay: (scene: ReplayScene) => start(false, 'replay', scene),
-    start, act, pause, title, changeMode, openHistory, closeHistory, openReplay, closeReplay, openSettings, closeSettings, askBagtas, askTala, askMang, askLola, askMinda, useString, skipScene: () => finishScene(), skipCrossing: () => land(), skipReveal: () => finishReveal(),
+    start, act, pause, title, changeMode, openHistory, closeHistory, openReplay, closeReplay, openSettings, closeSettings, askMayumi, askBagtas, askTala, askMang, askLola, askMinda, useString, skipScene: () => finishScene(), skipCrossing: () => land(), skipReveal: () => finishReveal(),
     setInput: (value: Point) => { input.current = value; } };
 }

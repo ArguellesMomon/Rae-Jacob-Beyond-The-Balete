@@ -5,7 +5,7 @@ import { act, create } from 'react-test-renderer';
 import type { ReactTestRenderer } from 'react-test-renderer';
 import { useAdventureGame } from '../src/hooks/useAdventureGame.ts';
 import { START } from '../src/game/model.ts';
-import { canStand, freshSave } from '../src/game/engine.ts';
+import { canStand, freshSave, nearbyInteraction } from '../src/game/engine.ts';
 import { getMap } from '../src/game/world.ts';
 import { walkRoute } from './helpers/walkRoute.ts';
 import type { InteractionId } from '../src/game/model.ts';
@@ -719,5 +719,107 @@ test('Chapter 2 replay preserves the main journey and recovers an interrupted Ba
     assert.equal(app.game.progress.chapterTwo.metBagtas, true); assert.equal(stored.get('@rae-jacob/adventure/v2'), original);
     await act(async () => app.game.start(true)); assert.equal(app.game.mapId, 'yard');
     assert.deepEqual(app.game.progress.discoveries, ['calamansi']); assert.equal(app.game.progress.chapterTwo.visited, false);
+  } finally { await app.dispose(); }
+});
+
+
+test('the real controller walks the new road, meets Luning and Mayumi, repairs the spring, survives interruption, and ends Chapter 2 once', async () => {
+  stored.clear(); const checkpoint = replayCheckpoint('rainroad');
+  checkpoint.mapId = 'bamboo'; checkpoint.player = { ...START, x: 384, y: 203, facing: 'up' };
+  checkpoint.progress.rainlit.visited = false;
+  stored.set('@rae-jacob/adventure/v2', JSON.stringify(checkpoint));
+  let app = await mount();
+  const walk = async (x: number, y: number) => {
+    for (const waypoint of walkRoute(app.game.player, { x, y }, app.game.mapId, app.game.progress)) {
+      let reached = false;
+      for (let i = 0; i < 180; i++) {
+        const dx = waypoint.x - app.game.player.x, dy = waypoint.y - app.game.player.y, d = Math.hypot(dx, dy);
+        if (d < 1.5) { app.game.setInput({ x: 0, y: 0 }); await tick(3); reached = true; break; }
+        const force = Math.min(1, Math.max(.32, d / 8));
+        app.game.setInput({ x: dx / d * force, y: dy / d * force });
+        await tick(Math.max(2, Math.min(10, Math.floor(d / 1.2))));
+        const map = getMap(app.game.mapId, app.game.progress);
+        assert.ok(canStand(app.game.player, map.colliders, app.game.mapId));
+        assert.ok(canStand(app.game.companion, map.colliders, app.game.mapId));
+      }
+      assert.ok(reached, 'Unreached waypoint ' + JSON.stringify(waypoint) + ' from ' + JSON.stringify(app.game.player));
+    }
+  };
+  const approach = async (id: InteractionId) => {
+    if (app.game.mode !== 'playing') await act(async () => app.game.changeMode('playing'));
+    const map = getMap(app.game.mapId, app.game.progress), target = map.interactions.find(i => i.id === id)!; assert.ok(target, id);
+    const spots = [0, 12, 16, -12, -16, 24, -24].flatMap(dy => [0, 12, -12, 20, -20].map(dx => ({ x: target.point.x + dx, y: target.point.y + dy })));
+    const spot = spots.find(point => canStand(point, map.colliders, app.game.mapId) && nearbyInteraction(point, undefined, app.game.mapId, undefined, app.game.progress)?.id === id)!;
+    assert.ok(spot, 'There is an unobstructed approach to ' + id); await walk(spot.x, spot.y); await tick(3);
+    assert.equal(app.game.targetId, id); await act(async () => app.game.act());
+  };
+  const interact = async (id: InteractionId) => { await approach(id); assert.equal(currentDialogueId(app), id); await finishSpeech(app); };
+  const resume = async () => { await app.dispose(); app = await mount(); await act(async () => app.game.start(true)); };
+  try {
+    await act(async () => app.game.start(true));
+    await interact('rainroadEntry'); assert.equal(app.game.mapId, 'rainroad'); assert.equal(currentDialogueId(app), 'rainroadArrival'); await finishSpeech(app);
+    await interact('hamletEntry'); assert.equal(app.game.mapId, 'hamlet'); await finishSpeech(app);
+    await interact('springEntry'); assert.equal(app.game.mapId, 'hamlet', 'The delivery clue is introduced first.');
+    await interact('luning'); assert.equal(app.game.progress.rainlit.metLuning, true);
+    await interact('springEntry'); assert.equal(app.game.mapId, 'spring'); await finishSpeech(app);
+    await interact('mayumi'); assert.equal(app.game.mode, 'mayumiQuestions'); assert.equal(app.game.progress.rainlit.metMayumi, true);
+    await act(async () => app.game.askMayumi('stories')); await finishSpeech(app);
+    assert.deepEqual(app.game.progress.rainlit.topics, ['stories']);
+    await interact('springBasket'); assert.equal(app.game.progress.rainlit.basketFreed, false);
+    await interact('springChannel'); await interact('springBrace'); assert.equal(app.game.progress.rainlit.rootBraced, true);
+    await resume(); assert.equal(app.game.progress.rainlit.rootBraced, true);
+    await interact('springBasket'); assert.equal(app.game.progress.rainlit.basketFreed, true);
+    await approach('springBrace'); assert.equal(app.game.mode, 'springRestoring'); assert.equal(app.game.progress.rainlit.restored, true);
+    await tick(45); assert.ok(app.game.sceneTime > 0 && app.game.sceneTime < 1);
+    await act(async () => emitAppState('background')); assert.equal(app.game.mode, 'paused'); assert.equal(currentDialogueId(app), 'springSettle');
+    await resume(); assert.equal(app.game.progress.rainlit.restored, true); assert.equal(app.game.dialogue, null);
+    await interact('springReturn'); assert.equal(app.game.mapId, 'hamlet');
+    await interact('luning'); assert.equal(app.game.progress.rainlit.basketReturned, true);
+    await interact('springEntry'); assert.equal(app.game.mapId, 'spring'); assert.equal(app.game.dialogue, null, 'Arrival plays only once.');
+    await interact('mayumi'); assert.equal(app.game.mode, 'springSealing'); assert.equal(app.game.progress.rainlit.sealSeen, true);
+    await tick(60); await act(async () => emitAppState('background')); assert.equal(currentDialogueId(app), 'springSeal');
+    await resume(); assert.equal(currentDialogueId(app), 'springSeal'); await finishSpeech(app);
+    assert.equal(app.game.mode, 'chapterTwoEnding'); assert.equal(app.game.progress.rainlit.complete, true);
+    assert.equal(app.game.progress.ubanGiftReceived, false, 'The optional Chapter 1 gift was never required.');
+    assert.equal(app.game.history.some(l => l.speaker === 'Mayumi'), true);
+    await interact('springSeal'); assert.equal(app.game.mode, 'playing', 'The ending is not repeated.');
+    await resume(); assert.equal(app.game.progress.rainlit.complete, true); assert.equal(app.game.dialogue, null);
+  } finally { await app.dispose(); }
+});
+
+test('spring replay scenes keep the main save untouched and a skipped reveal still shows its dialogue', async () => {
+  stored.clear(); const main = freshSave(); main.progress.discoveries = ['calamansi'];
+  stored.set('@rae-jacob/adventure/v2', JSON.stringify(main)); const original = stored.get('@rae-jacob/adventure/v2');
+  const app = await mount();
+  try {
+    await act(async () => app.game.startReplay('springEnding'));
+    await tick(3); assert.equal(app.game.targetId, 'mayumi');
+    await act(async () => app.game.act()); await finishSpeech(app);
+    assert.equal(app.game.mode, 'springSealing'); await act(async () => app.game.skipScene());
+    assert.equal(currentDialogueId(app), 'springSeal'); assert.equal(app.game.progress.rainlit.complete, false);
+    await finishSpeech(app); assert.equal(app.game.progress.rainlit.complete, true);
+    assert.equal(stored.get('@rae-jacob/adventure/v2'), original);
+    await act(async () => app.game.start(true)); assert.equal(app.game.mapId, 'yard');
+    assert.equal(app.game.progress.rainlit.metMayumi, false);
+  } finally { await app.dispose(); }
+});
+
+
+test('the baked Rainlit Road sign can be read early without traveling or stranding the controller', async () => {
+  stored.clear();
+  const checkpoint = replayCheckpoint('chapter2');
+  checkpoint.progress.chapterTwo.arrivalSeen = true;
+  checkpoint.player = { ...checkpoint.player, x: 392, y: 185, facing: 'up' };
+  stored.set('@rae-jacob/adventure/v2', JSON.stringify(checkpoint));
+  const app = await mount();
+  try {
+    await act(async () => app.game.start(true)); await tick(4);
+    assert.equal(app.game.targetId, 'rainroadEntry');
+    await act(async () => app.game.act());
+    assert.equal(currentDialogueId(app), 'rainroadEntry');
+    await finishSpeech(app);
+    assert.equal(app.game.mapId, 'bamboo'); assert.equal(app.game.mode, 'playing');
+    assert.equal(app.game.progress.chapterTwo.debriefSeen, false);
+    assert.equal(app.game.progress.rainlit.visited, false);
   } finally { await app.dispose(); }
 });
