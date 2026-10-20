@@ -6,8 +6,6 @@ export const TURNING_DEPTH = [
   { id: 'crown', path: 'M0 0h640v36h-44v7h-35V31h-57v11h-43V30h-48v13h-39V32h-46v10h-45V31h-40v12h-46V34h-45v14h-43V36H48v20H0z' },
   { id: 'leftEdge', path: 'M0 102h31v49h14v93H31v77H0z' },
   { id: 'rightEdge', path: 'M610 98h30v231h-23v-67h-13v-94h6z' },
-  { id: 'innerWest', path: 'M211 173h58v98h-58z' },
-  { id: 'innerEast', path: 'M378 219h48v54h-48z' },
   { id: 'near', path: 'M0 405h31v22h34v17h42v17h45v19H0z M487 480v-18h37v-20h42v-19h36v-26h38v83z' },
 ] as const;
 export function turningDepthOpacity(id: string, player?: Point) {
@@ -56,4 +54,20 @@ export function turningWeatherSvg(clock: number, layer: 'ground' | 'air' = 'air'
   }
   const result = wrapSvg(s, 640, 480);
   if (cache.size > 180) cache.clear(); cache.set(key, result); return result;
+}
+
+/** Bagtas throws attention between trails. The effect never changes supported ground. */
+export function turningGlamourSvg(step: number, clock: number, broken: boolean, motion = true) {
+  const t = motion ? Math.floor(clock * 3) / 3 : 1;
+  let s = '';
+  for (const [i, [x, y]] of [[116, 371], [231, 307], [410, 246], [570, 223], [308, 170]].entries()) {
+    const alpha = broken ? .035 : .11 + (Math.sin(t * 1.1 + i + step) + 1) * .07;
+    const offset = motion && !broken ? Math.round(Math.sin(t * .7 + i) * 4) : 0;
+    s += p(`M${x + offset} ${y}h3v4h-1v-3h-1v3h-1z M${x + 8 + offset} ${y - 6}h3v4h-1v-3h-1v3h-1z`, '#d8e5be', alpha);
+  }
+  for (const [i, [x, y]] of [[100, 198], [260, 170], [385, 117], [440, 300]].entries()) {
+    const shift = motion && !broken ? Math.sin(t * .4 + i + step) * 8 : 0;
+    s += p(`M${x + shift} ${y}h21v1h14v1h-21v1h-14z`, '#b6d2bf', broken ? .025 : .09);
+  }
+  return wrapSvg(s, 640, 480);
 }

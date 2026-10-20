@@ -26,30 +26,21 @@ test('Chapter 2 requires the completed first chapter and migrates old saves with
   assert.equal(travelRoute(restored.progress, 'toTurning'), null);
 });
 
-test('every fork stage has exactly one correct shape, wrong turns keep checked steps and neither discoveries nor the gift gate a solution', () => {
-  for (const gift of [false, true]) {
-    let p = { ...replayCheckpoint('bambooPuzzle').progress, ubanGiftReceived: gift };
-    p = completeInteraction(p, 'turningArrival');
-    const directions = [];
-    for (let stage = 0; stage < 3; stage++) {
-      assert.equal(new Set(FORKS.map(id => landmarkAt(id, stage))).size, 3);
-      const right = FORKS.filter(id => followsRoute(p, id)); assert.equal(right.length, 1);
-      const wrong = FORKS.find(id => !followsRoute(p, id))!;
-      const looped = completeInteraction(p, wrong);
-      assert.equal(looped.chapterTwo.trailStep, stage); assert.equal(looped.chapterTwo.loops, p.chapterTwo.loops + 1);
-      assert.ok(linesFor(wrong, p, 'turning').some(line => line.text.includes(LANDMARKS[stage].toLowerCase())));
-      assert.ok(travelRoute(looped, 'bambooLoop'));
-      directions.push(right[0]); p = completeInteraction(looped, right[0]);
-      assert.equal(p.chapterTwo.trailStep, stage + 1);
-      assert.deepEqual(parseSave(JSON.stringify({ ...replayCheckpoint('bambooPuzzle'), progress: p }))!.progress.chapterTwo, p.chapterTwo);
+test('one sign per trial earns passage without witnesses, rune matching or a prior gift', () => {
+  for(const gift of [false,true]){
+    let p=completeInteraction({...replayCheckpoint('bambooPuzzle').progress,ubanGiftReceived:gift},'turningArrival');
+    for(let stage=0;stage<3;stage++){
+      const map=getMap('turning',p),signs=map.interactions.filter(i=>FORKS.includes(i.id as typeof FORKS[number]));
+      assert.equal(signs.length,1);assert.equal(followsRoute(p,signs[0].id as typeof FORKS[number]),true);
+      p=completeInteraction(p,signs[0].id);assert.equal(p.chapterTwo.trailStep,stage+1);
+      assert.equal(p.chapterTwo.loops,0);
+      assert.deepEqual(parseSave(JSON.stringify({...replayCheckpoint('bambooPuzzle'),progress:p}))!.progress.chapterTwo,p.chapterTwo);
     }
-    assert.equal(new Set(directions).size, 3, 'reading the changing sketches matters');
-    assert.equal(p.chapterTwo.routeVerified, true); assert.equal(p.ubanGiftReceived, gift);
-    assert.deepEqual(p.discoveries, []);
-    const debrief = completeInteraction(p, 'bagtasDebrief'); assert.equal(debrief.chapterTwo.debriefSeen, true);
-    assert.deepEqual(completeInteraction(debrief, 'bagtasDebrief'), debrief);
-    assert.equal(travelRoute(debrief, 'backToBamboo')?.mapId, 'bamboo');
-    assert.equal(travelRoute(debrief, 'backToWorks')?.mapId, 'waterworks');
+    assert.equal(p.chapterTwo.routeVerified,true);assert.equal(p.ubanGiftReceived,gift);
+    assert.deepEqual(p.discoveries,['pathStone','pathWind','pathWater']);
+    const done=completeInteraction(p,'bagtasDebrief');assert.equal(done.chapterTwo.debriefSeen,true);
+    assert.deepEqual(completeInteraction(done,'bagtasDebrief'),done);
+    assert.equal(travelRoute(done,'backToBamboo')?.mapId,'bamboo');
   }
 });
 
@@ -75,7 +66,7 @@ test('corrupt bamboo checkpoints recover to safe ground and dependent state is n
   assert.equal(parsed.progress.chapterTwo.metBagtas, true); assert.equal(parsed.progress.chapterTwo.loops, 0);
   assert.deepEqual(parsed.progress.chapterTwo.topics, ['paths']);
   assert.ok(canStand(parsed.player, getMap(parsed.mapId, parsed.progress).colliders, parsed.mapId));
-  assert.deepEqual(parsed.player, getMap('turning').spawn);
+  assert.deepEqual(parsed.player, getMap('turning', parsed.progress).spawn);
   const verified = parseSave(JSON.stringify({ ...ready, progress: { ...ready.progress, chapterTwo: { debriefSeen: true } } }))!;
   assert.equal(verified.progress.chapterTwo.trailStep, 3); assert.equal(verified.progress.chapterTwo.routeVerified, true);
 });

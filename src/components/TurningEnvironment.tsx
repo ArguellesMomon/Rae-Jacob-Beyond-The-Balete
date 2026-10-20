@@ -3,7 +3,7 @@ import { ClipPath, Defs, Image as SvgImage, Path, SvgXml, Use } from 'react-nati
 import { TURNING_DEPTH, turningDepthOpacity, turningWeatherSvg } from '../art/turningEnvironmentArt';
 import type { Point } from '../game/model';
 
-export const TURNING_MAP_IMAGE = require('../../assets/maps/turning-paths-v2.png');
+export const TURNING_MAP_IMAGE = require('../../assets/maps/turning-paths-v3.png');
 export const TurningBase = memo(function TurningBase({ prefix = 'turning' }: { prefix?: string }) {
   return <>
     <Defs>

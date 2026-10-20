@@ -1,5 +1,6 @@
 import { RAINLIT_SPAWNS } from './rainlitWorld.ts';
 import { freshRainlit } from './model.ts';
+import { currentMaze } from './mazeTrials.ts';
 import type { SaveData } from './model.ts';
 import { EMPTY_PROGRESS, START, CLEARING_START, GROVE_START, WATERWORKS_START, BAMBOO_START, TURNING_START, freshChapterTwo } from './model.ts';
 export type SaveSlot = 'journey' | 'replay';
@@ -11,7 +12,9 @@ export const REPLAY_SCENES = [
   { id: 'springPuzzle', title: 'Chapter 2: A little room for water', detail: 'Survey, support, untangle and settle together.' },
   { id: 'springEnding', title: 'Chapter 2: The spring remembers', detail: 'Rest after the repair and witness a new clue.' },
   { id: 'chapter2', title: 'Chapter 2: The bamboo verge', detail: 'Meet Bagtas and begin the next journey.' },
-  { id: 'bambooPuzzle', title: 'Chapter 2: The turning paths', detail: 'Check three landmarks through changing forks.' },
+  { id: 'bambooPuzzle', title: 'Chapter 2: The turning paths', detail: 'Trial 1: watch the omen bird, follow petals, or ask the resting giantess.' },
+  { id: 'bambooWind', title: 'Chapter 2: The backward wind', detail: 'Trial 2: petals and leaf ties lead to one bowed-bamboo sign.' },
+  { id: 'bambooWater', title: 'Chapter 2: The borrowed current', detail: 'Trial 3: reach one running-water sign and break the illusion.' },
   { id: 'bambooDebrief', title: 'Chapter 2: A route verified', detail: 'Bring the checked route back to Bagtas.' },
   { id: 'yard', title: 'A new afternoon', detail: 'Lola, the yard, and the mysterious crossing.' },
   { id: 'arrival', title: 'First steps in Silong', detail: 'Rae arrives and meets Tala.' },
@@ -38,15 +41,19 @@ export function replayCheckpoint(scene: ReplayScene): SaveData {
     Object.assign(ready.progress.rainlit, { channelRead: true, rootBraced: true, basketFreed: true, restored: true });
     ready.player = { ...RAINLIT_SPAWNS.spring, x: 282, y: 283, facing: 'up' }; return ready;
   }
-  if (scene === 'chapter2' || scene === 'bambooPuzzle' || scene === 'bambooDebrief') {
+  if (scene === 'chapter2' || scene === 'bambooPuzzle' || scene === 'bambooWind' || scene === 'bambooWater' || scene === 'bambooDebrief') {
     const ready = replayCheckpoint('ending');
     Object.assign(ready.progress, { chapterComplete: true, rootRevealed: true, afterBellSeen: true, chapterTwo: freshChapterTwo() });
     const c = ready.progress.chapterTwo; c.visited = true;
     ready.mapId = 'bamboo'; ready.player = { ...BAMBOO_START };
     if (scene === 'chapter2') return ready;
     Object.assign(c, { arrivalSeen: true, metBagtas: true, turningVisited: true });
-    if (scene === 'bambooPuzzle') { ready.mapId = 'turning'; ready.player = { ...TURNING_START }; return ready; }
-    Object.assign(c, { turningSeen: true, trailStep: 3, routeVerified: true });
+    if (scene === 'bambooPuzzle' || scene === 'bambooWind' || scene === 'bambooWater') {
+      c.trailStep=scene==='bambooWind'?1:scene==='bambooWater'?2:0;
+      c.turningSeen=c.trailStep>0;
+      ready.mapId = 'turning'; ready.player = { ...TURNING_START,...currentMaze(ready.progress).spawn }; return ready;
+    }
+    Object.assign(c, { turningSeen: true, trailStep: 3, routeVerified: true, glamourBroken: true });
     ready.player = { ...BAMBOO_START, x: 400, y: 265, facing: 'up' }; return ready;
   }
   const p = { ...EMPTY_PROGRESS, rainlit: freshRainlit(), chapterTwo: freshChapterTwo(), discoveries: [], talaTopics: [], mangTopics: [], lolaTopics: [], mindaTopics: [], residentChats: {}, storyChoices: {} };

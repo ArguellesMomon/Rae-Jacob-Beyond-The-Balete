@@ -1,0 +1,5 @@
+
+> rae-jacob-beyond-the-balete@0.1.0 turning:preview
+> node --experimental-strip-types scripts/render-three-trials.ts
+
+Rendered three separate 1536x1152 trial maps and nine close camera views. These are source-art reviews; full-map views are developer artifacts and are never shown during play.

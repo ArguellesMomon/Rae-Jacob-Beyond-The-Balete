@@ -27,7 +27,7 @@
     "waterworks:preview": "node --experimental-strip-types scripts/render-waterworks.ts",
     "verge:preview": "node --experimental-strip-types scripts/render-bamboo-verge.ts",
     "navigation:review": "node --experimental-strip-types scripts/review-navigation.ts",
-    "turning:preview": "node --experimental-strip-types scripts/render-turning.ts",
+    "turning:preview": "node --experimental-strip-types scripts/render-three-trials.ts",
     "rainlit:preview": "node --experimental-strip-types scripts/render-rainlit.ts",
     "props:preview": "node --experimental-strip-types scripts/render-prop-polish.ts"
   },

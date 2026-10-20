@@ -11,6 +11,23 @@ import { parseHistory } from './history.ts';
 import { clearApproach } from './interaction.ts';
 import { parseStoryChoices } from './storyChoices.ts';
 import { MAP_GROUND, supportsFeet } from './walkable.ts';
+import { currentMaze } from './mazeTrials.ts';
+
+const wallBuckets = new WeakMap<readonly Rect[], Map<string, Rect[]>>();
+function localWalls(point: Point, walls: readonly Rect[]): readonly Rect[] {
+  if (walls.length < 60) return walls;
+  let index = wallBuckets.get(walls);
+  if (!index) {
+    index = new Map();
+    for (const r of walls) for (let y = Math.floor(r.y / 64); y <= Math.floor((r.y + r.height) / 64); y++) for (let x = Math.floor(r.x / 64); x <= Math.floor((r.x + r.width) / 64); x++) {
+      const key = `${x}:${y}`, bucket = index.get(key) ?? []; bucket.push(r); index.set(key, bucket);
+    }
+    wallBuckets.set(walls, index);
+  }
+  const found: Rect[] = [];
+  for (let y = Math.floor((point.y - 5) / 64); y <= Math.floor((point.y + 1) / 64); y++) for (let x = Math.floor((point.x - 5) / 64); x <= Math.floor((point.x + 5) / 64); x++) found.push(...(index.get(`${x}:${y}`) ?? []));
+  return found;
+}
 
 export function canStand(point: Point, colliders: readonly Rect[] = COLLIDERS, mapId: MapId = 'yard'): boolean {
   const world = MAP_GROUND[mapId];
@@ -21,7 +38,7 @@ export function canStand(point: Point, colliders: readonly Rect[] = COLLIDERS, m
   // Touching an edge is allowed. Floating-point drift must not turn a bridge seam
   // (for example 389.00000000000006) into a wall for the following companion.
   const epsilon = 1e-7;
-  return !colliders.some(r => foot.x < r.x + r.width - epsilon && foot.x + foot.width > r.x + epsilon && foot.y < r.y + r.height - epsilon && foot.y + foot.height > r.y + epsilon);
+  return !localWalls(point, colliders).some(r => foot.x < r.x + r.width - epsilon && foot.x + foot.width > r.x + epsilon && foot.y < r.y + r.height - epsilon && foot.y + foot.height > r.y + epsilon);
 }
 
 export function movementSpeed(force: number): number {
@@ -178,8 +195,8 @@ export function travelRoute(progress: Progress, route: TravelRoute): SaveData | 
     return { version: 2, mapId, player, progress: { ...progress, rainlit: { ...progress.rainlit, visited: true } } };
   }
   if (route === 'toBamboo') return progress.chapterComplete ? { version: 2, mapId: 'bamboo', player: { ...BAMBOO_START }, progress: { ...progress, chapterTwo: { ...progress.chapterTwo, visited: true } } } : null;
-  if (route === 'toTurning') return progress.chapterComplete && progress.chapterTwo.metBagtas ? { version: 2, mapId: 'turning', player: { ...TURNING_START }, progress: { ...progress, chapterTwo: { ...progress.chapterTwo, turningVisited: true } } } : null;
-  if (route === 'bambooLoop') return progress.chapterTwo.turningSeen ? { version: 2, mapId: 'turning', player: { ...TURNING_START }, progress } : null;
+  if (route === 'toTurning') return progress.chapterComplete && progress.chapterTwo.metBagtas ? { version: 2, mapId: 'turning', player: { ...TURNING_START, ...currentMaze(progress).spawn }, progress: { ...progress, chapterTwo: { ...progress.chapterTwo, turningVisited: true } } } : null;
+  if (route === 'bambooLoop') return progress.chapterTwo.turningSeen ? { version: 2, mapId: 'turning', player: { ...TURNING_START, ...currentMaze(progress).spawn }, progress } : null;
   if (route === 'backToBamboo') return progress.chapterTwo.visited ? checkpoint('bamboo', 520, 267, 'left') : null;
   if (route === 'backToWorks') return progress.chapterComplete ? checkpoint('waterworks', 644, 314, 'left') : null;
   if (route === 'toWaterworks' || route === 'toWorksFromClearing') {
@@ -245,7 +262,8 @@ export function parseSave(raw: string | null): SaveData | null {
     progress.flowDiverted = progress.branchMoved && !progress.waterRestored && (p.flowDiverted === true || progress.bellRecovered);
     if (inSilong) { progress.foundTree = true; progress.talkedToLola = true; }
     const map = getMap(mapId, progress), onLockedBank = mapId === 'waterworks' && !progress.bellRung && value.player.x > 407;
-    const safe = !onLockedBank && canStand(value.player, map.colliders, mapId) ? value.player : map.spawn;
+    const legacyMaze = mapId === 'turning' && !Number.isInteger(p.chapterTwo?.mazeSeed);
+    const safe = !legacyMaze && !onLockedBank && canStand(value.player, map.colliders, mapId) ? value.player : map.spawn;
     return { version: 2, mapId, player: { ...START, x: safe.x, y: safe.y, facing: ['up', 'down', 'left', 'right'].includes(value.player.facing) ? value.player.facing : 'down' }, progress, history: parseHistory(value.history) };
   } catch { return null; }
 }

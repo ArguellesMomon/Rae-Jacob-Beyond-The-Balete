@@ -3,6 +3,7 @@ node_modules/
 dist-web/
 dist-preview/
 dist-native/
+dist-folklore-guides/
 web-build/
 coverage/
 *.log

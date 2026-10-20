@@ -1,11 +1,11 @@
-import { useMemo, useRef, useState } from 'react';
+import { memo, useMemo, useRef, useState } from 'react';
 import { PanResponder, StyleSheet, Text, View } from 'react-native';
 import type { Point } from '../game/model';
 import Svg, { Path, Rect } from 'react-native-svg';
 import { PixelFrame } from './PixelFrame';
 import { JOYSTICK_MARKS } from '../art/interfaceArt';
 
-export function Joystick({ onMove, compact = false }: { onMove: (point: Point) => void; compact?: boolean }) {
+export const Joystick=memo(function Joystick({ onMove, compact = false }: { onMove: (point: Point) => void; compact?: boolean }) {
   const [drag, setDrag] = useState({ x: 0, y: 0, active: false });
   const [origin, setOrigin] = useState({ x: 66, y: 66 });
   const callback = useRef(onMove); callback.current = onMove;
@@ -40,7 +40,7 @@ export function Joystick({ onMove, compact = false }: { onMove: (point: Point) =
     </View>
     <Text style={styles.caption}>{drag.active ? 'A LITTLE FURTHER TO JOG' : 'WANDER A LITTLE'}</Text>
   </View>;
-}
+});
 const styles = StyleSheet.create({
   wrap: { width: 150, alignItems: 'center' },
   area: { width: 132, height: 132 },

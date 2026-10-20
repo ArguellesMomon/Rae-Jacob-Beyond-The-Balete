@@ -4,6 +4,7 @@ import { duwendePortraitSvg, duwendeSpriteSvg } from './duwendeArt.ts';
 import { bagtasSpriteSvg, bagtasPortraitSvg } from './bagtasArt.ts';
 import { kaprePortraitSvg } from './kapreArt.ts';
 import { travelerPortraitSvg, travelerSpriteSvg } from './travelerArt.ts';
+import { dalisaySvg, tigmamanukanSvg, trailCreaturePortraitSvg } from './trailCreatureArt.ts';
 import type { CharacterId, Direction, Emotion, Gesture } from '../game/model.ts';
 
 // Original integer-grid character art. Larger source canvases add detail while
@@ -44,6 +45,8 @@ function eyes(x: number, y: number, emotion: Emotion, blink: boolean, large = fa
 
 const frameCache = new Map<string, string>();
 export function characterSpriteSvg(id: Exclude<CharacterId, 'uban'>, direction: Direction = 'down', frame = 0, gesture: Gesture = 'idle', emotion: Emotion = 'neutral', blink = false, mouth = 0): string {
+  if(id==='tigmamanukan')return tigmamanukanSvg(direction,frame>=0?frame%3:0,blink,mouth>0);
+  if(id==='dalisay')return dalisaySvg(direction,blink,mouth,frame===-2?1:0);
   if (id === 'lola') return lolaSpriteSvg(direction, frame, gesture, emotion, blink, mouth);
   if (id === 'minda' || id === 'luning') return duwendeSpriteSvg(id, direction, frame, gesture, emotion, blink, mouth);
   if (id === 'mayumi') return springSpriteSvg(id, blink, mouth, emotion, frame < 0 ? Math.abs(frame) : frame);
@@ -152,6 +155,7 @@ function supportingSpriteSvg(id: Exclude<keyof typeof palettes, 'uban'>, directi
 
 const portraitCache = new Map<string, string>();
 export function characterPortraitSvg(id: CharacterId, emotion: Emotion = 'neutral', blink = false, mouth = 0): string {
+  if(id==='tigmamanukan'||id==='dalisay')return trailCreaturePortraitSvg(id,emotion,blink,mouth);
   if (id === 'lola') return lolaPortraitSvg(emotion, blink, mouth);
   if (id === 'minda' || id === 'luning') return duwendePortraitSvg(id, emotion, blink, mouth);
   if (id === 'mayumi') return springPortraitSvg(id, emotion, blink, mouth);

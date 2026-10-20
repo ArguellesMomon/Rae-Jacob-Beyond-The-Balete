@@ -1,5 +1,8 @@
 # Chapter 2 opening - Device check
 
+Current revision (2026-10-19): the five-arch maze and Bagtas’s trickster bargain supersede the earlier three-exit design below. See [the current story, puzzle, ending and review notes](bagtas-maze-and-spring-ending.md). The Rainlit Road continuation is playable, including Mayumi’s resolution and the hamlet coda.
+
+
 Status: ready for device review; no phone results have been marked passed.
 
 Latest feedback pass: revisit the arrival, grove and Chapter 2 opening replay scenes to read Rae's first-meeting reactions. Check that surprise becomes questions and cautious conversation, and that repeat visits do not replay those introductions. In a completed journey, inspect the root several times and after reopening the app; the Chapter 2 invitation must stay dismissed while the bamboo road remains usable. Check the named Turning Paths arch and gold arrow are recognizable before reaching interaction range, and that the left/top/right path signs and side-mounted progress plaque remain legible on the phone.

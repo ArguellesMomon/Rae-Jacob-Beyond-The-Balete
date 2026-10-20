@@ -1,0 +1,224 @@
+
+> rae-jacob-beyond-the-balete@0.1.0 test
+> node --import ./tests/register-native-mocks.mjs --experimental-strip-types --test tests/*.test.ts
+
+✔ old yard saves migrate without losing completed discoveries or the tree encounter (14.5017ms)
+✔ crossing commits a recoverable arrival checkpoint before its animation (6.1058ms)
+✔ every clearing interaction is reachable from the arrival point (688.3898ms)
+✔ Tala questions work in any order, deduplicate, and update the way-home objective (1.1204ms)
+✔ clearing saves recover a changed collision position without resetting story progress (0.8161ms)
+✔ Tala follows ground paths across the plank bridge and stays near Rae at the workbench (35.9945ms)
+✔ clearing water blocks movement and map interactions never leak between scenes (1.1326ms)
+✔ a following Tala does not monopolize the contextual action button near clues and NPCs (0.4601ms)
+✔ Tala only gets a companion focus when Rae stops close by and faces him (0.5452ms)
+✔ music and effects mute independently, dialogue ducks the mix, and pause or background stops all voices (52.457ms)
+✔ resuming a completed save does not replay rewards; ringing and hoofbeats each fire once on their actual story event (3.4111ms)
+✔ the distant clang stops once the bell is recovered or the water is diverted; footsteps require real movement (1.3105ms)
+✔ settings preview survives menu frames, can be muted, and is stopped immediately on lifecycle suspension (0.6638ms)
+✔ reply choices keep a ducked mix and the quiet village shot does not replay the earned bell (0.7998ms)
+✔ every replay scene starts at a safe, coherent checkpoint with its own empty history (174.3759ms)
+✔ dialogue history records only the current spoken line, sanitizes old data, stays bounded and searches all words (5.2979ms)
+✔ targeting rejects intervening walls but permits an object’s own small footing (0.6387ms)
+✔ character acting distinguishes Rae’s idle habits and Tala’s care for her map near water (1.48ms)
+✔ the story keeps unintroduced companions out of scenery dialogue and gives the bell celebration a clear source (63.0976ms)
+✔ replay pacing statistics include genuine stalls and reject invalid intervals (0.7085ms)
+✔ Chapter 2 requires the completed first chapter and migrates old saves without losing the keepsake or memories (44.3288ms)
+✔ five marks have one true next shape; inspected proofs and the counter-trick earn passage without needing the gift (81.3799ms)
+✔ all new scenery, forks and NPC approaches are reachable with real target selection at every stage (781.2007ms)
+✔ corrupt bamboo checkpoints recover to safe ground and dependent state is normalized (1.1601ms)
+✔ Bagtas personal replies persist without quest mutation, questions are optional and identity unlocks on meeting him (1.7245ms)
+✔ the original bamboo artwork and Bagtas expressions rasterize, stay distinct and animate without altering Rae profiles (2435.733ms)
+✔ Mayumi has a subtle translucent aura with gentle motion and a fixed Still frame (112.6813ms)
+✔ Mingming keeps the existing cat discovery across saves, first greeting and repeat visits (28.4632ms)
+✔ every optional conversation is repeatable, records only its own topic and remains outside puzzle requirements (50.2018ms)
+✔ earlier saves gain empty personal topics and new character memories survive a round trip (37.9692ms)
+✔ journal entries unlock with actual meetings and relationship notes acknowledge the restored crossing (0.9725ms)
+✔ the revised ending carries its audio cue with the authored line rather than a line number (21.8059ms)
+✔ the visual set has distinct expressions, directions and eight genuine traveler walk frames (677.5517ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the real controller resumes an interrupted crossing at the saved arrival, retaining old yard notes (232.0448ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the slower opening finishes on its own and saves arrival without requiring optional yard memories (97.2457ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the real controller plays arrival, triggers Tala, supports questions, and restores the recruited companion (109.8075ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the controller travels to the grove, reveals Mang, follows the tube, and returns without losing progress (112.061ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ interrupting Mang’s reveal resumes safely with his introduction, not a stuck camera (26.4904ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the controller completes the waterworks, contextual string use, bell restoration and chapter ending across interruptions (573.4351ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the root ending offers Chapter 2 once; repeated inspections and reloading keep earned exploration (32.0196ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ tool selection can be cancelled, and both new scenes finish without using their skip buttons (41.8525ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ settings return to the title, paused game or unfinished conversation without starting or advancing play (5.086ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ personal conversations pause safely, remember topics and leave the optional story route open (41.1378ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ a completed bell save can collect Mang Uban’s gift, recover an interrupted offer and keep it across remounts (16.4808ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ ambient residents save only completed visits and offer a different short speech after returning (16.5252ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ a tube-first traveler meets Mang before the post-bell gift scene rather than skipping his introduction (38.5811ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ chapter replay writes to a separate slot and returns to the main journey with its memories intact (16.2528ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ history pauses a conversation without advancing it and restores its exact entry context (6.5846ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ rapid replay scene changes keep queued snapshots isolated from the main save (8.5904ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ replay choices suspend input and Back returns to title or the unfinished paused conversation (5.2105ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ a personal reply pauses safely, commits once, excludes other branches from history and survives an unfinished introduction (23.0214ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the map lesson preserves the puzzle, completes its relationship beat and keeps recap dismissal independent of saves (31.0218ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the quiet aftermath follows the bell, recovers across interruptions and completes once without repeating the ring (53.0043ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the controller plays Chapter 2 from an earned crossing through loops, checked landmarks, Bagtas and the return to Chapter 1 (4409.8662ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ Chapter 2 replay preserves the main journey and recovers an interrupted Bagtas reply without asking twice (39.7422ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the real controller walks the new road, meets Luning and Mayumi, repairs the spring, survives interruption, and ends Chapter 2 once (865.2038ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ spring replay scenes keep the main save untouched and a skipped reveal still shows its dialogue (11.2042ms)
+✔ the baked Rainlit Road sign can be read early without traveling or stranding the controller (7.5244ms)
+✔ redesigned creatures keep genuine facial acting and fixed feet across their idle and offering poses (323.7406ms)
+✔ both redesigned portraits have nine visibly different expressions and retain the dialogue frame size (185.3165ms)
+✔ codex follows encounters, rather than visiting maps or reading a creature name (3.6768ms)
+✔ existing saves unlock the codex without a new quest or migration flag, and replay does not leak entries (15.6537ms)
+✔ returning and ringing the bell produce two persistent crowd stages on walkable ground (10.6123ms)
+✔ celebration poses animate visibly and freeze under Still without hiding neighbors (64.8856ms)
+✔ all village duwende have readable ear silhouettes and distinct textured portraits (142.4554ms)
+✔ diagonal movement is normalized and joystick dead zone stops animation (37.6278ms)
+✔ house collision stops Rae and allows sliding beside the wall (0.5979ms)
+✔ large frame delay cannot tunnel through the house (1.1805ms)
+✔ every interaction has a reachable approach; targets cannot be selected remotely (1.8962ms)
+✔ save validation rejects corrupt values and recovers a blocked v2 position (4.8074ms)
+✔ all yard interactions can be reached from spawn without crossing collision (577.4125ms)
+✔ discoveries can be completed in any order and cannot be duplicated (1.6716ms)
+✔ the tree ending requires talking to Lola, while discoveries stay optional (7.0582ms)
+✔ grove travel checkpoints preserve clues, questions, and a safe route back to the clearing (46.6994ms)
+✔ all grove interactions are reachable around the giant tree (128.0995ms)
+✔ Mang questions are optional, repeatable, and preserve clues discovered before his introduction (25.805ms)
+✔ the maintenance trail can be understood through the tube clue or Mang, in either order (0.3921ms)
+✔ second-milestone saves remain compatible and grove saves recover blocked positions (3.3268ms)
+✔ generated spring props have real transparent silhouettes and puzzle states retain all required pieces (92.2942ms)
+✔ spring terrain replacement leaves the rest of the existing map pixel-for-pixel intact (292.1268ms)
+✔ the natural rill remains a ground boundary and water reveals downstream without painting a tube (147.8911ms)
+✔ all nine maps distinguish real ground and paths from roofs, forests, water and distant scenery (65.8446ms)
+✔ whole feet need support at path corners and bridge seams; water stays blocked even when dry (1.0228ms)
+✔ sustained directional, diagonal and delayed-frame movement never escapes a map or its ground (669.6578ms)
+✔ Rae and Tala traverse real floor routes and settle together in every map (804.7567ms)
+✔ every replay and allowed map transition places both characters on connected ground (84.3662ms)
+✔ old background positions recover safely without losing discoveries, keepsakes or chapter progress (29.8023ms)
+✔ bad frame input and invalid companion breadcrumbs cannot leave characters outside the scene (2.2972ms)
+✔ removed scenery overlays leave no invisible prop walls; movable puzzle items keep their feet (1.277ms)
+✔ the crossing reaches full black before the root journey and reveals its landing without a flash (2.6121ms)
+✔ the opening explains an accidental damaged crossing and gives Rae time to react without identifying the voice (5.7136ms)
+✔ new yard memories save individually and never become crossing or puzzle prerequisites (13.9222ms)
+✔ native audio uses four reusable voices, stays silent before a gesture, and never restarts a finished cue on unlock (22.3016ms)
+✔ a delayed native replay seek cannot restart an effect after mute or suspension (1.0886ms)
+✔ web audio catches autoplay rejection, retries on a gesture, and keeps ended cues quiet (2.3324ms)
+✔ walking and jogging join continuously while preserving fine movement and the dead zone (2.8467ms)
+✔ the gentle camera converges without overshoot and has the same response at different frame rates (2.0194ms)
+✔ short landscape screens retain enough vertical world space; oversized views center the map (0.5951ms)
+✔ preferences recover malformed storage and preserve an intentional mute (23.8657ms)
+✔ restored NPCs stop requesting completed work, and objectives honor the tube-first route (8.0977ms)
+✔ every bundled audio asset is valid mono PCM with headroom, finite duration and a quiet loop seam (96.589ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ sound and camera choices save independently of adventure progress and survive remounting (120.7065ms)
+✔ the rainlit continuation preserves old journeys and requires the checked Bagtas debrief (47.1587ms)
+✔ the spring repair respects prerequisites, needs no optional discovery or seed, and survives each save (39.5136ms)
+✔ returning the basket before lowering the root does not invent a completed repair, and Tala answers the current journey (2.4607ms)
+✔ inconsistent future flags cannot skip Mayumi, fabricate a seed memory, or place an early save upstream (5.9801ms)
+✔ personal questions, recorded traditions and vocabulary remain outside the repair and acknowledge local contexts (1.0594ms)
+✔ new pixel cast rasterizes with distinct expressions, blink, speech and bounded source canvases (890.7516ms)
+✔ spring repair, flowing water and forming seal have genuinely different raster states; three map assets decode (232.4602ms)
+✔ ninety seeded trial layouts connect every cell, keep clues remote and support every carved corridor (1655.7725ms)
+✔ every invitation layout has one logical solution and one convincing landmark copy; wrong turns really reshuffle signs (277.3529ms)
+✔ all three rule transformations solve without the optional seed; layouts, witnesses and trial checkpoints survive reload (24.9125ms)
+✔ the close camera cannot expose the entire labyrinth and keeps its frame inside the painted ground at every edge (6.0779ms)
+✔ malformed seeds and witness masks normalize safely without losing already completed trials (28.8705ms)
+✔ normal cameras fill desktop, phone and ultrawide screens without exceeding the real map or changing pixel proportions (26.0551ms)
+✔ grove desktop framing includes the near-perch actors and gift shots stay inside the painting (47.7862ms)
+✔ listed duplicate marker, tube, cord, basket and home-window graphics remain removed (266.4102ms)
+✔ every reply has a distinct exchange, persists, reconstructs without a prompt and leaves quest flags alone (32.3714ms)
+✔ old and malformed saves gain safe story defaults without inventing a friendship scene (1.1357ms)
+✔ yard memories add recognition to later clues while both explored and unexplored routes remain solvable (5.6497ms)
+✔ Tala develops through correction and later callbacks without crediting older saves for an unseen lesson (1.7829ms)
+✔ return recaps describe completed events, never future rewards, at each replay and puzzle stage (1.549ms)
+✔ all seven arch landmark and rune pairs are visible on each separate trial (14852.6098ms)
+✔ the wheel visibly moves, stops when diverted, respects Still, and the painted flow diagram has ink (81.9853ms)
+✔ the painted spring hollow and cradle exist before the seal reveal (127.0468ms)
+✔ the clothesline contains visible clothes with distinct gentle animation frames (144.2652ms)
+✔ baked story objects have reachable matching interactions and the Rainlit sign is readable before travel unlocks (5.5517ms)
+✔ generated wooden pieces have transparent backgrounds and the lever rotates around its fixed socket (182.8526ms)
+✔ the generated spring surface fills downstream inside the bed and stays clear outside it (470.692ms)
+✔ the bark seal is visible only in its revealed state and retains the dark hollow (36.8468ms)
+✔ travelers show two front eyes, one attached profile eye and no back-facing facial features through every stride (629.8633ms)
+✔ all eight walk frames remain distinct at world display size in all directions, with at least one planted foot (2652.7507ms)
+✔ walk and story poses fit inside their canvases at every angle without cutting off hands, ears, maps or shoes (2079.6117ms)
+✔ traveler portraits preserve visible expression, blink and speech changes at the existing dialogue size (244.4485ms)
+✔ Tala keeps the satchel on the same anatomical hip instead of mirroring it through a turn (389.9752ms)
+✔ distance-driven walk cycles use eight traveler frames and keep the existing supporting-cast timing (0.967ms)
+✔ Bagtas cannot be bypassed by guessing pictures: observations and the clothing reversal have durable, independent effects (90.6673ms)
+✔ each separate trial has reachable proof, witnesses, seven arches and an escape (263.6219ms)
+✔ glamour and household activity freeze under Still while remaining visually distinct after the repair (1609.3553ms)
+✔ the hamlet coda happens once, survives saves and cannot be invented before the chapter resolves (3.4219ms)
+✔ the bypass safety float, stopped-wheel requirement, and reversible lever protect every puzzle step (4.7601ms)
+✔ returning, rehanging and ringing are separate durable actions; the root scene requires the named crossing (18.5924ms)
+✔ every puzzle control is reachable before repair and the eastern bank opens only after the waybell rings (109.5335ms)
+✔ each saved puzzle checkpoint resumes safely, including old v2 saves and inconsistent flags (35.0122ms)
+✔ hints follow the current step without changing progress or requiring optional notebook discoveries (2.3571ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ resident banter rotates without adjacent repeats, survives saves and never repairs the quest (18.4488ms)
+✔ all nine optional scenery memories deduplicate and migrate without advancing puzzles (7.0546ms)
+✔ the Listening Seed is earned once after the rung waybell and cannot be fabricated by an earlier save (3.698ms)
+✔ new residents and props have reachable approaches before and after repairs on all three maps (483.568ms)
+✔ flow camera and tremble are bounded and Steady view retains a legible current without moving the camera (1484.3481ms)
+✔ flow feedback observes changes once and never replays on initial load or after pause (97.5392ms)
+ℹ tests 151
+ℹ suites 0
+ℹ pass 151
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19815.0046

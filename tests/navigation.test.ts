@@ -7,11 +7,15 @@ import { MAP_GROUND, supportsFeet } from '../src/game/walkable.ts';
 import { EMPTY_PROGRESS, START } from '../src/game/model.ts';
 import type { MapId, Point, Progress } from '../src/game/model.ts';
 import { REPLAY_SCENES, replayCheckpoint } from '../src/game/replay.ts';
+import { currentMaze, mazePoint } from '../src/game/mazeTrials.ts';
 import { walkRoute } from './helpers/walkRoute.ts';
 
 const maps: MapId[] = ['yard', 'clearing', 'grove', 'waterworks', 'bamboo', 'turning', 'rainroad', 'hamlet', 'spring'];
 const complete = replayCheckpoint('chapter2').progress;
 const progressFor = (map: MapId) => map === 'yard' ? EMPTY_PROGRESS : ['rainroad', 'hamlet', 'spring'].includes(map) ? replayCheckpoint('springPuzzle').progress : complete;
+const turning = currentMaze(replayCheckpoint('bambooPuzzle').progress);
+const turningFloors = [turning.spawn,turning.proof,...turning.witnesses,...turning.gates.map(g=>g.point)].map(p=>[p.x,p.y]);
+const turningWalls = turning.colliders.filter(r=>r.x>100&&r.y>100&&r.width>24&&r.height>32).slice(0,4).map(r=>[r.x+r.width/2,r.y+r.height/2]);
 const fixtures: Record<MapId, { floor: number[][]; blocked: number[][] }> = {
   rainroad: { floor: [[95, 337], [208, 267], [420, 248], [575, 213]], blocked: [[100, 100], [300, 350], [580, 150], [450, 430]] },
   hamlet: { floor: [[160, 329], [300, 270], [450, 250], [585, 240]], blocked: [[150, 150], [350, 120], [550, 330], [330, 330], [610, 300]] },
@@ -21,7 +25,7 @@ const fixtures: Record<MapId, { floor: number[][]; blocked: number[][] }> = {
   grove: { floor: [[224, 448], [232, 302], [331, 342], [102, 377], [308, 433], [416, 373]], blocked: [[100, 120], [238, 150], [400, 240], [414, 470], [205, 485]] },
   waterworks: { floor: [[224, 424], [264, 281], [322, 219], [385, 322], [430, 378], [584, 214], [654, 314]], blocked: [[84, 160], [130, 210], [322, 110], [432, 250], [500, 214], [224, 300], [550, 460]] },
   bamboo: { floor: [[84, 391], [84, 420], [400, 265], [330, 286], [447, 299], [553, 246], [535, 216]], blocked: [[180, 391], [400, 340], [450, 80], [320, 100], [490, 400], [553, 180], [200, 250]] },
-  turning: { floor: [[320, 390], [320, 108], [110, 230], [528, 230], [151, 303], [423, 303], [355, 205]], blocked: [[250, 200], [370, 400], [450, 350], [600, 250], [320, 60], [200, 350]] },
+  turning: { floor: turningFloors, blocked: turningWalls },
 };
 
 test('all nine maps distinguish real ground and paths from roofs, forests, water and distant scenery', () => {
@@ -38,12 +42,10 @@ test('all nine maps distinguish real ground and paths from roofs, forests, water
 });
 
 test('whole feet need support at path corners and bridge seams; water stays blocked even when dry', () => {
-  assert.equal(supportsFeet({ x: 90, y: 230 }, 'turning'), false, 'center inside the path is insufficient');
-  assert.equal(supportsFeet({ x: 92, y: 230 }, 'turning'), true);
-  assert.equal(supportsFeet({ x: 110, y: 195 }, 'turning'), false);
-  assert.equal(supportsFeet({ x: 110, y: 197 }, 'turning'), true);
-  assert.equal(supportsFeet({ x: 274, y: 320 }, 'turning'), false, 'do not cut the concave junction corner');
-  assert.equal(supportsFeet({ x: 279, y: 325 }, 'turning'), true);
+  const [a,b] = turning.edges.find(([a,b]) => mazePoint(a).y === mazePoint(b).y)!;
+  const p = mazePoint(a), q = mazePoint(b), midpoint = {x:(p.x+q.x)/2,y:p.y};
+  assert.equal(canStand({...midpoint,y:midpoint.y-12},turning.colliders,'turning'),false,'whole feet cannot overhang a forest wall');
+  assert.equal(canStand({...midpoint,y:midpoint.y-11},turning.colliders,'turning'),true);
   assert.equal(supportsFeet({ x: 254, y: 424 }, 'waterworks'), true, 'the union supports feet across joined ground and bridge');
   for (const diverted of [false, true]) {
     const map = getMap('waterworks', { ...complete, flowDiverted: diverted });
@@ -75,7 +77,7 @@ test('Rae and Tala traverse real floor routes and settle together in every map',
   const goals: Record<MapId, Point> = {
     rainroad: { x: 575, y: 213 }, hamlet: { x: 585, y: 240 }, spring: { x: 520, y: 279 },
     yard: { x: 548, y: 182 }, clearing: { x: 408, y: 243 }, grove: { x: 331, y: 342 },
-    waterworks: { x: 584, y: 214 }, bamboo: { x: 553, y: 246 }, turning: { x: 110, y: 230 },
+    waterworks: { x: 584, y: 214 }, bamboo: { x: 553, y: 246 }, turning: turning.proof,
   };
   for (const id of maps) {
     const progress = progressFor(id), map = getMap(id, progress);
@@ -144,7 +146,7 @@ test('bad frame input and invalid companion breadcrumbs cannot leave characters 
 });
 
 test('removed scenery overlays leave no invisible prop walls; movable puzzle items keep their feet', () => {
-  for (const [id, x, y] of [['bamboo', 330, 279], ['waterworks', 352, 266], ['rainroad', 208, 261], ['spring', 248, 285], ['turning', 151, 285], ['turning', 423, 285]] as const) {
+  for (const [id, x, y] of [['bamboo', 330, 279], ['waterworks', 352, 266], ['rainroad', 208, 261], ['spring', 248, 285]] as const) {
     const map = getMap(id, progressFor(id));
     assert.equal(canStand({ x, y }, map.colliders, id), true, id + ': removed overlay must not leave a wall');
   }

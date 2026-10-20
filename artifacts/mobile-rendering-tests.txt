@@ -1,0 +1,15 @@
+✔ the 30 fps scene budget remains even on 60, 90 and 120 Hz phones without fractional timing drift (2.0993ms)
+✔ native gradient offsets obey the SVG renderer number contract and cannot flood warnings (1.4554ms)
+✔ small clipped terrain regions cover all supported floor, including chunk seams, without opening forest walls (692.5624ms)
+✔ phone cameras bound terrain geometry and foliage to nearby regions rather than the whole map (180.9247ms)
+✔ every phone walking atlas cell preserves the authored angle, stride, blink and carried-map pose pixel for pixel (1926.0517ms)
+✔ each trial uses its V1 material family at a bounded decoded texture size (34.8963ms)
+✔ walking sprite viewport crops never expose adjacent atlas frames or shift a character angle (916.8993ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4545.3875

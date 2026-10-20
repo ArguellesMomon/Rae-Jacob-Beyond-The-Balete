@@ -1,6 +1,6 @@
 import type { Dialogue, HistoryEntry, MapId } from './model.ts';
 export const HISTORY_LIMIT = 600;
-const speakers = ['Mayumi', 'Luning', 'Bagtas', 'Rae Jacob', 'Lola Selya', 'Someone?', 'Tala', 'Minda', 'Mang Uban', 'Nilo', 'Sela', 'Doro', 'Pilo'];
+const speakers = ['Aling Dalisay', 'Mayumi', 'Luning', 'Bagtas', 'Rae Jacob', 'Lola Selya', 'Someone?', 'Tala', 'Minda', 'Mang Uban', 'Nilo', 'Sela', 'Doro', 'Pilo'];
 export function parseHistory(value: unknown): HistoryEntry[] {
   if (!Array.isArray(value)) return [];
   return value.slice(-HISTORY_LIMIT).flatMap((entry, index) => {

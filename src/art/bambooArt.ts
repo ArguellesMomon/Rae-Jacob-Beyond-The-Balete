@@ -2,6 +2,7 @@ import { bamboo, plank } from './propMaterials.ts';
 import { pixelPath as p, pixelRect as r, wrapSvg } from './pixelArt.ts';
 import type { Progress } from '../game/model.ts';
 import { landmarkAt, type Landmark } from '../game/chapterTwo.ts';
+import { MAZE_FORKS, MAZE_CLUES } from '../game/turningMaze.ts';
 import { pixelLettering } from './pixelLettering.ts';
 const vergeTrail = 'M55 446h98V364h85v-38h186v-52h168V174h-70v53H376v44H224v43H118v50H55z';
 const turningTrail = 'M274 466h92V320h185V192h-46v83H365V75h-86v200H135v-83H87v128h187z';
@@ -112,17 +113,22 @@ canopy += bambooClump(604, 300, 4, 160) + bambooClump(8, 275, 3, 160);
 export const BAMBOO_CANOPY_SVG = wrapSvg(canopy, 640, 480);
 
 export function landmarkGlyph(name: Landmark, x: number, y: number) {
+  if(name==='Severed reed')return p(`M${x-5} ${y+6}h2v-6h-2zM${x+1} ${y-2}h2v-5h-2zM${x-8} ${y-2}h5v2h-5z`,'#bfce91');
+  if(name==='Forked shadow')return p(`M${x-1} ${y+6}h2V${y}h4v-5h-2v3h-3v-5h-2v5h-4v-3h-2v5h7z`,'#e5d9ad');
+  if (name === 'Hollow stone') return p(`M${x - 7} ${y - 5}h14v11h-14z`, '#c2bb99') + r(x - 3, y - 2, 6, 5, '#3b5142');
+  if (name === 'Still water') return `<ellipse cx="${x}" cy="${y}" rx="8" ry="5" fill="none" stroke="#b6d1ba" stroke-width="2"/>`;
   if (name === 'Split stone') return p(`M${x - 7} ${y - 4}h3v-3h8v3h4v9h-15z`, '#d9d0a3') + p(`M${x} ${y - 7}h2v5h-2v4h2v3h-2v-5h-2v-4h2z`, '#5e7864');
   if (name === 'Bent bamboo') return p(`M${x - 3} ${y + 6}h2v-8h3v-4h5v-2H${x + 1}v2h-3v5h-1z`, '#d6c78b') + r(x - 8, y - 4, 8, 2, '#a8bb86') + r(x + 2, y - 2, 8, 2, '#a8bb86');
   return p(`M${x - 8} ${y - 4}h6v2h7v-2h5v2h-5v2h-7v-2h-6z M${x - 8} ${y + 2}h6v2h7v-2h5v2h-5v2h-7v-2h-6z`, '#b6d1ba');
 }
 export function turningStateSvg(progress: Progress) {
   let s = '';
-  for (const [id, x, y] of [['forkWest', 110, 230], ['forkNorth', 320, 108], ['forkEast', 528, 230]] as const) {
+  for (const { id, point: { x, y } } of MAZE_FORKS) {
     s += bamboo(x - 1.5, y - 16, 12, 'story-fork-post-' + id, 3) + plank(x - 12, y - 34, 24, 19, 'story-fork-' + id);
     s += landmarkGlyph(landmarkAt(id, progress.chapterTwo.trailStep), x, y - 25);
   }
-  for (const [name, x, y] of [['Split stone', 151, 290], ['Bent bamboo', 423, 290], ['Running water', 370, 191]] as const) {
+  for (const [i, { point: { x, y } }] of MAZE_CLUES.entries()) {
+    const name = (['Split stone', 'Bent bamboo', 'Running water'] as const)[i];
     s += bamboo(x - 1, y - 1, 9, 'story-study-post-' + x, 3) + plank(x - 11, y - 16, 22, 16, 'story-study-' + x) + landmarkGlyph(name, x, y - 8);
   }
   return wrapSvg(s, 640, 480);

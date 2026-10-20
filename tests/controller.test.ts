@@ -8,10 +8,12 @@ import { START } from '../src/game/model.ts';
 import { canStand, freshSave, nearbyInteraction } from '../src/game/engine.ts';
 import { getMap } from '../src/game/world.ts';
 import { walkRoute } from './helpers/walkRoute.ts';
-import type { InteractionId } from '../src/game/model.ts';
+import type { InteractionId, MapId } from '../src/game/model.ts';
 import { CROSSING_DURATION, crossingFrame } from '../src/game/crossing.ts';
 import { replayCheckpoint } from '../src/game/replay.ts';
 import { FORKS, followsRoute } from '../src/game/chapterTwo.ts';
+import { mazeWayfinding } from '../src/game/mazeWayfinding.ts';
+import { currentMaze, mazePoint, MAZE_TRIALS } from '../src/game/mazeTrials.ts';
 import { stored } from './mocks/storage.ts';
 import { emitAppState, emitBack } from './mocks/native.ts';
 
@@ -37,6 +39,69 @@ async function mount() {
   await act(async () => { renderer = create(createElement(Harness)); });
   return { get game() { return current; }, async dispose() { await act(async () => { renderer.unmount(); }); } };
 }
+
+test('static menus freeze world rendering and keep the joystick callback stable across game ticks',async()=>{
+  stored.clear();const app=await mount();
+  try{
+    await act(async()=>app.game.start(false));
+    const input=app.game.setInput,before=app.game.clock;await tick(30);
+    assert.ok(app.game.clock>before);assert.equal(app.game.setInput,input);
+    await act(async()=>app.game.pause());const paused=app.game.clock;await tick(120);
+    assert.equal(app.game.clock,paused,'paused terrain and character art must not keep repainting');
+    await act(async()=>app.game.openSettings());await tick(60);assert.equal(app.game.clock,paused);
+    await act(async()=>app.game.closeSettings());assert.equal(app.game.mode,'paused');
+    await act(async()=>app.game.changeMode('playing'));await tick(6);
+    assert.ok(app.game.clock>paused&&app.game.clock<paused+.2,'resuming never adds the paused interval');
+    await act(async()=>emitAppState('background'));const hidden=app.game.clock;await tick(60);assert.equal(app.game.clock,hidden);
+    await act(async()=>emitAppState('active'));
+  }finally{await app.dispose();}
+});
+
+test('repeated joystick releases never teleport Rae or Tala across any map or trial',async()=>{
+  const maps:MapId[]=['yard','clearing','grove','waterworks','bamboo','turning','rainroad','hamlet','spring'];
+  for(const mapId of maps)for(let stage=0;stage<(mapId==='turning'?3:1);stage++){
+    stored.clear();
+    const save=replayCheckpoint(mapId==='yard'?'yard':mapId==='turning'?'bambooPuzzle':mapId==='spring'?'springEnding':'springPuzzle');
+    save.mapId=mapId;save.progress.chapterTwo.trailStep=stage;
+    save.progress.groveRevealed=true;save.progress.metMang=true;save.progress.metTala=true;
+    save.progress.chapterTwo.turningSeen=true;
+    save.progress.rainlit.springSeen=true;save.progress.rainlit.roadSeen=true;save.progress.rainlit.hamletSeen=true;
+    save.player={...getMap(mapId,save.progress).spawn};
+    stored.set('@rae-jacob/adventure/v2',JSON.stringify(save));
+    const app=await mount();
+    try{
+      await act(async()=>app.game.start(true));
+      assert.equal(app.game.dialogue,null);
+      for(const input of [{x:1,y:0},{x:0,y:-1},{x:-1,y:0},{x:0,y:1},{x:.6,y:.6},{x:-.6,y:-.6}]){
+        app.game.setInput(input);await tick(17);
+        const lastDrawn={...app.game.player},lastCompanion={...app.game.companion};
+        app.game.setInput({x:0,y:0});await tick(3);
+        const stopped={...app.game.player};
+        assert.ok(Math.hypot(stopped.x-lastDrawn.x,stopped.y-lastDrawn.y)<=2.5,`${mapId}/${stage}: releasing cannot relocate Rae`);
+        assert.ok(Math.hypot(app.game.companion.x-lastCompanion.x,app.game.companion.y-lastCompanion.y)<=5,`${mapId}/${stage}: Tala only takes continuous steps`);
+        await tick(40);
+        assert.equal(app.game.player.x,stopped.x);assert.equal(app.game.player.y,stopped.y);
+        assert.equal(app.game.player.stride,stopped.stride,'idle animation cannot reset or advance world position');
+        assert.ok(canStand(app.game.companion,getMap(mapId,app.game.progress).colliders,mapId));
+      }
+    }finally{await app.dispose();}
+  }
+});
+test('each maze responds to fresh joystick input within one 30 Hz paint budget after standing still',async()=>{
+  for(let stage=0;stage<3;stage++){
+    stored.clear();const save=replayCheckpoint('bambooPuzzle');
+    save.progress.chapterTwo.turningSeen=true;save.progress.chapterTwo.trailStep=stage;
+    const plan=currentMaze(save.progress);save.player={...save.player,...plan.spawn};
+    stored.set('@rae-jacob/adventure/v2',JSON.stringify(save));const app=await mount();
+    try{
+      await act(async()=>app.game.start(true));await tick(120);
+      const start={...app.game.player},neighbor=mazePoint(plan.links[plan.entryNode][0]),dx=neighbor.x-start.x,dy=neighbor.y-start.y,d=Math.hypot(dx,dy);
+      app.game.setInput({x:dx/d,y:dy/d});await tick(2);
+      assert.ok(Math.hypot(app.game.player.x-start.x,app.game.player.y-start.y)>.1,'movement is published within 33.4ms of input');
+      app.game.setInput({x:0,y:0});await tick(2);assert.equal(app.game.player.moving,false);
+    }finally{await app.dispose();}
+  }
+});
 function currentDialogueId(app: { readonly game: ReturnType<typeof useAdventureGame> }) { return app.game.dialogue?.id; }
 async function advanceSpeech(app: { readonly game: ReturnType<typeof useAdventureGame> }) {
   await act(async () => { if (app.game.mode === 'reply') app.game.chooseReply('thoughtful'); else app.game.act(); });
@@ -671,15 +736,28 @@ test('the controller plays Chapter 2 from an earned crossing through loops, chec
     await act(async () => app.game.askBagtas('paths')); await finishSpeech(app); assert.deepEqual(app.game.progress.chapterTwo.topics, ['paths']);
     await act(async () => app.game.changeMode('playing')); await walk(553, 265); await walk(553, 246); await interact('turningEntry');
     assert.equal(app.game.mapId, 'turning'); await finishSpeech(app);
-    await walk(320, 108); await interact('forkNorth'); assert.equal(app.game.mode, 'pathTurning');
-    assert.equal(app.game.progress.chapterTwo.trailStep, 0); assert.equal(app.game.progress.chapterTwo.loops, 1);
     await act(async () => emitAppState('background')); assert.equal(app.game.mode, 'paused'); await resume();
     for (let step = 0; step < 3; step++) {
-      const fork = FORKS.find(id => followsRoute(app.game.progress, id))!;
-      await walk(320, 300);
-      if (fork === 'forkWest') { await walk(110, 300); await walk(110, 230); }
-      else if (fork === 'forkEast') { await walk(528, 300); await walk(528, 230); }
-      else await walk(320, 108);
+      const plan = currentMaze(app.game.progress);
+      const fork = plan.goal.id;
+      const destination = plan.goal.point;
+      if(step===0){
+        const helper=mazeWayfinding(plan).helpers[0];
+        const center={x:helper.point.x-(helper.facing==='up'||helper.facing==='down'?10:0),y:helper.point.y-(helper.facing==='left'||helper.facing==='right'?11:0)};
+        await walk(center.x,center.y);await interact('tigmamanukan');
+        assert.equal(app.game.progress.chapterTwo.trailStep,0);assert.ok(app.game.progress.chapterTwo.helperChats.tigmamanukan!>0);
+        const rest=plan.rest,a=mazePoint(rest.node),b=mazePoint(rest.next);
+        await walk((a.x+b.x)/2,(a.y+b.y)/2);await interact('dalisay');
+        assert.ok(app.game.progress.chapterTwo.helperChats.dalisay!>0);
+      }
+      await walk(destination.x, destination.y);
+      if(step===1){
+        const earned=app.game.progress.chapterTwo.trailStep,seed=app.game.progress.chapterTwo.mazeSeed;
+        await act(async()=>app.game.pause());await act(async()=>app.game.returnToTrialEntrance());
+        assert.equal(app.game.progress.chapterTwo.trailStep,earned);assert.equal(app.game.progress.chapterTwo.mazeSeed,seed);
+        assert.equal(app.game.mode,'playing');assert.deepEqual({x:app.game.player.x,y:app.game.player.y},plan.spawn);
+        await walk(destination.x,destination.y);
+      }
       await interact(fork); assert.equal(app.game.mode, 'pathTurning'); assert.equal(app.game.progress.chapterTwo.trailStep, step + 1);
       if (step === 0) await resume(); else await tick(90);
     }
@@ -784,6 +862,15 @@ test('the real controller walks the new road, meets Luning and Mayumi, repairs t
     assert.equal(app.game.history.some(l => l.speaker === 'Mayumi'), true);
     await interact('springSeal'); assert.equal(app.game.mode, 'playing', 'The ending is not repeated.');
     await resume(); assert.equal(app.game.progress.rainlit.complete, true); assert.equal(app.game.dialogue, null);
+    await act(async () => app.game.visitRestoredHamlet()); assert.equal(app.game.mapId, 'hamlet');
+    await approach('luning'); assert.equal(currentDialogueId(app), 'luning');
+    assert.ok(app.game.dialogue!.lines.some(l => l.text.includes('expected for supper')));
+    await advanceSpeech(app); await act(async () => emitAppState('background')); await resume();
+    assert.equal(app.game.progress.rainlit.homecomingSeen, false, 'an interrupted coda is not completed early');
+    await interact('luning'); assert.equal(app.game.progress.rainlit.homecomingSeen, true);
+    await resume(); await approach('luning');
+    assert.equal(app.game.dialogue!.lines.some(l => l.text.includes('expected for supper')), false);
+    await finishSpeech(app);
   } finally { await app.dispose(); }
 });
 

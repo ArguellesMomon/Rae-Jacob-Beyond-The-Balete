@@ -1,5 +1,8 @@
 # Turning Paths — The Road Keeps Its Own Counsel
 
+Current revision (2026-10-19): the five-arch maze and Bagtas’s trickster bargain supersede the earlier three-exit design below. See [the current story, puzzle, ending and review notes](bagtas-maze-and-spring-ending.md). The Rainlit Road continuation is playable, including Mayumi’s resolution and the hamlet coda.
+
+
 The junction carries the verge's tactile bamboo art into a quieter forest. Receding jade stems, warm patches of moist earth, moss, leaf litter, small off-trail puddles and filtered light give the repeating paths depth without hiding the landmarks Rae and Tala must read.
 
 ## Environment and navigation

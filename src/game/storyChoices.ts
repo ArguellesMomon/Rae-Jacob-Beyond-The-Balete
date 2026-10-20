@@ -8,9 +8,9 @@ export const STORY_CHOICES: Record<StoryChoiceId, { prompt: string; replies: Rec
   bagtasIntent: {
     prompt: 'How does Rae answer Bagtas?',
     replies: {
-      playful: { label: 'A road that does not race my slippers.', lines: [R('A road that does not race my slippers. They have had a very long afternoon.', 'wry'), { speaker: 'Bagtas', text: 'I shall reduce my magnificent stride. Tell your slippers they are receiving special consideration.', emotion: 'wry' }, R('They are excellent at stopping for clues. And snacks.')] },
-      cautious: { label: 'Tell us what you have actually checked.', lines: [R('Tell us what you have actually checked. I need to know when a direction is a guess.', 'worried'), { speaker: 'Bagtas', text: 'You bargain like a surveyor. Very well. Checked ground first; my excellent theories clearly labeled.', emotion: 'warm' }, R('Then I can help you check it.', 'determined')] },
-      thoughtful: { label: 'We can help you find your way, too.', lines: [R('You have been coming back to your own footprints. We can help you find your way, too.'), { speaker: 'Bagtas', text: 'Help me? An unusual proposal. Hm. A good guide recognizes a useful traveling party. Accepted.', emotion: 'wry' }, R('Tala and I are learning that neither person has to know every turn.')] },
+      playful: { label: 'My slippers get a fair chance.', lines: [R('My slippers get a fair chance. No changing the rules when they start winning.', 'wry'), { speaker: 'Bagtas', text: 'I have standards. My tricks are exquisite; my agreements remain exactly where I leave them.', emotion: 'wry' }, R('Then I will remember every word. So will Tala.')] },
+      cautious: { label: 'Keep the way back open.', lines: [R('Keep the way back open. I need to know that choosing your challenge is still a choice.', 'worried'), { speaker: 'Bagtas', text: 'The southern path returns to this shelter. I will not disguise it. You may put my name beside that promise.', emotion: 'determined' }, R('I will.', 'determined')] },
+      thoughtful: { label: 'Come as a companion if we win.', lines: [R('If we win, come as a companion. No tricking us into needing you first.'), { speaker: 'Bagtas', text: 'You ask a proud creature to travel without arranging the entrance. Very well. Earn the road; I will consider how to walk it.', emotion: 'wry' }, R('We can start by asking each other.')] },
     },
   },
   firstTrust: {

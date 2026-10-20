@@ -1,0 +1,5 @@
+
+> rae-jacob-beyond-the-balete@0.1.0 navigation:review
+> node --experimental-strip-types scripts/review-navigation.ts
+
+Reviewed all nine map surfaces, state reachability checks and every replay spawn. Wrote nine alignment overlays and a contact sheet. Source geometry review only.

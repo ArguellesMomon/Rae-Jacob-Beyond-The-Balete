@@ -5,8 +5,8 @@ export type Player = Point & { facing: Direction; moving: boolean; stride: numbe
 export type RainlitMapId = 'rainroad' | 'hamlet' | 'spring';
 export type MapId = 'yard' | 'clearing' | 'grove' | 'waterworks' | 'bamboo' | 'turning' | RainlitMapId;
 export type MayumiTopic = 'water' | 'stories' | 'roads';
-export type RainlitProgress = { visited: boolean; roadSeen: boolean; hamletSeen: boolean; metLuning: boolean; springSeen: boolean; metMayumi: boolean; channelRead: boolean; rootBraced: boolean; basketFreed: boolean; restored: boolean; basketReturned: boolean; sealSeen: boolean; complete: boolean; seedMemory: boolean; topics: MayumiTopic[] };
-export const freshRainlit = (): RainlitProgress => ({ visited: false, roadSeen: false, hamletSeen: false, metLuning: false, springSeen: false, metMayumi: false, channelRead: false, rootBraced: false, basketFreed: false, restored: false, basketReturned: false, sealSeen: false, complete: false, seedMemory: false, topics: [] });
+export type RainlitProgress = { visited: boolean; roadSeen: boolean; hamletSeen: boolean; metLuning: boolean; springSeen: boolean; metMayumi: boolean; channelRead: boolean; rootBraced: boolean; basketFreed: boolean; restored: boolean; basketReturned: boolean; sealSeen: boolean; complete: boolean; homecomingSeen: boolean; seedMemory: boolean; topics: MayumiTopic[] };
+export const freshRainlit = (): RainlitProgress => ({ visited: false, roadSeen: false, hamletSeen: false, metLuning: false, springSeen: false, metMayumi: false, channelRead: false, rootBraced: false, basketFreed: false, restored: false, basketReturned: false, sealSeen: false, complete: false, homecomingSeen: false, seedMemory: false, topics: [] });
 export type RainlitDiscovery = 'rainGauge' | 'bambooDrips' | 'basketRack' | 'springMoss';
 export type RainlitInteraction = RainlitDiscovery | 'rainroadEntry' | 'rainroadArrival' | 'roadReturn' | 'hamletEntry' | 'hamletArrival' | 'hamletReturn' | 'springEntry' | 'springArrival' | 'springReturn' | 'luning' | 'mayumi' | 'springChannel' | 'springBrace' | 'springBasket' | 'springSettle' | 'springSeal' | 'springSeed' | 'mayumiWater' | 'mayumiStories' | 'mayumiRoads';
 export type StoryChoiceId = 'firstTrust' | 'mapMistake' | 'bagtasIntent';
@@ -17,15 +17,16 @@ export type MangTopic = 'home' | 'ringing' | 'forest' | 'kapre' | 'memory' | 'ba
 export type LolaTopic = 'stories' | 'string' | 'waiting';
 export type MindaTopic = 'water' | 'neighbors' | 'waybell';
 export type BagtasTopic = 'paths' | 'stories' | 'seals';
-export type ChapterTwoProgress = { visited: boolean; arrivalSeen: boolean; metBagtas: boolean; turningVisited: boolean; turningSeen: boolean; trailStep: number; routeVerified: boolean; debriefSeen: boolean; loops: number; topics: BagtasTopic[] };
-export const freshChapterTwo = (): ChapterTwoProgress => ({ visited: false, arrivalSeen: false, metBagtas: false, turningVisited: false, turningSeen: false, trailStep: 0, routeVerified: false, debriefSeen: false, loops: 0, topics: [] });
-export type CharacterId = 'mayumi' | 'luning' | 'bagtas' | 'rae' | 'lola' | 'tala' | 'minda' | 'uban';
+export type TrailHelperId = 'tigmamanukan' | 'dalisay';
+export type ChapterTwoProgress = { visited: boolean; arrivalSeen: boolean; metBagtas: boolean; turningVisited: boolean; turningSeen: boolean; trailStep: number; routeVerified: boolean; debriefSeen: boolean; loops: number; glamourBroken: boolean; mazeSeed: number; mazeWitnesses: [number, number, number]; helperChats: Partial<Record<TrailHelperId, number>>; topics: BagtasTopic[] };
+export const freshChapterTwo = (): ChapterTwoProgress => ({ visited: false, arrivalSeen: false, metBagtas: false, turningVisited: false, turningSeen: false, trailStep: 0, routeVerified: false, debriefSeen: false, loops: 0, glamourBroken: false, mazeSeed: 0, mazeWitnesses: [0, 0, 0], helperChats: {}, topics: [] });
+export type CharacterId = TrailHelperId | 'mayumi' | 'luning' | 'bagtas' | 'rae' | 'lola' | 'tala' | 'minda' | 'uban';
 export type ResidentId = 'nilo' | 'sela' | 'doro' | 'pilo';
 export type SceneryId = 'lampShelf' | 'messageBoard' | 'dryingRack' | 'seedTray' | 'rainCup' | 'listeningStone' | 'toolRoll' | 'floatGauge' | 'reedChimes';
 export type Emotion = 'neutral' | 'warm' | 'delighted' | 'curious' | 'worried' | 'determined' | 'wistful' | 'surprised' | 'wry';
 export type Gesture = 'idle' | 'talk' | 'wave' | 'map' | 'think' | 'work' | 'reach' | 'pull' | 'bow' | 'brush' | 'guardMap' | 'listen' | 'celebrate';
-export type BambooForkId = 'forkWest' | 'forkNorth' | 'forkEast';
-export type InteractionId = RainlitInteraction | BambooForkId | 'bambooDeparture' | 'bambooArrival' | 'bagtas' | 'bagtasPaths' | 'bagtasStories' | 'bagtasSeals' | 'bagtasDebrief' | 'turningEntry' | 'turningArrival' | 'bambooReturn' | 'turningReturn' | 'afterBell' | ResidentId | 'mangGift' | 'listeningSeed' | DiscoveryId | 'lola' | 'balete' | 'arrival' | 'tala' | 'minda' | 'grovePath' | 'talaWhere' | 'talaHome' | 'talaRinging' | 'mang' | 'mangHome' | 'mangRinging' | 'mangForest' | 'clearingPath' | 'waterworksPath' | 'waterworksArrival' | 'splitter' | 'branch' | 'lever' | 'wheelBell' | 'stringBell' | 'worksTube' | 'groveReturn' | 'lowTrail' | 'footbridge' | 'rootSeal' | 'talaMaps' | 'talaCourtesy' | 'talaJourney' | 'mangKapre' | 'mangMemory' | 'mangBagtas' | 'lolaStories' | 'lolaString' | 'lolaWaiting' | 'mindaWater' | 'mindaNeighbors' | 'mindaWaybell';
+export type BambooForkId = 'forkWest' | 'forkNorth' | 'forkEast' | 'forkMoss' | 'forkMist' | 'forkShade' | 'forkReed';
+export type InteractionId = TrailHelperId | RainlitInteraction | BambooForkId | 'mazeWitnessA' | 'mazeWitnessB' | 'turningCharm' | 'bambooDeparture' | 'bambooArrival' | 'bagtas' | 'bagtasPaths' | 'bagtasStories' | 'bagtasSeals' | 'bagtasDebrief' | 'turningEntry' | 'turningArrival' | 'bambooReturn' | 'turningReturn' | 'afterBell' | ResidentId | 'mangGift' | 'listeningSeed' | DiscoveryId | 'lola' | 'balete' | 'arrival' | 'tala' | 'minda' | 'grovePath' | 'talaWhere' | 'talaHome' | 'talaRinging' | 'mang' | 'mangHome' | 'mangRinging' | 'mangForest' | 'clearingPath' | 'waterworksPath' | 'waterworksArrival' | 'splitter' | 'branch' | 'lever' | 'wheelBell' | 'stringBell' | 'worksTube' | 'groveReturn' | 'lowTrail' | 'footbridge' | 'rootSeal' | 'talaMaps' | 'talaCourtesy' | 'talaJourney' | 'mangKapre' | 'mangMemory' | 'mangBagtas' | 'lolaStories' | 'lolaString' | 'lolaWaiting' | 'mindaWater' | 'mindaNeighbors' | 'mindaWaybell';
 export type Progress = {
   chapterTwo: ChapterTwoProgress;
   rainlit: RainlitProgress;
@@ -48,7 +49,7 @@ export type Interaction = {
   point: Point;
   note?: string;
 };
-export type DialogueLine = { speaker: 'Mayumi' | 'Luning' | 'Bagtas' | 'Nilo' | 'Sela' | 'Doro' | 'Pilo' | 'Rae Jacob' | 'Lola Selya' | 'Someone?' | 'Tala' | 'Minda' | 'Mang Uban'; text: string; emotion?: Emotion; gesture?: Gesture; beat?: string; prop?: 'seed'; cue?: 'hooves'; choice?: StoryChoiceId };
+export type DialogueLine = { speaker: 'Aling Dalisay' | 'Mayumi' | 'Luning' | 'Bagtas' | 'Nilo' | 'Sela' | 'Doro' | 'Pilo' | 'Rae Jacob' | 'Lola Selya' | 'Someone?' | 'Tala' | 'Minda' | 'Mang Uban'; text: string; emotion?: Emotion; gesture?: Gesture; beat?: string; prop?: 'seed'; cue?: 'hooves'; choice?: StoryChoiceId };
 export type Dialogue = { id: InteractionId; lines: DialogueLine[]; index: number; effectApplied?: boolean };
 export type HistoryEntry = { seq: number; mapId: MapId; scene: string; speaker: DialogueLine['speaker']; text: string; beat?: string };
 export type SaveData = { version: 2; mapId: MapId; player: Player; progress: Progress; history?: HistoryEntry[] };
@@ -62,4 +63,4 @@ export const CLEARING_GROVE_RETURN: Player = { x: 292, y: 137, facing: 'down', m
 export const WATERWORKS_START: Player = { x: 84, y: 344, facing: 'right', moving: false, stride: 0 };
 
 export const BAMBOO_START: Player = { x: 84, y: 391, facing: 'right', moving: false, stride: 0 };
-export const TURNING_START: Player = { x: 320, y: 390, facing: 'up', moving: false, stride: 0 };
+export const TURNING_START: Player = { x: 768, y: 1088, facing: 'up', moving: false, stride: 0 };

@@ -9,7 +9,7 @@ Generated with `npm.cmd run navigation:review`. These overlays review source geo
 | Old Balete Grove | 12164 | 10 |
 | Rootwater Works | 11234 | 12 |
 | Bamboo Verge | 9620 | 9 |
-| Turning Paths | 12149 | 7 |
+| Turning Paths 1/3 · The Divided Stone | 154222 | 11 |
 | Rainlit Road | 9068 | 5 |
 | Riverside Hamlet | 6948 | 5 |
 | The Quiet Spring | 10328 | 7 |
@@ -24,9 +24,9 @@ Generated with `npm.cmd run navigation:review`. These overlays review source geo
 | Spring root braced | 10326 | 7 |
 | Spring after repair | 10381 | 7 |
 | Verge before Bagtas | 9620 | 9 |
-| Turning Paths 1 | 12149 | 7 |
-| Turning Paths 2 | 12149 | 7 |
-| Turning Paths 3 | 12149 | 7 |
+| Turning Paths 1 | 154222 | 11 |
+| Turning Paths 2 | 156371 | 11 |
+| Turning Paths 3 | 157192 | 12 |
 
 All expected targets remain reachable in every reviewed state. Waterworks requires the named bridge for its eastern bank. Every replay starts on safe ground. Regression tests also drive Rae/Tala through real paths, test held/diagonal input and delayed frames, check old-save recovery, and verify bridge/corner foot support.
 

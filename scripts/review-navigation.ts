@@ -1,3 +1,4 @@
+import { mazeSceneArt } from './maze-scene-art.ts';
 import { mkdir, writeFile } from 'node:fs/promises';
 import sharp from 'sharp';
 import { MAP_GROUND } from '../src/game/walkable.ts';
@@ -12,7 +13,7 @@ await mkdir('artifacts', { recursive: true });
 const ready = replayCheckpoint('chapter2').progress, works = replayCheckpoint('works').progress;
 const maps: MapId[] = ['yard', 'clearing', 'grove', 'waterworks', 'bamboo', 'turning', 'rainroad', 'hamlet', 'spring'];
 const baseProgress = (id: MapId) => ['rainroad', 'hamlet', 'spring'].includes(id) ? replayCheckpoint('springPuzzle').progress : id === 'yard' ? EMPTY_PROGRESS : id === 'waterworks' ? works : ready;
-const images: Record<MapId, string> = { rainroad: 'rainlit-road-v1.png', hamlet: 'riverside-hamlet-v3.png', spring: 'quiet-spring-v2.png', yard: 'lolas-yard-v2.png', clearing: 'lantern-clearing-v2.png', grove: 'old-balete-grove-v2.png', waterworks: 'rootwater-works-v2.png', bamboo: 'bamboo-verge-v3.png', turning: 'turning-paths-v2.png' };
+const images: Record<MapId, string> = { rainroad: 'rainlit-road-v1.png', hamlet: 'riverside-hamlet-v3.png', spring: 'quiet-spring-v2.png', yard: 'lolas-yard-v2.png', clearing: 'lantern-clearing-v2.png', grove: 'old-balete-grove-v2.png', waterworks: 'rootwater-works-v2.png', bamboo: 'bamboo-verge-v3.png', turning: 'turning-paths-v3.png' };
 function reach(id: MapId, progress: Progress) {
   const map = getMap(id, progress), queue: Point[] = [{ ...map.spawn }], seen = new Set([`${map.spawn.x},${map.spawn.y}`]);
   for (let i = 0; i < queue.length; i++) for (const [dx, dy] of [[2, 0], [-2, 0], [0, 2], [0, -2]]) {
@@ -39,7 +40,7 @@ for (const [index, id] of maps.entries()) {
   const outlines = geometry.regions.map(region => `<polygon points="${region.map(point => point.join(',')).join(' ')}" fill="none" stroke="#b5f4dd" stroke-width=".7"/>`).join('')
     + map.colliders.map(collider => `<rect x="${collider.x}" y="${collider.y}" width="${collider.width}" height="${collider.height}" fill="none" stroke="#ff6e8f" stroke-width=".7"/>`).join('')
     + map.interactions.filter(item => item.id !== 'tala').map(item => `<circle cx="${item.point.x}" cy="${item.point.y}" r="2" fill="#fff2a7"/>`).join('');
-  const background = await sharp(`assets/maps/${images[id]}`).resize(map.width, map.height, { kernel: 'nearest' }).png().toBuffer();
+  const background = id==='turning' ? await sharp(Buffer.from(wrapSvg(mazeSceneArt(progress,undefined,1,{actors:false}),map.width,map.height))).png().toBuffer() : await sharp(`assets/maps/${images[id]}`).resize(map.width, map.height, { kernel: 'nearest' }).png().toBuffer();
   const combined = await sharp(background).composite([{ input: mask }, { input: Buffer.from(wrapSvg(outlines, map.width, map.height)) }]).png().toBuffer();
   await sharp(combined).resize(map.width * 2, map.height * 2, { kernel: 'nearest' }).png().toFile(`artifacts/navigation-${id}-review.png`);
   const panel = await sharp(combined).resize(480, 360, { fit: 'contain', background: '#17352f' }).png().toBuffer();

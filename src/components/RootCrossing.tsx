@@ -18,7 +18,7 @@ export function RootCrossing({ progress, width, height, onSkip }: { progress: nu
     {shot.phase === 'yard' && <Svg width={width} height={height} viewBox="388 90 260 146" preserveAspectRatio="xMidYMid slice">
       <YardBase prefix="crossing-yard" />
       <G opacity={.2 + Math.sin(progress * 34) * .1}><Rect x={533} y={140} width={30} height={34} fill="#f8e6ac" /></G>
-      <SvgXml xml={Rae} x={538} y={160} width={20} height={30} />
+      <G transform="translate(538 160)"><SvgXml xml={Rae} width={20} height={30} /></G>
       <YardForeground prefix="crossing-yard" />
       {[0, 1, 2, 3, 4].map(i => <Rect key={i} x={531 + i * 8} y={172 - Math.floor(progress * 70 + i * 5) % 27} width={2} height={2} fill="#fff1c8" opacity={.7} />)}
     </Svg>}

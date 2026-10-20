@@ -1,5 +1,8 @@
 # Chapter 2 - The Path That Walks Back
 
+Current revision (2026-10-19): the five-arch maze and Bagtas’s trickster bargain supersede the earlier three-exit design below. See [the current story, puzzle, ending and review notes](bagtas-maze-and-spring-ending.md). The Rainlit Road continuation is playable, including Mayumi’s resolution and the hamlet coda.
+
+
 First playable version: **Bamboo Verge → Turning Paths → a checked route back to Bagtas**. This implements the opening story arc. The rainlit road and the rest of Chapter 2 remain subsequent work.
 
 The agreed continuation is [The Rainlit Road](chapter-02-the-rainlit-road.md), introducing **Mayumi, The Diwata ng Bukal**. Her name and spring-centered identity were confirmed on 2026-10-18. This remains planned content beyond the playable opening.

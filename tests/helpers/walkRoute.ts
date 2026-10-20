@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { canStand } from '../../src/game/engine.ts';
 import { getMap } from '../../src/game/world.ts';
 import type { MapId, Point, Progress } from '../../src/game/model.ts';
+import { currentMaze, MAZE_CELL, MAZE_COLS, MAZE_ROWS, mazeNodeRoute, mazePoint } from '../../src/game/mazeTrials.ts';
 
 /** Plan test input along real floor instead of driving straight through background art. */
 export function walkRoute(start: Point, goal: Point, mapId: MapId, progress: Progress): Point[] {
@@ -13,6 +14,12 @@ export function walkRoute(start: Point, goal: Point, mapId: MapId, progress: Pro
     for (let i = 1; i <= steps; i++) if (!canStand({ x: a.x + (b.x - a.x) * i / steps, y: a.y + (b.y - a.y) * i / steps }, map.colliders, mapId)) return false;
     return true;
   };
+  if(mapId==='turning') {
+    const plan=currentMaze(progress),node=(point:Point)=>Math.max(0,Math.min(MAZE_ROWS-1,Math.round((point.y-64)/MAZE_CELL)))*MAZE_COLS+Math.max(0,Math.min(MAZE_COLS-1,Math.round((point.x-64)/MAZE_CELL)));
+    const points=[start,...mazeNodeRoute(plan,node(start),node(goal)).map(mazePoint),goal];
+    const distinct=points.filter((point,i)=>i===0||Math.hypot(point.x-points[i-1].x,point.y-points[i-1].y)>.01);
+    if(distinct.slice(1).every((p,i)=>clear(distinct[i],p)))return distinct.slice(1);
+  }
   const nodes = [{ point: start, parent: -1 }], seen = new Set(['0,0']);
   let end = -1;
   for (let i = 0; i < nodes.length; i++) {

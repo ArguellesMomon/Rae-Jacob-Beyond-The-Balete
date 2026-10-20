@@ -1,0 +1,74 @@
+[
+  {
+    "trial": "The Divided Stone",
+    "helper": "nilo",
+    "position": {
+      "x": 736,
+      "y": 1035
+    },
+    "facing": "left",
+    "directions": "From here, head west (left). At the next bend, take the path south (down the path). The fallen white petals continue into that branch.",
+    "arrows": 34,
+    "clues": 11
+  },
+  {
+    "trial": "The Divided Stone",
+    "helper": "sela",
+    "position": {
+      "x": 586,
+      "y": 864
+    },
+    "facing": "up",
+    "directions": "From here, head north (up the path). At the next bend, take the path east (right). The fallen white petals continue into that branch.",
+    "arrows": 34,
+    "clues": 11
+  },
+  {
+    "trial": "The Backward Wind",
+    "helper": "nilo",
+    "position": {
+      "x": 96,
+      "y": 523
+    },
+    "facing": "right",
+    "directions": "From here, head east (right). At the next bend, take the path north (up the path). The fallen white petals continue into that branch.",
+    "arrows": 35,
+    "clues": 13
+  },
+  {
+    "trial": "The Backward Wind",
+    "helper": "sela",
+    "position": {
+      "x": 96,
+      "y": 331
+    },
+    "facing": "right",
+    "directions": "From here, head east (right). At the next junction, take the path east (right). The fallen white petals continue into that branch.",
+    "arrows": 35,
+    "clues": 13
+  },
+  {
+    "trial": "The Borrowed Current",
+    "helper": "nilo",
+    "position": {
+      "x": 864,
+      "y": 75
+    },
+    "facing": "right",
+    "directions": "From here, head east (right). At the next bend, take the path south (down the path). The fallen white petals continue into that branch.",
+    "arrows": 31,
+    "clues": 9
+  },
+  {
+    "trial": "The Borrowed Current",
+    "helper": "sela",
+    "position": {
+      "x": 842,
+      "y": 416
+    },
+    "facing": "down",
+    "directions": "From here, head south (down the path). At the next bend, take the path west (left). The fallen white petals continue into that branch.",
+    "arrows": 31,
+    "clues": 9
+  }
+]

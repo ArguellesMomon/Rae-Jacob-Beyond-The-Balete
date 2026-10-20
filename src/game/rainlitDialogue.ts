@@ -34,6 +34,25 @@ export function rainlitLines(id: InteractionId, p: Progress, map: MapId): Dialog
     T('Start with her name. Then give her room to answer one.'),
   ];
   if (id === 'luning') {
+    if (r.complete && !r.homecomingSeen) return [
+      R('The cups were all covered when we left. Now everybody is outside.', 'surprised', 'A neighbor passes a full cup to a smaller pair of hands. Beside the rack, a stiff strip of basket fiber softens in a shallow bowl. Someone shakes water from a newly rinsed cloth.'),
+      L('Clothes to rinse. Fibers to soak. Supper that does not have to wait for another rain jar. The water brought our afternoon back.'),
+      ...(r.basketReturned ? [R('And your basket?')] : [R('I brought your basket, too. I kept the repaired side away from the mud.'), L('Set it beside the rack. That patch has earned another season.', 'warm')]),
+      L('A new strap, then another delivery. Some of those neighbors need food before they need a story about the rescue.'),
+      R('I thought helping a whole village would sound louder. Trumpets, maybe.'),
+      T('That little cup is a good sound.'),
+      B('I could provide a ceremonial hoofbeat.'), L('You could carry the two filled jars by the rack.'),
+      B('A far less glamorous arrangement. Very well.', 'wry', 'Bagtas bends to the jars. He does not make their weight, or the work of carrying them, disappear.'),
+      R('You are not going to turn the road around on the way?'), B('I gave my word. Today, the jars arrive where I say they will.', 'determined'),
+      L('There is a place on the bench, Rae. Food, a dry cloth, and no task attached.'),
+      R('I keep thinking La will worry more if I sit still.', 'wistful'),
+      T('Resting here does not mean you have stopped looking for her.'),
+      R('Will you leave a space beside me?'), L('For Tala? Already there.'),
+      R('For her, too. I mean... if La could see where I am, I want her to know somebody saved me a place.', 'warm'),
+      L('Then we will set another cup where you can see it.'),
+      T('On the new page: spring restored. Neighbors drinking. Rae Jacob, expected for supper.'),
+      R('Expected. I like that word.', 'warm', 'Rae sits long enough for the water to become an ordinary sound. Far from Lola’s yard, someone calls him in before the food cools.'),
+    ];
     if (r.basketFreed && !r.basketReturned) return [
       L('My delivery basket! That dark band is my repair. The old weave is stronger than it looks.', 'surprised'),
       R('The strap caught under a root. Tala found it, Bagtas braced the wood, and I pulled very carefully. There was no heroic jumping.'),
@@ -66,7 +85,7 @@ export function rainlitLines(id: InteractionId, p: Progress, map: MapId): Dialog
   if (id === 'springEntry') return !r.metLuning ? [R('Bagtas mentioned a basket-maker. I should speak to Luning in the yard before we head upstream.')]
     : [T('Across the planks, then along the dry bank. We will leave the wet moss and the pool itself undisturbed.')];
   if (id === 'springArrival') return [
-    R('Someone is standing by the water. Her clothes look green until the light catches them.', 'surprised', 'A woman kneels to lift a stranded leaf out of a shallow stone pocket. She waits while a tiny fish slips back into shade.'),
+    R('Someone is standing by the water. Her white dress looks blue where the spring reflects it.', 'surprised', 'A woman kneels to lift a stranded leaf out of a shallow stone pocket. She waits while a tiny fish slips back into shade.'),
     R('Is that... really a diwata? Like the ones Lola meant? I do not know what I thought they looked like. Taller than a story, I suppose.'),
     T('We can ask her. From the dry stones. There is room to approach on the left bank.'),
     B('I usually announce our arrival. This seems a good time to let someone else begin.'),
@@ -102,6 +121,12 @@ export function rainlitLines(id: InteractionId, p: Progress, map: MapId): Dialog
       T('I dated the low-water line and the restored one. The next person can see what changed.'),
       B('And I added that a forked support was needed. My strength is impressive. It is still useful to leave instructions.'),
       M('You have all left something another traveler can use. Let us rest before talking about the old road.'),
+      R('Does it ever get lonely, staying beside the same spring while everybody else goes somewhere?'),
+      M('Sometimes. Then a child comes to learn which stone is safe to stand on. Years later, that child brings someone smaller. A place can hold many journeys.'),
+      R('I thought a diwata would have an answer ready for everything. You sound like you have waited for answers, too.'),
+      M('For a seedling to take, for a season to turn, for someone to listen. Patience is work. It does not mean I never worry.'),
+      T('You stayed with the spring when it needed help. Now we can stay for a moment with you.'),
+      M('I would like that.', 'warm', 'Mayumi lowers her leaf cup. The light around her softens across the moving water. For several breaths, nobody asks the spring to be a road.'),
       R('La always knows when I am trying to look less tired than I am.', 'wistful', 'The forest settles around the ordinary sound of running water. Rae loosens the string around his pocket.'),
       { speaker: 'Someone?', text: 'Jacob...?', emotion: 'wistful', beat: 'A faint syllable travels with the water. For an instant, it has the shape of a voice calling across a familiar yard.' },
       R('La? Lola! I am here! Can you hear me?', 'surprised'),
@@ -145,7 +170,16 @@ export function rainlitLines(id: InteractionId, p: Progress, map: MapId): Dialog
       B('Then you need a guide with the courage to say the road is unchecked. Fortunately, you have the finest available.'),
       R('And assistance with very good handwriting.', 'warm'),
       M('The old survey road continues beyond these banks. We will prepare what we know before you follow it. Tonight, the water runs, and there is a place for you to rest.'),
-      R('One road at a time, La. I heard something today. I am going to find out what it means.', 'wistful', 'Tala dates the new seal. Beneath it, Rae draws a cup with room beside it for another. The spring keeps its small, steady sound.'),
+      R('When I came here, I thought every creature would know why I fell. Like somebody had planned an adventure and forgotten to tell me.', 'wistful'),
+      R('But Luning wanted her delivery back. You wanted the fish to reach the shade. Everybody had a day before I landed in it.'),
+      M('And you changed part of that day. Gently enough that its life can continue after you leave.'),
+      T('We have a mystery to follow. We also have people to come back to.'),
+      B('I promised you passage to the spring. What lies beyond it would be another agreement.'),
+      R('You can decide whether you want to come. No maze to make us need you first.'),
+      B('A difficult condition. I accept.', 'neutral'),
+      ...(p.ubanGiftReceived ? [R('Mang Uban’s seed is still in my pocket. I keep waiting for it to tell me what happens next.'), M('Keep it safe. You need not force a gift to explain itself tonight.'), R('Then tonight I can just be somebody he trusted.', 'warm')] : []),
+      M('Go back to Luning before another road. See the water at work in the hands that needed it. Let someone care for you in return.'),
+      R('One road at a time, La. I am still looking for home. I am learning how to arrive somewhere, too.', 'wistful', 'Tala dates the new seal. Beneath it, Rae draws a cup with room beside it for another. The spring keeps its small, steady sound.'),
     ];
   if (id === 'mayumiWater') return [R('If you care for a spring, can you just tell the water to go where you want?'), M('Water follows the ground it finds. I watch where it begins, what changes its course, and whose lives depend on it.'), R('That sounds like a lot of ordinary work for somebody in a story.'), M('Ordinary work keeps a place alive. A spring is not less remarkable because someone clears a leaf from it.'), T('And being remarkable does not make someone able to fix everything alone.'), M('Exactly. Keep that sentence on your map.', 'warm')];
   if (id === 'mayumiStories') return [R('Lola said diwata, but I think I imagined the same person in every forest.'), M('I can tell you who I am and the place I care for. One meeting cannot tell you every story people carry.'), T('Then on this page I will write Mayumi of this spring. No guessing at everyone else.'), R('And when I get home, I can ask Lola where she first heard her stories.'), M('Ask who told them, where they were told, and what the people of that place call their guardians. Names matter.'), R('Mayumi. I will remember yours.', 'warm')];

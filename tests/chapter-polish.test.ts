@@ -17,7 +17,7 @@ test('every replay scene starts at a safe, coherent checkpoint with its own empt
     assert.deepEqual(parsed.progress, save.progress, scene.id);
     assert.deepEqual(parsed.history, []);
     assert.deepEqual(save.progress.discoveries, []);
-    assert.equal(save.progress.chapterComplete, ['chapter2', 'bambooPuzzle', 'bambooDebrief', 'rainroad', 'springMeeting', 'springPuzzle', 'springEnding'].includes(scene.id));
+    assert.equal(save.progress.chapterComplete, ['chapter2', 'bambooPuzzle', 'bambooDebrief', 'bambooWind', 'bambooWater', 'rainroad', 'springMeeting', 'springPuzzle', 'springEnding'].includes(scene.id));
   }
   const first = replayCheckpoint('works'), second = replayCheckpoint('works');
   first.progress.talaTopics.push('home');

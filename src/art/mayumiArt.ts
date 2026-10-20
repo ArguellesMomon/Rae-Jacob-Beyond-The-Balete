@@ -73,7 +73,7 @@ const auras = new Map<number, string>();
 export function mayumiAuraSvg(clock = 0, motion = true) {
   const frame = motion ? Math.floor(clock * 2) % 24 : 0, cached = auras.get(frame); if (cached) return cached;
   const t = frame / 24 * Math.PI * 2, breath = .84 + Math.sin(t) * .1;
-  let s = '<defs><radialGradient id="mayumi-aura-light"><stop stop-color="#e8f6ee" stop-opacity=".36"/><stop offset=".5" stop-color="#a5d8ee" stop-opacity=".2"/><stop offset="1" stop-color="#82bfe5" stop-opacity="0"/></radialGradient></defs>';
+  let s = '<defs><radialGradient id="mayumi-aura-light"><stop offset="0" stop-color="#e8f6ee" stop-opacity=".36"/><stop offset="0.5" stop-color="#a5d8ee" stop-opacity=".2"/><stop offset="1" stop-color="#82bfe5" stop-opacity="0"/></radialGradient></defs>';
   s += `<ellipse cx="48" cy="64" rx="45" ry="60" fill="url(#mayumi-aura-light)" opacity="${breath}"/><ellipse cx="48" cy="124" rx="28" ry="4" fill="url(#mayumi-aura-light)"/>`;
   for (let i = 0; i < 6; i++) {
     const x = Math.round(17 + i * 13 % 64 + Math.sin(t + i) * 2), y = Math.round(24 + i * 19 % 86 + Math.cos(t + i * 2) * 3);

@@ -1,0 +1,105 @@
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ static menus freeze world rendering and keep the joystick callback stable across game ticks (44.289ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ repeated joystick releases never teleport Rae or Tala across any map or trial (233.7561ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the real controller resumes an interrupted crossing at the saved arrival, retaining old yard notes (12.3801ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the slower opening finishes on its own and saves arrival without requiring optional yard memories (26.9597ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the real controller plays arrival, triggers Tala, supports questions, and restores the recruited companion (33.1855ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the controller travels to the grove, reveals Mang, follows the tube, and returns without losing progress (33.5906ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ interrupting Mang’s reveal resumes safely with his introduction, not a stuck camera (10.5175ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the controller completes the waterworks, contextual string use, bell restoration and chapter ending across interruptions (216.5856ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the root ending offers Chapter 2 once; repeated inspections and reloading keep earned exploration (16.1605ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ tool selection can be cancelled, and both new scenes finish without using their skip buttons (11.0564ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ settings return to the title, paused game or unfinished conversation without starting or advancing play (4.2655ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ personal conversations pause safely, remember topics and leave the optional story route open (18.5442ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ a completed bell save can collect Mang Uban’s gift, recover an interrupted offer and keep it across remounts (7.5222ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ ambient residents save only completed visits and offer a different short speech after returning (4.6266ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ a tube-first traveler meets Mang before the post-bell gift scene rather than skipping his introduction (14.7439ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ chapter replay writes to a separate slot and returns to the main journey with its memories intact (18.0103ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ history pauses a conversation without advancing it and restores its exact entry context (5.7324ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ rapid replay scene changes keep queued snapshots isolated from the main save (2.3573ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ replay choices suspend input and Back returns to title or the unfinished paused conversation (3.1678ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ a personal reply pauses safely, commits once, excludes other branches from history and survives an unfinished introduction (14.5467ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the map lesson preserves the puzzle, completes its relationship beat and keeps recap dismissal independent of saves (4.488ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the quiet aftermath follows the bell, recovers across interruptions and completes once without repeating the ring (14.7364ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the controller plays Chapter 2 from an earned crossing through loops, checked landmarks, Bagtas and the return to Chapter 1 (288.0342ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ Chapter 2 replay preserves the main journey and recovers an interrupted Bagtas reply without asking twice (15.1827ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ the real controller walks the new road, meets Luning and Mayumi, repairs the spring, survives interruption, and ends Chapter 2 once (335.4345ms)
+react-test-renderer is deprecated. See https://react.dev/warnings/react-test-renderer
+✔ spring replay scenes keep the main save untouched and a skipped reveal still shows its dialogue (7.1997ms)
+✔ the baked Rainlit Road sign can be read early without traveling or stranding the controller (1.6894ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1894.3334

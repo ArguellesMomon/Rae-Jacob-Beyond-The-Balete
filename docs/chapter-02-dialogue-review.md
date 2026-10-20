@@ -4,405 +4,451 @@ Generated with `npm.cmd run chapter2:preview`. This is the first playable arc of
 
 ## bambooArrival
 
-*Light slips through high leaves. A few rain drops tick against the hollow stalks.*
+*Three measured clops answer from opposite sides of the bamboo. The last arrives before its echo.*
 
-**Rae Jacob:** The bamboo is taller than the yard fence. Considerably taller.
+**Rae Jacob:** Tala, the hooves are ahead of us. Now behind us. There is only one road!
 
-**Tala:** Keep the sound of the wheel behind us. For now, we know one way back.
+**Tala:** Stay beside me. A sound is not a direction.
 
-**Rae Jacob:** That voice said we had already taken the wrong road. An extremely encouraging welcome.
+**Bagtas:** A promising observation. Most visitors have already started running by now.
 
-**Tala:** We can ask what it meant before deciding it meant trouble.
+**Rae Jacob:** That voice is laughing at us.
 
-**Rae Jacob:** Lola would make me introduce myself before arguing with someone that tall.
+**Tala:** Then we should meet its owner before following its advice.
 
-**Tala:** There is a shelter ahead. And cups. Somebody expects travelers.
-
-**Rae Jacob:** Two cups. I am going to count that as a good sign.
-
-**Tala:** We begin with our names. Then we ask for a road someone has actually checked.
+**Rae Jacob:** Lola would make me introduce myself. I would rather introduce a fence between us.
 
 ## bagtas
 
-*Rae stops short of the shelter. His fingers close around his spare kite string.*
+*Rae stops at the edge of the shelter. The tall figure unfolds his arms, mane slipping over broad shoulders.*
 
-**Rae Jacob:** Tala... his head. And those feet. That is not somebody wearing a mask, is it?
+**Rae Jacob:** Tala... his head. Those feet. Please tell me that is a costume.
 
-**Tala:** No mask. You can stand beside me. We do not have to rush.
+**Tala:** A tikbalang. You can stay beside me.
 
-**Rae Jacob:** A tikbalang. I thought seeing a kapre would make me ready for anything. My knees disagree.
+**Rae Jacob:** Lola said they could make you lose your way. My knees remember that part very clearly.
 
-*The traveler straightens to his full height, broad shoulders catching the light. A long dark mane slips over his back. He sets one hand on his hip.*
+**Bagtas:** Bagtas. Finest guide in this bamboo. Also the reason you have passed that bent stalk twice.
 
-**Bagtas:** At last. Travelers with the good sense to find the finest guide in this bamboo.
+**Rae Jacob:** You did that? We thought we were getting somewhere!
 
-**Rae Jacob:** The finest guide? There is a sign behind you pointing back to this same shelter.
+**Bagtas:** You were. Back to me. Excellent destination.
 
-**Bagtas:** Excellent placement. You found me, did you not?
+**Rae Jacob:** That is not funny when you do not know how to get home.
 
-**Rae Jacob:** You can really talk. Sorry! Of course you can. I have just never met anyone like you.
+**Bagtas:** A child in a hurry, a map with unfinished edges. You were going to ask for the Heart Balete without asking whose paths you crossed.
 
-*He lowers the smaller cup onto the bench, carefully clear of Tala. His chin remains lifted.*
+**Tala:** We can ask permission. You could have answered without turning us around.
 
-**Bagtas:** Naturally I can talk. Directions would be rather wasted on a silent guide. Take your time coming closer; I am difficult to overlook.
+**Bagtas:** I could. But then I would have learned nothing about you.
 
-**Rae Jacob:** Lola said a tikbalang could lead someone in circles. Were those your hooves calling from both sides?
+**Rae Jacob:** And we would have learned less about you. I am Rae Jacob. This is Tala. May we pass through your bamboo?
 
-**Bagtas:** My hooves. An unmistakable sound. The echoes took several routes; I took one. I called because you were approaching an unchecked road.
+**Bagtas:** Better. Passage has a price: outwit my three turns. Bring me proof that you looked at the road instead of chasing the voice that sounded most certain.
 
-**Rae Jacob:** Were you the person shouting about the wrong road?
+**Tala:** Your terms, clearly. Before either of us agrees.
 
-**Bagtas:** Bagtas. Remember the name; most roads do. And yes, I called. The road was wrong. No need to take it personally.
+**Bagtas:** Five arches. Three true marks: split stone, bowed bamboo, running water. Two invitations I would advise against. Their pictures change when the path folds.
 
-**Rae Jacob:** Rae Jacob. This is Tala. Our bell has its name back, so we thought the road was fixed.
+**Rae Jacob:** And if I get one wrong?
 
-**Bagtas:** One crossing was fixed. These turns and I are having a temporary disagreement. Since the surge, they keep returning me to this shelter.
+**Bagtas:** You return to the entrance. Your notes remain. No lost belongings, no trapped feet. The southern path always leads back to this shelter.
 
-**Tala:** So the finest guide is caught in the loop, too?
+**Rae Jacob:** No pretending to be my Lola. No making Tala disappear. And if we say stop, we stop.
 
-*One ear flicks backward. For a moment, Bagtas finds the survey cord more interesting than their faces.*
+*The smile leaves his muzzle for a breath. He rests one hoof flat on the earth.*
 
-**Bagtas:** I have been checking it from every angle. Extensively.
+**Bagtas:** You negotiate rather well for someone wearing such small slippers.
 
-**Tala:** You know the paths. Does that mean you are changing them?
+**Bagtas:** Agreed. Your grandmother’s voice stays yours. Your companion stays with you. The return path remains open.
 
-**Bagtas:** I have turned a careless traveler around before a doorstep was trampled. This is different. If I were arranging it, the turns would have considerably more style.
+**Tala:** And what do you owe us when we succeed?
 
-**Tala:** We need to know what is happening, even if you do not know yet.
+**Bagtas:** The road toward the spring. My company as far as its keeper. Answers without a false turn tucked inside them.
 
-**Bagtas:** Very well. I do not know what changed the paths. There. A rare admission. Do not make me repeat it.
+**Rae Jacob:** Why would the finest guide need to make people prove themselves?
 
-**Rae Jacob:** Someone sealed a side passage behind us. A smooth cut, with a pale ring.
+**Bagtas:** Because every traveler wants a shortcut. Very few ask what is growing under the feet they hurry past.
 
-**Bagtas:** Then do not pry it open. We can follow the road that remains, while we learn who has been closing the others.
+**Tala:** That explains what you care about. It does not make every trick kind.
 
-**Tala:** Can it lead toward the Heart Balete?
+**Bagtas:** No. I did not offer kindness. I offered a bargain.
 
-**Bagtas:** Beyond this thicket, yes. Usually a small matter for someone of my experience. Today, we check the thicket before discussing my other triumphs.
-
-**Rae Jacob:** I need to get back to my Lola. I cannot spend forever following a road that walks behind me.
-
-**Bagtas:** Then we shall put those restless feet to use. I remember the landmarks. Tala records them. You check the posts. With my guidance, we can make one reliable route.
-
-**Rae Jacob:** And with our checking.
-
-**Bagtas:** Yes, yes. With your checking. I was coming to that.
-
-**Bagtas:** What do you need from me before we begin?
+**Bagtas:** Have you a condition to add?
 
 ### playful
 
-**Rae Jacob:** A road that does not race my slippers. They have had a very long afternoon.
+**Rae Jacob:** My slippers get a fair chance. No changing the rules when they start winning.
 
-**Bagtas:** I shall reduce my magnificent stride. Tell your slippers they are receiving special consideration.
+**Bagtas:** I have standards. My tricks are exquisite; my agreements remain exactly where I leave them.
 
-**Rae Jacob:** They are excellent at stopping for clues. And snacks.
+**Rae Jacob:** Then I will remember every word. So will Tala.
 
 ### cautious
 
-**Rae Jacob:** Tell us what you have actually checked. I need to know when a direction is a guess.
+**Rae Jacob:** Keep the way back open. I need to know that choosing your challenge is still a choice.
 
-**Bagtas:** You bargain like a surveyor. Very well. Checked ground first; my excellent theories clearly labeled.
+**Bagtas:** The southern path returns to this shelter. I will not disguise it. You may put my name beside that promise.
 
-**Rae Jacob:** Then I can help you check it.
+**Rae Jacob:** I will.
 
 ### thoughtful
 
-**Rae Jacob:** You have been coming back to your own footprints. We can help you find your way, too.
+**Rae Jacob:** If we win, come as a companion. No tricking us into needing you first.
 
-**Bagtas:** Help me? An unusual proposal. Hm. A good guide recognizes a useful traveling party. Accepted.
+**Bagtas:** You ask a proud creature to travel without arranging the entrance. Very well. Earn the road; I will consider how to walk it.
 
-**Rae Jacob:** Tala and I are learning that neither person has to know every turn.
+**Rae Jacob:** We can start by asking each other.
 
-**Bagtas:** Read the little verse beside the shelter. First the split stone, then bent bamboo, then running water. Those sketches mark the paths that reach each landmark.
+**Bagtas:** Inspect the real stone, the bowed bamboo and the seep inside. A pretty sign is easy to copy; a careful observation is harder.
 
-**Bagtas:** The entrance is to your right, beyond the verse board. Look for the gold arrow under the arch marked TURNING PATHS. Walk up to it and choose Travel.
+**Rae Jacob:** Stone, bamboo, water. And keep my friend where I can see her.
 
-**Tala:** The posts can change position. We will record the landmark, not just a turn to the left.
-
-**Bagtas:** If a branch loops, come back calmly. Your checked steps still count. The return path at the bottom always reaches this shelter.
-
-**Rae Jacob:** One reliable route. That is a beginning I can understand.
+**Bagtas:** To your right: TURNING PATHS. I shall enjoy this enormously. Try not to make it too easy.
 
 ## bagtasPaths
 
-**Rae Jacob:** Why remember a stone instead of a direction?
+**Rae Jacob:** Are all those hoofbeats really you?
 
-**Bagtas:** A post can be turned. A traveler can turn. A seam through a stone takes more work to move. One of my better observations.
+**Bagtas:** All mine. Their locations are a different matter. I can invite your attention east while your feet carry you west.
 
-**Tala:** So we compare what a marker shows with what we see.
+**Tala:** The pictures can move, and the sounds can lie. What stays useful?
 
-**Bagtas:** Precisely. And we check again after a change. My old cord measures the road I walked. Even my stride cannot measure a road before it exists.
+**Bagtas:** What you actually observed. Split stone, bowed stalk, running water. Inspect each proof. Then find its true mark among the five arches.
 
-**Rae Jacob:** A guide who leaves room for corrections. Tala and I have been practicing that.
+**Rae Jacob:** The hollow stone and still water are the tricks?
 
-**Bagtas:** Call them refinements. It sounds better beside my name.
+**Bagtas:** You are asking very expensive questions. Take that answer for free.
+
+**Tala:** If a turn repeats, we keep our proofs and checked steps.
 
 ## bagtasStories
 
-**Rae Jacob:** I keep looking at your ears. Do they turn toward things before you hear them? Sorry. Is that rude?
+**Rae Jacob:** Did you become a guide so you could confuse more people?
 
-**Bagtas:** Looking is understandable. Excellent ears. They turn toward interesting sounds. Including a child whispering beside my cup.
+**Bagtas:** I learned the road before most travelers learned to ask for it. Being ignored becomes tiresome.
 
-**Rae Jacob:** You heard that? I asked Tala whether you sleep standing up.
+**Rae Jacob:** So does being lost.
 
-**Bagtas:** After walking farther in a morning than most travelers manage all week, I have earned a seat.
+*One ear turns away. He rubs a knot in the survey cord rather than meet Rae’s eyes.*
 
-**Rae Jacob:** And your mane goes nearly to your waist. Does it catch on all the bamboo?
+**Bagtas:** Yes.
 
-**Bagtas:** I choose my turns carefully. A mane like this deserves a proper entrance.
+**Tala:** You like being needed. You also like deciding when somebody is allowed to leave.
 
-**Tala:** It caught on the shelter cord when you stood up.
+**Bagtas:** A sharp pencil, that one.
 
-**Bagtas:** A badly placed cord. I shall relocate it.
+**Rae Jacob:** Lola told me about turning your shirt inside out when a tikbalang keeps leading you around. Does that bother you?
 
-**Rae Jacob:** You look strong enough to lift that bench with one hand. Could you just push through the paths?
+**Bagtas:** Old advice travels farther than I would prefer. You may find a reason to remember it.
 
-**Bagtas:** Easily. The bench, I mean. Strength gets you through a thicket; knowing where you arrived takes something else.
+**Tala:** That is one family’s telling. Bagtas is one tikbalang. We will record both without pretending they are the same thing.
 
-**Rae Jacob:** Lola told stories about tikbalang making travelers lose their way. I was scared you might keep us here.
+**Rae Jacob:** I still think your mane is amazing. I can think that and be cross with you.
 
-**Bagtas:** If I wanted an audience for my accomplishments, I would prefer one that stayed willingly. Ask your questions. Watch what I do. You may judge for yourself.
-
-**Rae Jacob:** Then I will ask before I decide. But I might still jump if a hoof goes clop behind me.
-
-**Tala:** A story can remind us to be careful. It cannot tell us what every person will do.
-
-**Bagtas:** Good. You can begin by drawing my good side. Either will do.
+**Bagtas:** A balanced assessment. Begin with the mane when you write it down.
 
 ## bagtasSeals
 
-**Rae Jacob:** Have you seen a pale ring like the one on the cut root?
+**Rae Jacob:** Is the pale ring on the cut root another of your jokes?
 
-**Bagtas:** Yes. On another closed passage, farther along the old survey line.
+**Bagtas:** No. I turn a traveler’s attention. Those seals close actual passages. I do not know who makes them.
 
-**Tala:** Beyond the flooding?
+**Tala:** You are sure of the difference?
 
-**Bagtas:** On dry ground. I cannot tell you who made it. I can tell you the surge does not explain every closed road.
+**Bagtas:** Certain of what I do. Uncertain of what they do. Record it in that order.
 
-**Rae Jacob:** Then fixing the water was real help, but not the whole mystery.
-
-**Bagtas:** Exactly. Do not let a larger worry make a small kindness disappear.
+**Rae Jacob:** Then we can be suspicious without deciding you did everything.
 
 ## bambooCord
 
-**Rae Jacob:** Knots in different sizes. Is this a very long necklace?
+**Rae Jacob:** A knot for every road?
 
-**Bagtas:** A survey cord. Every knot is a distance I have walked. The loose end is this thicket, which is being difficult.
+**Bagtas:** And for agreements. I do not tie one lightly.
 
-**Tala:** You left room for a correction.
-
-**Bagtas:** For a refinement. People follow my directions. I intend to remain worth following.
+**Tala:** Then make room for ours.
 
 ## bambooCup
 
-**Rae Jacob:** A large cup and a small one. Were you waiting for somebody?
+**Rae Jacob:** You have a small cup ready.
 
-**Bagtas:** Naturally. The finest guide should offer more than excellent company. Smaller travelers need water, too.
-
-**Rae Jacob:** Lola saves a second cup, too.
+**Bagtas:** Being a difficult host is not the same as being a thirsty one. Drink if you wish. It changes none of our terms.
 
 ## hoofMarks
 
-**Rae Jacob:** All these prints turn back toward the shelter.
+**Rae Jacob:** These prints cross the same patch of mud in both directions.
 
-**Tala:** He has been checking the same road, too.
+**Tala:** He can throw the sound of a pursuit without taking a step.
 
-**Rae Jacob:** It is easier to blame someone when you have not looked at where they were walking.
+**Rae Jacob:** I am going to watch his feet when he tells me where to go.
 
 ## rainLeaves
 
-**Rae Jacob:** Rain and sunshine at once. Lola has a story for weather like this.
+**Rae Jacob:** Sun and rain. La says there is a tikbalang wedding.
 
-**Bagtas:** I have a roof that needs mending for weather like this.
+**Bagtas:** No wedding here. One thoroughly occupied bachelor.
 
-**Tala:** Both worth remembering.
+**Tala:** A familiar saying. A particular tikbalang. Different things to record.
 
 ## trailVerse
 
-**Tala:** First the stone with a seam. Then the crown that bends. Then the water that runs.
+**Tala:** Stone with a seam. Crown that bends. Water that runs. Three true marks, among five invitations.
 
-**Bagtas:** The three fork posts carry sketches of those landmarks. They may change places; look at their shapes, not just west or east.
+**Bagtas:** The hollow stone and still water are beautifully made. You may admire them on your way back.
 
-**Rae Jacob:** Stone, bent bamboo, water. I will say it slowly while my feet are doing other things.
+**Rae Jacob:** Inspect first. Do not let him choose what I notice.
 
 ## turningArrival
 
-**Rae Jacob:** This leaf looks like a tiny boat. I shall remember it.
+*A hoofprint appears beside its own reflection in a puddle. No hoof touches the water.*
 
-**Tala:** There are three paths ahead: left, straight up, and right. Each has a sign showing its landmark. Walk close to a sign and choose Travel.
+**Rae Jacob:** It keeps going behind the bamboo. There is a whole maze in here!
 
-**Rae Jacob:** So that is what you mean by a fork. A place where the path splits! Split stone first. Then bent bamboo. Then running water.
+**Bagtas:** Five invitations. Only three are worth accepting. Do admire the arrangement.
 
-**Tala:** After each turn, we may return to a clearing that looks the same. Our checked steps still count. Read the signs again; their pictures may move.
+**Tala:** We can explore without choosing an arch. First find the real split stone, bowed bamboo and running seep. Side paths may hold the proof.
 
-**Tala:** The path at the bottom always returns to Bagtas. You can stop there whenever you want.
+**Rae Jacob:** A hole in a stone is different from a crack. Standing water is different from running water.
 
-**Rae Jacob:** No rushing into the loudest-looking road. Yes, La. I am learning.
+**Tala:** After a checked turn the signs trade places. Keep the observations, then look again.
+
+**Rae Jacob:** The bottom trail goes back to the shelter. I am marking that before anything else.
 
 ## pathStone
 
-**Rae Jacob:** A seam through a round stone. The first picture in the verse.
+**Rae Jacob:** A pale seam all the way through. No round hole in the middle.
 
-**Tala:** Find the fork whose post carries that split-stone sketch.
+**Tala:** Proof one. The true split-stone sign has a zigzag crack; the hollow-stone sign has a closed dark center.
+
+**Rae Jacob:** A drawing can look nearly right and still send us wrong.
 
 ## pathWind
 
-**Tala:** The crown bends without breaking. Three leaves, one curved stalk. That comes second.
+**Tala:** Three leaves on a bowed living stalk. Their undersides catch the light.
 
-**Rae Jacob:** Like a kite string bowing in the wind. Shape first, direction second.
+**Rae Jacob:** Inside out... La had advice about clothes when a tikbalang kept turning the road around.
+
+**Tala:** Remember it. There is a sheltered spot just to the right if we need to try it.
+
+**Rae Jacob:** The true bamboo sign has one bent stalk and three leaves. I can check that.
 
 ## pathWater
 
-**Rae Jacob:** Three ripples passing a reed. Running water comes last.
+**Rae Jacob:** That leaf passed the reed. This water is going somewhere.
 
-**Tala:** Once we have checked stone and bamboo, that sketch should take us through.
+**Tala:** Proof three. The running-water sign has two broken ripple lines. The still-water trick is a closed ring.
+
+**Rae Jacob:** A splashing sound by itself could be Bagtas. The leaf actually moved.
+
+## turningCharm
+
+**Rae Jacob:** The leaves are showing their undersides. La said, if the same path keeps bringing you back... turn your shirt inside out.
+
+**Tala:** I will keep watch. There is room behind this bamboo.
+
+*Rae steps behind the bowed stalk, reverses his sando and returns. Its side seam catches the light. The doubled hoofprints thin to one trail.*
+
+**Rae Jacob:** There. Tag outside. La would straighten it immediately.
+
+**Bagtas:** Ah. Your grandmother has been giving away trade secrets.
+
+**Rae Jacob:** Maybe you should have asked what I learned at home.
+
+**Tala:** The last borrowed echo has faded. Find the running-water mark now.
 
 ## bagtasDebrief
 
-*Bagtas pushes away from the shelter post, shaking a caught leaf from his mane. His ears turn toward Tala's notebook.*
+*His ears rise before he can lower them. Tala opens her notebook without handing it over.*
 
-**Bagtas:** Back already? An excellent result. Just as I expected.
+**Bagtas:** Back already? I had another splendid taunt prepared.
 
-**Rae Jacob:** Your ears went straight up. You looked surprised.
+**Tala:** The split seam. Three leaves on the bowed stalk. A leaf carried past a reed. We checked the things your signs were trying to imitate.
 
-**Bagtas:** Impressed. A very different expression.
+**Rae Jacob:** And I turned my sando inside out. La gets credit for that part.
 
-**Tala:** Stone seam, bending crown, running water. I dated every observation. Rae checked each post.
+**Bagtas:** An inelegant victory. Annoyingly effective.
 
-**Rae Jacob:** We kept the landmarks when the directions changed. Also, I would like to report that my slippers did excellent work.
+**Rae Jacob:** You promised us a road. No extra test because we finished this one.
 
-**Bagtas:** Then four feet and a careful pencil have earned the thanks of Bagtas. I do not hand those out with every cup of water.
+*Bagtas unwinds one knot. The hoofbeats behind the shelter stop. For the first time, one sound comes from one place.*
 
-**Rae Jacob:** There are only two of mine.
+**Bagtas:** The bargain stands.
 
-**Bagtas:** I noticed Tala. You should keep doing that, too.
+**Tala:** Did you expect us to give up?
 
-**Tala:** We can copy this route for the people returning from the clearing.
+**Bagtas:** I expected you to run after me. You stayed with each other instead.
 
-**Bagtas:** I will walk it again before hanging my guide cord. If a route carries my name, it must carry people safely. Your notes will come with me.
+**Rae Jacob:** Tala is my friend, not part of your maze.
 
-**Rae Jacob:** When we find a way toward home, will you tell me what you know and what you only hope?
+**Bagtas:** I heard you the first time.
 
-**Bagtas:** Yes. Beyond this thicket lies the rainlit road. It points toward the Heart Balete. Whether your crossing is open is a question we still have to ask.
+**Rae Jacob:** Then hear this, too. It was clever. I hated not knowing whether you would let us leave.
 
-**Tala:** One checked route, and an honest next question.
+**Bagtas:** I kept the return path open.
 
-*Bagtas adds a new knot to the shelter cord. Beside Tala's dated line, Rae draws two very large slippers.*
+**Tala:** You knew that. A frightened child had to take your word for it.
 
-**Rae Jacob:** Lola, I am still coming. Today I helped a guide find his own way back.
+*His hoof scrapes a short line into the soil. He leaves the word unadorned.*
+
+**Bagtas:** ...Fair.
+
+**Bagtas:** Rainlit Road lies behind this shelter. I owe Luning an answer about a delivery, and I owe you passage to Mayumi. Those are promises, not prizes.
+
+**Bagtas:** I remain the finest guide available. You may correct my directions. Quietly, if possible.
+
+**Tala:** Clearly, when necessary.
+
+**Rae Jacob:** Then let us go. Together, and no disappearing.
+
+**Bagtas:** The onward road is behind my shelter, at the gold RAINLIT ROAD sign. Walk up to the arrow and choose Travel. I will meet you there.
 
 ## Debrief callback: playful
 
-*Bagtas pushes away from the shelter post, shaking a caught leaf from his mane. His ears turn toward Tala's notebook.*
+*His ears rise before he can lower them. Tala opens her notebook without handing it over.*
 
-**Bagtas:** Back already? An excellent result. Just as I expected.
+**Bagtas:** Back already? I had another splendid taunt prepared.
 
-**Rae Jacob:** Your ears went straight up. You looked surprised.
+**Tala:** The split seam. Three leaves on the bowed stalk. A leaf carried past a reed. We checked the things your signs were trying to imitate.
 
-**Bagtas:** Impressed. A very different expression.
+**Rae Jacob:** And I turned my sando inside out. La gets credit for that part.
 
-**Tala:** Stone seam, bending crown, running water. I dated every observation. Rae checked each post.
+**Bagtas:** An inelegant victory. Annoyingly effective.
 
-**Rae Jacob:** We kept the landmarks when the directions changed. Also, I would like to report that my slippers did excellent work.
+**Rae Jacob:** You promised us a road. No extra test because we finished this one.
 
-**Bagtas:** Then four feet and a careful pencil have earned the thanks of Bagtas. I do not hand those out with every cup of water.
+*Bagtas unwinds one knot. The hoofbeats behind the shelter stop. For the first time, one sound comes from one place.*
 
-**Rae Jacob:** There are only two of mine.
+**Bagtas:** The bargain stands.
 
-**Bagtas:** I noticed Tala. You should keep doing that, too.
+**Tala:** Did you expect us to give up?
 
-**Tala:** We can copy this route for the people returning from the clearing.
+**Bagtas:** I expected you to run after me. You stayed with each other instead.
 
-**Bagtas:** I will walk it again before hanging my guide cord. If a route carries my name, it must carry people safely. Your notes will come with me.
+**Rae Jacob:** Tala is my friend, not part of your maze.
 
-**Bagtas:** The route has been measured against the pace of your slippers. I trust they approve.
+**Bagtas:** I heard you the first time.
 
-**Rae Jacob:** They would approve even more after a snack.
+**Rae Jacob:** Then hear this, too. It was clever. I hated not knowing whether you would let us leave.
 
-**Rae Jacob:** When we find a way toward home, will you tell me what you know and what you only hope?
+**Bagtas:** I kept the return path open.
 
-**Bagtas:** Yes. Beyond this thicket lies the rainlit road. It points toward the Heart Balete. Whether your crossing is open is a question we still have to ask.
+**Tala:** You knew that. A frightened child had to take your word for it.
 
-**Tala:** One checked route, and an honest next question.
+*His hoof scrapes a short line into the soil. He leaves the word unadorned.*
 
-*Bagtas adds a new knot to the shelter cord. Beside Tala's dated line, Rae draws two very large slippers.*
+**Bagtas:** ...Fair.
 
-**Rae Jacob:** Lola, I am still coming. Today I helped a guide find his own way back.
+**Bagtas:** Rainlit Road lies behind this shelter. I owe Luning an answer about a delivery, and I owe you passage to Mayumi. Those are promises, not prizes.
+
+**Bagtas:** Tell your slippers they have beaten a worthy opponent.
+
+**Rae Jacob:** They would like a snack and an apology.
+
+**Bagtas:** I remain the finest guide available. You may correct my directions. Quietly, if possible.
+
+**Tala:** Clearly, when necessary.
+
+**Rae Jacob:** Then let us go. Together, and no disappearing.
+
+**Bagtas:** The onward road is behind my shelter, at the gold RAINLIT ROAD sign. Walk up to the arrow and choose Travel. I will meet you there.
 
 ## Debrief callback: cautious
 
-*Bagtas pushes away from the shelter post, shaking a caught leaf from his mane. His ears turn toward Tala's notebook.*
+*His ears rise before he can lower them. Tala opens her notebook without handing it over.*
 
-**Bagtas:** Back already? An excellent result. Just as I expected.
+**Bagtas:** Back already? I had another splendid taunt prepared.
 
-**Rae Jacob:** Your ears went straight up. You looked surprised.
+**Tala:** The split seam. Three leaves on the bowed stalk. A leaf carried past a reed. We checked the things your signs were trying to imitate.
 
-**Bagtas:** Impressed. A very different expression.
+**Rae Jacob:** And I turned my sando inside out. La gets credit for that part.
 
-**Tala:** Stone seam, bending crown, running water. I dated every observation. Rae checked each post.
+**Bagtas:** An inelegant victory. Annoyingly effective.
 
-**Rae Jacob:** We kept the landmarks when the directions changed. Also, I would like to report that my slippers did excellent work.
+**Rae Jacob:** You promised us a road. No extra test because we finished this one.
 
-**Bagtas:** Then four feet and a careful pencil have earned the thanks of Bagtas. I do not hand those out with every cup of water.
+*Bagtas unwinds one knot. The hoofbeats behind the shelter stop. For the first time, one sound comes from one place.*
 
-**Rae Jacob:** There are only two of mine.
+**Bagtas:** The bargain stands.
 
-**Bagtas:** I noticed Tala. You should keep doing that, too.
+**Tala:** Did you expect us to give up?
 
-**Tala:** We can copy this route for the people returning from the clearing.
+**Bagtas:** I expected you to run after me. You stayed with each other instead.
 
-**Bagtas:** I will walk it again before hanging my guide cord. If a route carries my name, it must carry people safely. Your notes will come with me.
+**Rae Jacob:** Tala is my friend, not part of your maze.
 
-**Bagtas:** Checked: stone, bamboo, water. Unchecked: the rainlit road beyond. I remember what you asked of me.
+**Bagtas:** I heard you the first time.
 
-**Rae Jacob:** That is a direction I can trust.
+**Rae Jacob:** Then hear this, too. It was clever. I hated not knowing whether you would let us leave.
 
-**Rae Jacob:** When we find a way toward home, will you tell me what you know and what you only hope?
+**Bagtas:** I kept the return path open.
 
-**Bagtas:** Yes. Beyond this thicket lies the rainlit road. It points toward the Heart Balete. Whether your crossing is open is a question we still have to ask.
+**Tala:** You knew that. A frightened child had to take your word for it.
 
-**Tala:** One checked route, and an honest next question.
+*His hoof scrapes a short line into the soil. He leaves the word unadorned.*
 
-*Bagtas adds a new knot to the shelter cord. Beside Tala's dated line, Rae draws two very large slippers.*
+**Bagtas:** ...Fair.
 
-**Rae Jacob:** Lola, I am still coming. Today I helped a guide find his own way back.
+**Bagtas:** Rainlit Road lies behind this shelter. I owe Luning an answer about a delivery, and I owe you passage to Mayumi. Those are promises, not prizes.
+
+**Bagtas:** Checked: the road to the hamlet. Unknown: whether your way home is open. No false certainty.
+
+**Rae Jacob:** Keep doing that.
+
+**Bagtas:** I remain the finest guide available. You may correct my directions. Quietly, if possible.
+
+**Tala:** Clearly, when necessary.
+
+**Rae Jacob:** Then let us go. Together, and no disappearing.
+
+**Bagtas:** The onward road is behind my shelter, at the gold RAINLIT ROAD sign. Walk up to the arrow and choose Travel. I will meet you there.
 
 ## Debrief callback: thoughtful
 
-*Bagtas pushes away from the shelter post, shaking a caught leaf from his mane. His ears turn toward Tala's notebook.*
+*His ears rise before he can lower them. Tala opens her notebook without handing it over.*
 
-**Bagtas:** Back already? An excellent result. Just as I expected.
+**Bagtas:** Back already? I had another splendid taunt prepared.
 
-**Rae Jacob:** Your ears went straight up. You looked surprised.
+**Tala:** The split seam. Three leaves on the bowed stalk. A leaf carried past a reed. We checked the things your signs were trying to imitate.
 
-**Bagtas:** Impressed. A very different expression.
+**Rae Jacob:** And I turned my sando inside out. La gets credit for that part.
 
-**Tala:** Stone seam, bending crown, running water. I dated every observation. Rae checked each post.
+**Bagtas:** An inelegant victory. Annoyingly effective.
 
-**Rae Jacob:** We kept the landmarks when the directions changed. Also, I would like to report that my slippers did excellent work.
+**Rae Jacob:** You promised us a road. No extra test because we finished this one.
 
-**Bagtas:** Then four feet and a careful pencil have earned the thanks of Bagtas. I do not hand those out with every cup of water.
+*Bagtas unwinds one knot. The hoofbeats behind the shelter stop. For the first time, one sound comes from one place.*
 
-**Rae Jacob:** There are only two of mine.
+**Bagtas:** The bargain stands.
 
-**Bagtas:** I noticed Tala. You should keep doing that, too.
+**Tala:** Did you expect us to give up?
 
-**Tala:** We can copy this route for the people returning from the clearing.
+**Bagtas:** I expected you to run after me. You stayed with each other instead.
 
-**Bagtas:** I will walk it again before hanging my guide cord. If a route carries my name, it must carry people safely. Your notes will come with me.
+**Rae Jacob:** Tala is my friend, not part of your maze.
 
-**Bagtas:** You offered to help a guide find his own way. I am glad I let you.
+**Bagtas:** I heard you the first time.
 
-**Rae Jacob:** It is a good thing to practice from both sides.
+**Rae Jacob:** Then hear this, too. It was clever. I hated not knowing whether you would let us leave.
 
-**Rae Jacob:** When we find a way toward home, will you tell me what you know and what you only hope?
+**Bagtas:** I kept the return path open.
 
-**Bagtas:** Yes. Beyond this thicket lies the rainlit road. It points toward the Heart Balete. Whether your crossing is open is a question we still have to ask.
+**Tala:** You knew that. A frightened child had to take your word for it.
 
-**Tala:** One checked route, and an honest next question.
+*His hoof scrapes a short line into the soil. He leaves the word unadorned.*
 
-*Bagtas adds a new knot to the shelter cord. Beside Tala's dated line, Rae draws two very large slippers.*
+**Bagtas:** ...Fair.
 
-**Rae Jacob:** Lola, I am still coming. Today I helped a guide find his own way back.
+**Bagtas:** Rainlit Road lies behind this shelter. I owe Luning an answer about a delivery, and I owe you passage to Mayumi. Those are promises, not prizes.
+
+**Bagtas:** You asked for a companion instead of an opponent. I shall attempt the less familiar role.
+
+**Rae Jacob:** You can start by walking where your hooves sound.
+
+**Bagtas:** I remain the finest guide available. You may correct my directions. Quietly, if possible.
+
+**Tala:** Clearly, when necessary.
+
+**Rae Jacob:** Then let us go. Together, and no disappearing.
+
+**Bagtas:** The onward road is behind my shelter, at the gold RAINLIT ROAD sign. Walk up to the arrow and choose Travel. I will meet you there.
 

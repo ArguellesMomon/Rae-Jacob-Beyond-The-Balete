@@ -1,0 +1,5 @@
+
+> rae-jacob-beyond-the-balete@0.1.0 chapter2:preview
+> node --experimental-strip-types scripts/render-chapter-two.ts
+
+Rendered both bamboo maps, all three fork layouts, Bagtas expressions/animation and the playable dialogue review.

@@ -6,11 +6,13 @@ import type { SaveSlot, ReplayScene } from '../game/replay';
 import { rememberLine } from '../game/history';
 import { chooseStoryReply, REPLY_TONES, STORY_CHOICES } from '../game/storyChoices';
 import { journeyRecap } from '../game/recap';
+import { nextPaintTime, sceneRenderRate } from '../game/renderBudget';
 import { CROSSING_DURATION } from '../game/crossing';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AppState, BackHandler, Platform } from 'react-native';
 import { companionSpawn, completeInteraction, crossToClearing, followTrail, freshSave, nearbyInteraction, parseSave, stepPlayer, travelRoute } from '../game/engine';
+import { currentMaze, newMazeSeed } from '../game/mazeTrials';
 import type { TrailPoint } from '../game/engine';
 import type { TravelRoute } from '../game/engine';
 import { linesFor } from '../game/dialogue';
@@ -209,7 +211,11 @@ export function useAdventureGame() {
   const start = useCallback((resume: boolean, destination: SaveSlot = 'journey', checkpoint?: ReplayScene) => {
     persist(true);
     const storedSave = snapshots.current[destination] ?? (destination === 'journey' ? saved : replaySaved);
-    const next = destination === 'replay' && checkpoint ? replayCheckpoint(checkpoint) : resume && storedSave ? storedSave : freshSave();
+    let next = destination === 'replay' && checkpoint ? replayCheckpoint(checkpoint) : resume && storedSave ? storedSave : freshSave();
+    if (destination === 'replay' && checkpoint && next.mapId === 'turning') {
+      const progress = {...next.progress,chapterTwo:{...next.progress.chapterTwo,mazeSeed:newMazeSeed()}};
+      next={...next,progress,player:{...next.player,...currentMaze(progress).spawn}};
+    }
     setRecap(resume && storedSave && !checkpoint ? journeyRecap(next.progress, next.mapId) : null);
     slotRef.current = destination; setSlot(destination);
     historyRef.current = [...(next.history ?? [])]; setHistory(historyRef.current);
@@ -232,7 +238,7 @@ export function useAdventureGame() {
       else if (next.progress.rainlit.sealSeen && !next.progress.rainlit.complete) showDialogue('springSeal');
     }
     if (next.mapId === 'bamboo' && !next.progress.chapterTwo.arrivalSeen) showDialogue('bambooArrival');
-    if (next.mapId === 'turning' && !next.progress.chapterTwo.turningSeen) showDialogue('turningArrival');
+    if (next.mapId === 'turning' && (!next.progress.chapterTwo.turningSeen || checkpoint === 'bambooWind' || checkpoint === 'bambooWater')) showDialogue('turningArrival');
     if (next.mapId === 'clearing' && !next.progress.arrivalSeen) showDialogue('arrival');
     if (next.mapId === 'grove' && next.progress.groveRevealed && !next.progress.metMang) showDialogue('mang');
     if (next.mapId === 'waterworks' && !next.progress.waterworksSeen) showDialogue('waterworksArrival');
@@ -246,6 +252,7 @@ export function useAdventureGame() {
   const finishDialogue = useCallback((id: InteractionId, effectApplied = false) => {
     const chapterWasComplete = progressRef.current.chapterComplete;
     const rainlitWasComplete = progressRef.current.rainlit.complete;
+    const trialBefore = progressRef.current.chapterTwo.trailStep;
     const next = effectApplied ? progressRef.current : completeInteraction(progressRef.current, id);
     progressRef.current = next; setProgress(next);
     const rainRoutes: Partial<Record<InteractionId, TravelRoute>> = { rainroadEntry: 'toRainroad', roadReturn: 'backToShelter', hamletEntry: 'toHamlet', hamletReturn: 'backToRoad', springEntry: 'toSpring', springReturn: 'backToHamlet' };
@@ -261,7 +268,7 @@ export function useAdventureGame() {
     if (id === 'turningEntry' && next.chapterTwo.metBagtas) { travel('toTurning'); return; }
     if (id === 'bambooReturn') { travel('backToWorks'); return; }
     if (id === 'turningReturn') { travel('backToBamboo'); return; }
-    if (FORKS.includes(id as typeof FORKS[number])) {
+    if (FORKS.includes(id as typeof FORKS[number]) && next.chapterTwo.trailStep > trialBefore) {
       travel(next.chapterTwo.routeVerified ? 'backToBamboo' : 'bambooLoop');
       sceneElapsed.current = 0; setSceneTime(0); changeMode('pathTurning'); persist(true); return;
     }
@@ -342,7 +349,8 @@ export function useAdventureGame() {
     let request = 0, previous = 0, painted = 0, elapsed = 0;
     const frame = (now: number) => {
       const dt = previous ? Math.min((now - previous) / 1000, 0.05) : 0; previous = now;
-      if (focus.current) elapsed += dt;
+      const rate=sceneRenderRate(modeRef.current,!!dialogueRef.current,focus.current);
+      if (rate>0) elapsed += dt;
       if (modeRef.current === 'crossing' && focus.current) {
         transitionElapsed.current += dt;
         if (transitionElapsed.current >= CROSSING_DURATION) land();
@@ -365,8 +373,11 @@ export function useAdventureGame() {
         if (mapRef.current !== 'yard' && progressRef.current.metTala) companionRef.current = followTrail(companionRef.current, trail.current, playerRef.current, dt, mapRef.current, progressRef.current);
         if (mapRef.current === 'grove' && !progressRef.current.groveRevealed && Math.hypot(playerRef.current.x - MANG_POINT.x, playerRef.current.y - MANG_POINT.y) < 51) beginReveal();
       }
-      if (now - painted >= 1000 / 30) {
-        painted = now;
+      const nextPaint=nextPaintTime(painted,now,rate);
+      if (nextPaint!==null) {
+        // Keep the fractional remainder so 60 Hz timestamps do not accidentally
+        // turn a 30 fps budget into irregular 20 fps updates.
+        painted=nextPaint;
         if (focus.current) setClock(elapsed);
         if (modeRef.current === 'crossing') setTransition(Math.min(1, transitionElapsed.current / CROSSING_DURATION));
         if (modeRef.current === 'revealing') setReveal(Math.min(1, revealElapsed.current / 4.2));
@@ -442,10 +453,16 @@ export function useAdventureGame() {
     return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up); window.removeEventListener('blur', blur); };
   }, [act, changeMode, chooseReply, closeHistory, closeReplay, closeSettings, finishReveal, finishScene, land, openHistory, pause, stop]);
 
+  const setInput=useCallback((value:Point)=>{input.current=value;},[]);
   return { mode, mapId, player, companion, progress, saved, replaySaved, slot, history, recap, dismissRecap: () => setRecap(null), chooseReply, loaded, dialogue, clock, transition, reveal, sceneTime, saveIssue, targetId,
     inspectKeepsake: () => { if (progressRef.current.ubanGiftReceived) { changeMode('playing'); showDialogue('listeningSeed'); } },
     beginChapterTwo: () => { if (progressRef.current.chapterComplete) travel('toBamboo'); },
+    returnToTrialEntrance: () => {
+      if(modeRef.current!=='paused'||mapRef.current!=='turning'||progressRef.current.chapterTwo.routeVerified)return;
+      dialogueRef.current=null;setDialogue(null);travel('bambooLoop');changeMode('playing');persist(true);
+    },
+    visitRestoredHamlet: () => { if (progressRef.current.rainlit.complete) travel('backToHamlet'); },
     startReplay: (scene: ReplayScene) => start(false, 'replay', scene),
     start, act, pause, title, changeMode, openHistory, closeHistory, openReplay, closeReplay, openSettings, closeSettings, askMayumi, askBagtas, askTala, askMang, askLola, askMinda, useString, skipScene: () => finishScene(), skipCrossing: () => land(), skipReveal: () => finishReveal(),
-    setInput: (value: Point) => { input.current = value; } };
+    setInput };
 }

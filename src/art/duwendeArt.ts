@@ -50,8 +50,8 @@ function head(id: DuwendeLook, direction: Direction, emotion: Emotion, blink: bo
 }
 
 const frames = new Map<string, string>();
-export function duwendeSpriteSvg(id: DuwendeLook, direction: Direction = 'down', frame = -1, gesture: Gesture = 'work', emotion: Emotion = 'neutral', blink = false, mouth = 0) {
-  const phase = Math.abs(frame) % 2, key = `${id}:${direction}:${phase}:${gesture}:${emotion}:${blink}:${mouth}`;
+export function duwendeSpriteSvg(id: DuwendeLook, direction: Direction = 'down', frame = -1, gesture: Gesture = 'work', emotion: Emotion = 'neutral', blink = false, mouth = 0, pointing?:Direction) {
+  const phase = Math.abs(frame) % 2, key = `${id}:${direction}:${phase}:${gesture}:${emotion}:${blink}:${mouth}:${pointing}`;
   const cached = frames.get(key); if (cached) return cached;
   const c = looks[id], celebrant = gesture === 'celebrate', back = direction === 'up';
   let s = r(20, 65, 8, 10, c.fold) + r(37, 65, 8, 10, c.fold) + r(18, 75, 12, 4, '#293c31') + r(36, 75, 12, 4, '#293c31') + r(20, 75, 8, 1, c.trim) + r(38, 75, 8, 1, c.trim);
@@ -61,10 +61,14 @@ export function duwendeSpriteSvg(id: DuwendeLook, direction: Direction = 'down',
   if (id === 'minda' || id === 'luning' || id === 'sela') s += r(22, 48, 2, 15, c.trim) + r(39, 48, 2, 15, c.trim) + r(22, 59, 19, 11, id === 'minda' ? '#345d64' : '#aa8b58') + r(25, 61, 12, 1, c.trim) + r(28, 63, 1, 5, c.trim);
   const raised = celebrant || gesture === 'wave';
   const handY = raised ? 12 - phase * 3 : gesture === 'talk' && mouth ? 47 : 56 + phase;
-  s += r(raised ? 7 : 12, raised ? handY + 4 : 48, 6, raised ? 48 - handY : 13, c.cloth) + r(raised ? 4 : 11, handY, 8, 7, c.skin) + r(raised ? 5 : 12, handY, 3, 3, c.light);
-  s += r(47, celebrant ? handY + 4 : 48, 6, celebrant ? 48 - handY : 13, c.fold) + r(celebrant ? 51 : 47, celebrant ? handY : 56 - phase, 7, 7, c.skin);
+  if(pointing==='left')s+=r(3,49+phase,15,5,c.cloth)+r(1,48+phase,8,6,c.skin)+r(0,48+phase,4,2,c.light);
+  else s += r(raised ? 7 : 12, raised ? handY + 4 : 48, 6, raised ? 48 - handY : 13, c.cloth) + r(raised ? 4 : 11, handY, 8, 7, c.skin) + r(raised ? 5 : 12, handY, 3, 3, c.light);
+  if(pointing==='right')s+=r(46,49+phase,14,5,c.cloth)+r(56,48+phase,7,6,c.skin)+r(60,48+phase,4,2,c.light);
+  else if(pointing==='up')s+=r(47,39,6,15,c.cloth)+r(49,33-phase,6,8,c.skin)+r(51,29-phase,2,6,c.light);
+  else if(pointing==='down')s+=r(47,49,6,17,c.cloth)+r(48,63+phase,6,8,c.skin)+r(50,70+phase,2,5,c.light);
+  else s += r(47, celebrant ? handY + 4 : 48, 6, celebrant ? 48 - handY : 13, c.fold) + r(celebrant ? 51 : 47, celebrant ? handY : 56 - phase, 7, 7, c.skin);
   s += head(id, direction, emotion, blink, mouth);
-  if (!back && !celebrant && gesture !== 'reach') {
+  if (!back && !celebrant && gesture !== 'reach' && !pointing) {
     if (id === 'nilo') s += p('M45 52h12v18H45z', '#67563a') + r(47, 55, 8, 11, '#c79850') + r(50, 56, 3, 8, '#ffe1a1') + r(48, 49, 6, 2, '#c6ae71');
     else if (id === 'luning' || id === 'sela') {
       s += r(22, 57 + phase, 25, 15, '#664d33') + r(23, 58 + phase, 23, 2, '#d3b47a');

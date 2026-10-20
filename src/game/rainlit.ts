@@ -23,6 +23,7 @@ export function parseRainlit(value: unknown, eligible: boolean): RainlitProgress
   r.basketReturned = r.basketFreed && r.metLuning && raw.basketReturned === true;
   r.sealSeen = r.restored && raw.sealSeen === true;
   r.complete = r.sealSeen && raw.complete === true;
+  r.homecomingSeen = r.complete && raw.homecomingSeen === true;
   r.seedMemory = r.metMayumi && raw.seedMemory === true;
   r.topics = r.metMayumi && Array.isArray(raw.topics) ? [...new Set(raw.topics.filter(t => ['water', 'stories', 'roads'].includes(t)))] : [];
   return r;
@@ -35,7 +36,7 @@ export function rainlitAction(p: Progress, id: InteractionId): Progress | null {
   if (id === 'rainroadArrival') return r.visited ? set({ roadSeen: true }) : p;
   if (id === 'hamletArrival') return r.roadSeen ? set({ hamletSeen: true }) : p;
   if (id === 'springArrival') return r.hamletSeen ? set({ springSeen: true }) : p;
-  if (id === 'luning') return r.hamletSeen ? set({ metLuning: true, basketReturned: r.basketReturned || r.basketFreed }) : p;
+  if (id === 'luning') return r.hamletSeen ? set({ metLuning: true, basketReturned: r.basketReturned || r.basketFreed, homecomingSeen: r.homecomingSeen || r.complete }) : p;
   if (id === 'mayumi') return r.springSeen ? set({ metMayumi: true }) : p;
   if (id === 'springChannel') return r.metMayumi ? set({ channelRead: true }) : p;
   if (id === 'springBrace') return r.channelRead ? set({ rootBraced: true }) : p;
@@ -49,7 +50,7 @@ export function rainlitAction(p: Progress, id: InteractionId): Progress | null {
 
 export function rainlitObjective(p: Progress, map: string): string {
   const r = p.rainlit;
-  if (r.complete) return 'Chapter 2 complete. The fresh seal is recorded. Rest, talk, or return Luning’s basket.';
+  if (r.complete) return r.homecomingSeen ? 'Chapter 2 complete. The hamlet has water and a place for Rae. Rest or revisit your friends.' : 'Chapter 2 complete. Return to Luning in Riverside Hamlet. See what the water brought back.';
   if (!r.visited) return 'Take the RAINLIT ROAD sign behind Bagtas’s shelter. Choose Travel.';
   if (map === 'bamboo' || map === 'turning') return 'Return to the RAINLIT ROAD sign behind Bagtas’s shelter.';
   if (!r.hamletSeen) return 'Follow the broad road east to the hamlet.';

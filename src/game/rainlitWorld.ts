@@ -1,5 +1,6 @@
 import type { Interaction, Player, Progress, RainlitMapId, Rect } from './model.ts';
 import { SPRING_RILL } from './springScene.ts';
+import { hamletLifeFootprints } from './hamletLife.ts';
 const rillColliders: Rect[] = SPRING_RILL.slice(1).map(([x, y], i) => {
   const [ax, ay] = SPRING_RILL[i];
   return { x: Math.min(ax, x) - 2, y: Math.min(ay, y) - 2, width: Math.abs(x - ax) + 4, height: Math.abs(y - ay) + 4 };
@@ -40,5 +41,5 @@ export function rainlitMap(id: RainlitMapId, p: Progress) {
     { id: 'springMoss', name: 'The spring’s mossy edge', action: 'Inspect', point: { x: 248, y: 290 }, note: 'Tiny wet spaces are habitats. The bank stays dry; the rill carries water to the lives downstream.' },
     ...(p.ubanGiftReceived ? [{ id: 'springSeed' as const, name: 'Listen with Mang Uban’s seed', action: 'Inspect' as const, point: { x: 313, y: 292 } }] : []),
   ];
-  return { ...RAINLIT_SIZE, name: id === 'rainroad' ? 'Rainlit Road' : id === 'hamlet' ? 'Riverside Hamlet' : 'The Quiet Spring', spawn: RAINLIT_SPAWNS[id], colliders: RAINLIT_COLLIDERS[id], interactions };
+  return { ...RAINLIT_SIZE, name: id === 'rainroad' ? 'Rainlit Road' : id === 'hamlet' ? 'Riverside Hamlet' : 'The Quiet Spring', spawn: RAINLIT_SPAWNS[id], colliders: id === 'hamlet' ? [...RAINLIT_COLLIDERS[id], ...hamletLifeFootprints(p)] : RAINLIT_COLLIDERS[id], interactions };
 }

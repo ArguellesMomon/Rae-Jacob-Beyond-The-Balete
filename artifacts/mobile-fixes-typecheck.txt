@@ -1,0 +1,3 @@
+
+> rae-jacob-beyond-the-balete@0.1.0 typecheck
+> tsc --noEmit

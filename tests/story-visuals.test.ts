@@ -9,6 +9,8 @@ import { yardLaundrySvg } from '../src/art/yardArt.ts';
 import { replayCheckpoint } from '../src/game/replay.ts';
 import { canStand, nearbyInteraction, travelRoute } from '../src/game/engine.ts';
 import { getMap } from '../src/game/world.ts';
+import { currentMaze } from '../src/game/mazeTrials.ts';
+import { mazeMarkersSvg } from '../src/art/mazeTrialArt.ts';
 
 async function pixels(source: string, box?: { left: number; top: number; width: number; height: number }) {
   const image = sharp(Buffer.from(source));
@@ -16,15 +18,14 @@ async function pixels(source: string, box?: { left: number; top: number; width: 
 }
 const visible = (buffer: Buffer) => { let count = 0; for (let i = 3; i < buffer.length; i += 4) if (buffer[i] > 90) count++; return count; };
 
-test('all three fork pictures are visible and change at every stage, with study sketches and the verse present', async () => {
-  const p = replayCheckpoint('bambooPuzzle').progress;
-  for (const [x, y] of [[110, 230], [320, 108], [528, 230]]) {
-    const pictures = await Promise.all([0, 1, 2].map(trailStep => pixels(turningStateSvg({ ...p, chapterTwo: { ...p.chapterTwo, trailStep } }), { left: x - 10, top: y - 33, width: 20, height: 17 })));
-    assert.ok(pictures.every(b => visible(b) > 100), 'A playable fork must have a visible sign picture.');
-    assert.equal(new Set(pictures.map(b => b.toString('base64'))).size, 3, 'Pictures must follow the changing fork stage.');
+test('the sole destination sign is clearly visible on each trial', async () => {
+  for(let stage=0;stage<3;stage++){
+    const p=replayCheckpoint('bambooPuzzle').progress;p.chapterTwo.trailStep=stage;
+    const plan=currentMaze(p),source=mazeMarkersSvg(p);
+    const {x,y}=plan.goal.point;assert.ok(visible(await pixels(source,{left:x-5,top:y-34,width:32,height:27}))>250);
+    assert.equal((source.match(/id="trial-destination"/g)||[]).length,1);
   }
-  for (const [x, y] of [[151, 290], [423, 290], [370, 191]]) assert.ok(visible(await pixels(turningStateSvg(p), { left: x - 11, top: y - 16, width: 22, height: 16 })) > 100);
-  assert.ok(visible(await pixels(VERGE_WAYFINDING_SVG, { left: 489, top: 196, width: 26, height: 25 })) > 8);
+  assert.ok(visible(await pixels(VERGE_WAYFINDING_SVG,{left:489,top:196,width:26,height:25}))>8);
 });
 
 test('the wheel visibly moves, stops when diverted, respects Still, and the painted flow diagram has ink', async () => {

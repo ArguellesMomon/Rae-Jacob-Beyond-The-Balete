@@ -36,8 +36,9 @@ function prose(line: DialogueLine): string {
   if (line.choice) for (const tone of REPLY_TONES) s += `### ${tone}\n\n${STORY_CHOICES[line.choice].replies[tone].lines.map(prose).join('')}`;
   return s;
 }
-for (const id of ['bambooArrival', 'bagtas', 'bagtasPaths', 'bagtasStories', 'bagtasSeals', 'bambooCord', 'bambooCup', 'hoofMarks', 'rainLeaves', 'trailVerse', 'turningArrival', 'pathStone', 'pathWind', 'pathWater', 'bagtasDebrief'] as InteractionId[]) {
+for (const id of ['bambooArrival', 'bagtas', 'bagtasPaths', 'bagtasStories', 'bagtasSeals', 'bambooCord', 'bambooCup', 'hoofMarks', 'rainLeaves', 'trailVerse', 'turningArrival', 'pathStone', 'pathWind', 'pathWater', 'turningCharm', 'bagtasDebrief'] as InteractionId[]) {
   const p = replayCheckpoint(id === 'bagtasDebrief' ? 'bambooDebrief' : 'chapter2').progress;
+  if (id === 'turningCharm') { p.chapterTwo.turningSeen = true; p.discoveries.push('pathWind'); }
   review += `## ${id}\n\n` + linesFor(id, p, id.startsWith('path') || id === 'turningArrival' ? 'turning' : 'bamboo').map(prose).join('');
 }
 for (const tone of REPLY_TONES) {

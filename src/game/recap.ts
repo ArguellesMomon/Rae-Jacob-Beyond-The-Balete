@@ -4,7 +4,8 @@ import type { MapId, Progress } from './model.ts';
 export function journeyRecap(p: Progress, map: MapId): string {
   if (isRainlitMap(map)) {
     const r = p.rainlit;
-    if (r.complete) return 'We restored Mayumi’s spring and witnessed a fresh seal form. The water runs; the mystery is still changing. We will ask who is closing the roads, and why.';
+    if (r.homecomingSeen) return 'Water reached the neighbors again. Cups filled, work resumed, and Luning saved us places at supper. The fresh seal is recorded. We can rest before asking who is closing the roads.';
+    if (r.complete) return 'Mayumi let us rest beside the restored spring. A fresh seal formed while we watched. We will follow the mystery after visiting the neighbors whose water came back.';
     if (r.sealSeen) return 'After the repair, we heard a distant voice. Then a new pale ring formed on the closed hollow, in front of all of us.';
     if (r.restored) return 'Tala surveyed, Bagtas braced, and I untangled the basket. The spring reaches the hamlet again. Mayumi is waiting on the left bank.';
     if (r.basketFreed) return 'Luning’s basket is safe. The root still needs to be lowered onto its stone cradle.';
@@ -16,10 +17,10 @@ export function journeyRecap(p: Progress, map: MapId): string {
   }
   if (map === 'bamboo' || map === 'turning') {
     const c = p.chapterTwo;
-    if (c.debriefSeen) return 'We helped Bagtas check a route through the turning bamboo. He marked the shelter cord; Tala kept our dated notes.';
+    if (c.debriefSeen) return 'We outwitted Bagtas’s three-labyrinth challenge. He kept his bargain: passage toward the spring, without another hidden turn. Trust will take more than winning.';
     if (c.routeVerified) return 'Stone, bending bamboo, running water. We checked all three landmarks and found the way back to Bagtas.';
     if (c.trailStep) return 'The paths shifted, but our checked landmarks stayed true. Tala kept our place in the route.';
-    if (c.metBagtas) return 'Bagtas is a guide caught in the same changing paths. We agreed to check one reliable route together.';
+    if (c.metBagtas) return 'Bagtas scattered hoofbeats through the bamboo. His challenge has three trails, one destination sign in each. Worn carvings and little trail clues show the real way. Our completed signs and the safe return path stay ours.';
     return 'We followed the open bamboo road beyond the repaired crossing. A tall traveler is waiting by a shelter.';
   }
   if (p.chapterComplete) return 'One bell returned, one crossing restored, and a friend beside me. Our Chapter 1 journey is safe in these pages.';

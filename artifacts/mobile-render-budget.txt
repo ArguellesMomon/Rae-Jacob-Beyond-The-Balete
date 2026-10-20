@@ -1,0 +1,92 @@
+[
+  {
+    "stage": "The Divided Stone",
+    "screen": "844x390",
+    "before": {
+      "plants": 356,
+      "contourBytes": 113387,
+      "activeGroundMiB": 54
+    },
+    "after": {
+      "plants": 43,
+      "chunks": 4,
+      "contourBytes": 13210,
+      "activeGroundMiB": 13.5
+    }
+  },
+  {
+    "stage": "The Divided Stone",
+    "screen": "390x844",
+    "before": {
+      "plants": 356,
+      "contourBytes": 113387,
+      "activeGroundMiB": 54
+    },
+    "after": {
+      "plants": 98,
+      "chunks": 8,
+      "contourBytes": 31031,
+      "activeGroundMiB": 13.5
+    }
+  },
+  {
+    "stage": "The Backward Wind",
+    "screen": "844x390",
+    "before": {
+      "plants": 341,
+      "contourBytes": 113165,
+      "activeGroundMiB": 54
+    },
+    "after": {
+      "plants": 46,
+      "chunks": 4,
+      "contourBytes": 16073,
+      "activeGroundMiB": 13.5
+    }
+  },
+  {
+    "stage": "The Backward Wind",
+    "screen": "390x844",
+    "before": {
+      "plants": 341,
+      "contourBytes": 113165,
+      "activeGroundMiB": 54
+    },
+    "after": {
+      "plants": 99,
+      "chunks": 8,
+      "contourBytes": 30690,
+      "activeGroundMiB": 13.5
+    }
+  },
+  {
+    "stage": "The Borrowed Current",
+    "screen": "844x390",
+    "before": {
+      "plants": 336,
+      "contourBytes": 114046,
+      "activeGroundMiB": 54
+    },
+    "after": {
+      "plants": 44,
+      "chunks": 3,
+      "contourBytes": 11377,
+      "activeGroundMiB": 13.5
+    }
+  },
+  {
+    "stage": "The Borrowed Current",
+    "screen": "390x844",
+    "before": {
+      "plants": 336,
+      "contourBytes": 114046,
+      "activeGroundMiB": 54
+    },
+    "after": {
+      "plants": 120,
+      "chunks": 9,
+      "contourBytes": 39054,
+      "activeGroundMiB": 13.5
+    }
+  }
+]

@@ -1,0 +1,5 @@
+
+> rae-jacob-beyond-the-balete@0.1.0 turning:preview
+> node --experimental-strip-types scripts/render-turning.ts
+
+Rendered four puzzle states, five route scenes, depth/material views, phone framing, transition storyboard and weather animation. All targets remain reachable, the three stages keep distinct landmark sketches, and every arch and proof remains reachable on the new maze ground. Source-art renders only.

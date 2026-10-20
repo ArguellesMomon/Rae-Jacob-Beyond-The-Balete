@@ -1,7 +1,7 @@
 import type { CharacterId, Progress } from './model.ts';
 import { RESIDENTS, RESIDENT_IDS } from './residents.ts';
 
-export type CreatureId = 'duwende' | 'kapre' | 'tikbalang' | 'diwata';
+export type CreatureId = 'duwende' | 'kapre' | 'tikbalang' | 'diwata' | 'tigmamanukan' | 'giantess';
 type Source = { title: string; url: string };
 export type CreatureEntry = { id: CreatureId; name: string; subtitle: string; portrait: CharacterId; tradition: string; powers: string; ways: string; variation: string; inSilong: string; sources: Source[] };
 export const CREATURES: readonly CreatureEntry[] = [
@@ -32,8 +32,8 @@ export const CREATURES: readonly CreatureEntry[] = [
     powers: 'Misleading travelers in forests and mountains is a recorded motif. The apparent road becomes unreliable. This entry does not turn every confusing turn into proof that a tikbalang is nearby.',
     ways: 'A familiar saying links rain falling in sunshine with a tikbalang wedding. The NCCA records it as a saying and children’s rhyme, rather than a literal weather rule.',
     variation: 'The institutional entry brings together several motifs. Individual tellings need not use all of them, and a named character need not behave like every warning told about his kind.',
-    inSilong: 'Bagtas’s proud personality, muscular build, guide work and relationship with Tala are original. The Turning Paths landmark puzzle is a game invention inspired by the misleading-road motif. Learning to observe matters more than assuming the loudest guide must be right.',
-    sources: [{ title: 'NCCA Official · tikbalang, 2015 cultural vocabulary entry', url: 'https://www.flickr.com/photos/nccaofficial/18070087763' }],
+    inSilong: 'Bagtas deliberately misleads Rae with echoing hoofbeats, changing signs and returning paths. His three-trial bargain, muscular build and gradual willingness to keep company are original fiction. Rae uses family advice about reversing clothing beside the final sign to loosen the last illusion. The three guided trials, occasional worn waymarks, creature helpers and destination signs are game inventions. Winning earns reluctant respect, not instant friendship.',
+    sources: [{ title: 'NCCA Official · tikbalang, 2015 cultural vocabulary entry', url: 'https://www.flickr.com/photos/nccaofficial/18070087763' }, { title: 'Read Tiktik · modern field-guide retelling, including inside-out clothing advice', url: 'https://www.readtiktik.com/fieldguide/tikbalang' }],
   },
   {
     id: 'diwata', name: 'Diwata', subtitle: 'Mayumi · The Diwata ng Bukal', portrait: 'mayumi',
@@ -47,6 +47,24 @@ export const CREATURES: readonly CreatureEntry[] = [
       { title: 'Pimentel, Rodriguez & del Rosario (2022) · Santa Ana / Diwata sa Bukal, pp. 328–330', url: 'https://ioer-imrj.com/wp-content/uploads/2022/08/Ntra.-Sra.-De-Los-Desamparados-and-Postcolonial-Resistances.pdf' },
     ],
   },
+  {
+    id:'tigmamanukan',name:'Tigmamanukan',subtitle:'A Tagalog omen bird and the traveler’s decision',portrait:'tigmamanukan',
+    tradition:'Juan de Plasencia’s 1589 account of Tagalog customs records a bird called Tigmamanuguin. Travelers interpreted its song before continuing a journey. The spelling Tigmamanukan is used here for our bird.',
+    powers:'The account distinguishes favorable and unfavorable forms of song. It documents omen interpretation, rather than a bird speaking directions or reliably finding every lost person.',
+    ways:'A traveler might continue or return home according to the omen. Listening before setting out gives the bird a connection to travel and uncertainty.',
+    variation:'This is an early colonial account of a Tagalog practice, not the voice of every Philippine community. Other regional omen birds have their own names and tellings; this entry does not merge them into one creature.',
+    inSilong:'Our original blue bird flies a short way along the correct seeded corridor, then returns to a branch. Tala helps Rae interpret that particular behavior. Its kindness, repeated appearances and navigation mechanic are authored for Silong. It does not talk or require a gift. The Codex records an observation after Rae watches it.',
+    sources:[{title:'Plasencia (1589) · Customs of the Tagalogs, travel omens, printed p. 189',url:'https://upload.wikimedia.org/wikipedia/commons/4/4c/The_Philippine_Islands%2C_1493-1803%3B_%28IA_afk2830.0001.007.umich.edu%29.pdf'}],
+  },
+  {
+    id:'giantess',name:'Giantess',subtitle:'Aling Dalisay · Inspired by an Isneg tale',portrait:'dalisay',
+    tradition:'In “The Giant’s Wife,” an Isneg tale recorded by Morice Vanoverbergh, Sibbarayungan sees Ayo approaching the dwelling of Gisurab. She takes Ayo inside and conceals her in a trunk.',
+    powers:'Sibbarayungan protects the visitor through hospitality and clever concealment. This episode does not give her a universal power to navigate forests or command paths.',
+    ways:'She deflects Gisurab’s suspicion, then lets Ayo out when he leaves. They eat, and Ayo goes home. A dangerous giant and a protective giantess appear in the same account.',
+    variation:'Sibbarayungan is a named figure in a particular Isneg tale. Her actions are not a rule that every giant, giantess or Isneg supernatural being is kind. This entry concerns that recorded episode, rather than one pan-Philippine giant species.',
+    inSilong:'Aling Dalisay is our original giantess, inspired by the tale’s protective welcome. She is not Sibbarayungan renamed, and her name is not presented as an Isneg traditional name. Her woven costume, open resting clearing, fallen-petal clues and directions are authored for this game. She offers help without a new quest and lets Rae be a frightened, curious child.',
+    sources:[{title:'Morice Vanoverbergh · Isneg Tales, “The Giant’s Wife,” printed p. 64',url:'https://asianethnology.org/article/148006-isneg-tales.pdf'}],
+  },
 ];
 
 export function creatureEncounters(id: CreatureId, p: Progress): string[] {
@@ -57,12 +75,16 @@ export function creatureEncounters(id: CreatureId, p: Progress): string[] {
   ];
   if (id === 'kapre') return p.metMang ? ['Mang Uban'] : [];
   if (id === 'tikbalang') return p.chapterTwo.metBagtas ? ['Bagtas'] : [];
+  if (id === 'tigmamanukan') return (p.chapterTwo.helperChats.tigmamanukan??0)>0?['The blue omen bird']:[];
+  if (id === 'giantess') return (p.chapterTwo.helperChats.dalisay??0)>0?['Aling Dalisay']:[];
   return p.rainlit.metMayumi ? ['Mayumi'] : [];
 }
 export const encounteredCreatures = (p: Progress) => CREATURES.filter(entry => creatureEncounters(entry.id, p).length > 0);
 export function creatureMemory(id: CreatureId, p: Progress): string {
+  if(id==='tigmamanukan')return 'I told a bird my name! It did not speak, but it flew a little way and waited. Tala said people listened to omen birds before journeys. I wonder what it notices from above the bamboo.';
+  if(id==='giantess')return 'She was enormous, even sitting down. I thought of Mang Uban, but she said a large shadow could belong to more than one kind of neighbor. She made room for my questions before showing us the road.';
   if (id === 'duwende') return p.bellRung ? 'The square filled with little voices when the bell rang. These are somebody’s homes. I helped bring their road back.' : p.metTala ? 'Tala is a duwende! I nearly stared at her ears instead of saying hello. She makes maps. I wonder what she sees that I walk straight past.' : 'I met one of the little neighbors. I want to learn their names before deciding what their story means.';
   if (id === 'kapre') return p.ubanGiftReceived ? 'He put a Listening Seed in my hand. Someone that enormous managed to give me something so small without crushing it.' : 'He is bigger than Lola’s house! I thought a voice that deep would only sound angry. But he waited for my question.';
-  if (id === 'tikbalang') return p.chapterTwo.debriefSeen ? 'We checked his road together. Even the finest guide can need another pair of eyes. I don’t think he will say it quite like that.' : 'A horse’s face, hands like a man’s, and so much confidence. Bagtas says he knows these paths. I still want to check the landmarks.';
+  if (id === 'tikbalang') return p.chapterTwo.debriefSeen ? 'He made the maze. We beat it, and he kept his bargain. I can admire his cleverness and still tell him I hated being lost. La’s inside-out shirt advice helped!' : 'A horse’s face, hands like a man’s, and so much confidence. He admitted the wrong turns were his. I asked him to keep a way back open. Tala heard him promise.';
   return p.rainlit.restored ? 'The water reached the neighbors again. Mayumi needed our hands as well as our questions. Being a diwata doesn’t mean every problem disappears.' : 'Mayumi noticed the water before anything else. I have so many questions. I should ask before stepping closer to her spring.';
 }

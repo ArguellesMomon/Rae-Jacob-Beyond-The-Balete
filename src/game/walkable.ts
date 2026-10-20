@@ -1,4 +1,5 @@
 import type { MapId, Point } from './model.ts';
+import { MAZE_SIZE } from './mazeTrials.ts';
 
 export type GroundPolygon = readonly (readonly [number, number])[];
 const box = (x: number, y: number, width: number, height: number): GroundPolygon => [[x, y], [x + width, y], [x + width, y + height], [x, y + height]];
@@ -47,9 +48,8 @@ export const MAP_GROUND: Record<MapId, { width: number; height: number; regions:
   spring: { width: 640, height: 480, regions: [
     [[60, 355], [80, 305], [135, 287], [185, 272], [205, 247], [195, 217], [220, 203], [260, 213], [300, 228], [360, 228], [430, 222], [500, 215], [551, 219], [560, 242], [540, 270], [500, 296], [460, 319], [418, 326], [382, 324], [360, 347], [388, 372], [438, 400], [475, 424], [464, 450], [408, 440], [370, 414], [333, 389], [288, 362], [245, 336], [220, 319], [180, 315], [150, 338], [121, 366], [106, 405], [75, 428], [50, 410]],
   ] },
-  turning: { width: 640, height: 480, regions: [
-    [[274, 466], [366, 466], [366, 320], [551, 320], [551, 192], [505, 192], [505, 275], [365, 275], [365, 75], [279, 75], [279, 275], [135, 275], [135, 192], [87, 192], [87, 320], [274, 320]],
-  ] },
+  // Procedural maze walls provide the detailed boundary; its world ground is fixed.
+  turning: { ...MAZE_SIZE, regions: [box(36, 40, MAZE_SIZE.width - 65, MAZE_SIZE.height - 60)] },
 };
 
 type Interval = [number, number];
